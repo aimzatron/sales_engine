@@ -1,4 +1,5 @@
 require 'csv'
+require './lib/merchant'
 
 class MerchantBuilder
 
@@ -11,10 +12,13 @@ class MerchantBuilder
       merchant_hash[:name] = merchant[:name]
       merchant_hash[:created_at] = merchant[:created_at]
       merchant_hash[:updated_at] = merchant[:updated_at]
-      merchant_hash
+
+      Merchant.new(merchant_hash)
     end
   end
 
 end
 
-#puts MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
+# returned_info =  MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
+
+# puts returned_info.inspect
