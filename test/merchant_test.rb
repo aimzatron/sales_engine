@@ -1,5 +1,6 @@
 require './test/test_helper'
 require './lib/merchant'
+require './lib/merchant_builder'
 
 class MerchantTest < MiniTest::Unit::TestCase
 
@@ -19,11 +20,30 @@ class MerchantTest < MiniTest::Unit::TestCase
     end
   end
 
+  describe "test_random" do
+    before do
+      MerchantBuilder.parse_csv
+      @data = Merchant.all
+    end
+
+    def test_if_random
+      m1 = Merchant.random
+      m2 = Merchant.random
+
+      20.times do
+        break if m1.id != m2.id
+        m1 = SalesEngine::Merchant.random
+      end
+
+      refute_equal m1.id, m2.id
+    end
+  end
+
   describe "test_find_methods" do
     before do
       @m1 = {:id => '5', :name => 'Williamson Group',
-        :created_at => "2012-03-27 14:54:09 UTC",
-        :updated_at => "2012-03-27 14:54:09 UTC"}
+             :created_at => "2012-03-27 14:54:09 UTC",
+             :updated_at => "2012-03-27 14:54:09 UTC"}
 
       @m2 = {:id => '7', :name => 'WILLIAMSON Group',
             :created_at => "2012-03-27 14:54:09 UTC",
@@ -109,6 +129,5 @@ class MerchantTest < MiniTest::Unit::TestCase
       assert_equal [], merchants
     end
   end
-
 
 end

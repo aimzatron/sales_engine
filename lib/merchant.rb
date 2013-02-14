@@ -1,8 +1,4 @@
-#require './lib/search'
-#require './lib/merchant_builder'
-
 class Merchant
-  #extend Search
 
   attr_reader :id, :name, :created_at, :updated_at
 
@@ -37,8 +33,8 @@ class Merchant
     @data.select{|merchant| merchant.id.downcase == id.downcase}
   end
 
+  def self.random
+    @data.sample
+  end
+
 end
-
-# merchant = Merchant.find_by_name("Williamson Group")
-# puts merchant.inspect
-

@@ -11,4 +11,12 @@ class Invoice
     @updated_at = data[:updated_at]
   end
 
+  def self.store(invoices)
+    @data = invoices
+  end
+
+  def self.all
+    @data
+  end
+
 end
