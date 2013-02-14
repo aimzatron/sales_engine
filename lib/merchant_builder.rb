@@ -18,7 +18,3 @@ class MerchantBuilder
   end
 
 end
-
-# returned_info =  MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
-
-# puts returned_info.inspect
