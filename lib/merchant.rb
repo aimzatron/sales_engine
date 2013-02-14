@@ -1,5 +1,5 @@
-require './lib/search'
-require './lib/merchant_builder'
+#require './lib/search'
+#require './lib/merchant_builder'
 
 class Merchant
   #extend Search
@@ -13,32 +13,32 @@ class Merchant
     @updated_at = data[:updated_at]
   end
 
+  def self.store(merchants)
+    @data = merchants
+  end
+
   def self.all
-    @data ||= MerchantBuilder.data
+    @data
   end
 
-  def self.method_missing(name, *args)
-    puts "method called: #{name} is not found"
-    puts "args passed in: #{args}"
-
-    attribute = extract_attribute(name)
-    args = args.join(" ")
-
-    Search.find_by(self, attribute, args)
+  def self.find_by_name(name)
+    @data.find {|merchant| merchant.name.downcase == name.downcase}
   end
 
-  def self.extract_attribute(name)
-    attribute = name.to_s.split("_")[2..-1].join("_")
+  def self.find_all_by_name(name)
+    @data.select{|merchant| merchant.name.downcase == name.downcase}
   end
 
+  def self.find_by_id(id)
+    @data.find {|merchant| merchant.id.downcase == id.downcase}
+  end
 
-
+  def self.find_all_by_id(id)
+    @data.select{|merchant| merchant.id.downcase == id.downcase}
+  end
 
 end
 
-#m = Merchant.new({:id => '1', :name => 'Userwise', :created_at => '2012-03-23 14:53:59 UTC', :updated_at => '2012-03-27 14:53:59 UTC' })
+# merchant = Merchant.find_by_name("Williamson Group")
+# puts merchant.inspect
 
-Merchant.find_by_name("Schroeder-Jerde")
-
-# array = Merchant.all
-# puts array.inspect
