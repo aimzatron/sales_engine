@@ -1,5 +1,7 @@
+# Address circular dependency issue (where two files require each other)
+
 require 'csv'
-require './lib/merchant'
+#require './lib/merchant'
 
 class MerchantBuilder
 
@@ -15,6 +17,13 @@ class MerchantBuilder
 
       Merchant.new(merchant_hash)
     end
+    #return data
+  end
+
+  def self.data
+    @data ||= self.parse_csv("./test/support/merchant_build.csv")
   end
 
 end
+
+#puts MerchantBuilder.data.inspect
