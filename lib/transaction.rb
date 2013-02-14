@@ -1,4 +1,5 @@
 class Transaction
+
   attr_reader :id, :invoice_id, :credit_card_number,
               :credit_card_expiration_date, :result, :created_at, :updated_at
 
@@ -10,6 +11,14 @@ class Transaction
     @result = data[:result]
     @created_at = data[:created_at]
     @updated_at = data[:updated_at]
+  end
+
+  def self.store(transactions)
+    @data = transactions
+  end
+
+  def self.all
+    @data
   end
 
 end

@@ -1,6 +1,6 @@
 class Customer
 
-attr_reader :id, :first_name, :last_name, :created_at, :updated_at
+  attr_reader :id, :first_name, :last_name, :created_at, :updated_at
 
   def initialize(data)
     @id         = data[:id]
@@ -8,6 +8,14 @@ attr_reader :id, :first_name, :last_name, :created_at, :updated_at
     @last_name  = data[:last_name]
     @created_at = data[:created_at]
     @updated_at = data[:updated_at]
+  end
+
+  def self.store(customers)
+    @data = customers
+  end
+
+  def self.all
+    @data
   end
 
 end

@@ -1,6 +1,8 @@
 require './test/test_helper'
 require './lib/merchant_builder'
 
+
+
 class MerchantBuilderTest < MiniTest::Unit::TestCase
 
   def test_it_exists
