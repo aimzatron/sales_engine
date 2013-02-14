@@ -12,7 +12,7 @@ class InvoiceBuilder
       invoice_hash[:customer_id] = invoice[:customer_id]
       invoice_hash[:merchant_id] = invoice[:merchant_id]
       invoice_hash[:status] = invoice[:status]
-      invoice_hash[:status] = invoice[:created_at]
+      invoice_hash[:created_at] = invoice[:created_at]
       invoice_hash[:updated_at] = invoice[:updated_at]
 
       Invoice.new(invoice_hash)

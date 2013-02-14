@@ -8,7 +8,7 @@ class Invoice
     @merchant_id = data[:merchant_id]
     @status = data[:status]
     @created_at = data[:created_at]
-    @update_at = data[:update_at]
+    @updated_at = data[:updated_at]
   end
 
 end
