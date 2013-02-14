@@ -19,5 +19,4 @@ class InvoiceBuilderTest < MiniTest::Unit::TestCase
     assert_equal merchant_id, output[1].merchant_id
   end
 
-
 end
