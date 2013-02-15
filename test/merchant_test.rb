@@ -140,7 +140,7 @@ class MerchantTest < MiniTest::Unit::TestCase
       ItemBuilder.parse_csv("./test/support/item_build.csv")
       InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
 
-      @merc_data = Merchant.all
+      Merchant.all
       #@item_data = Item.all
       @m = Merchant.find_by_id("1")
     end

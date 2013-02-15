@@ -40,23 +40,23 @@ class Invoice
   end
 
   def self.find_all_by_status(status)
-    @data.select {|invoice| invoice.status.downcase == status.downcase}    
+    @data.select {|invoice| invoice.status.downcase == status.downcase}
   end
 
   def self.find_by_created_at(created_at)
-    @data.find {|invoice| invoice.created_at.downcase == created_at.downcase}    
+    @data.find {|invoice| invoice.created_at.downcase == created_at.downcase}
   end
 
   def self.find_all_by_created_at(created_at)
-    @data.select {|invoice| invoice.created_at.downcase == created_at.downcase}    
+    @data.select {|invoice| invoice.created_at.downcase == created_at.downcase}
   end
 
   def self.find_by_updated_at(updated_at)
-    @data.find {|invoice| invoice.updated_at.downcase == updated_at.downcase}    
+    @data.find {|invoice| invoice.updated_at.downcase == updated_at.downcase}
   end
 
   def self.find_all_by_updated_at(updated_at)
-    @data.select {|invoice| invoice.updated_at.downcase == updated_at.downcase}    
+    @data.select {|invoice| invoice.updated_at.downcase == updated_at.downcase}
   end
 
 end

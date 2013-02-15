@@ -38,4 +38,8 @@ class Customer
     @data.sample
   end
 
+  def invoices
+    Invoice.find_all_by_customer_id(self.id)
+  end
+
 end
