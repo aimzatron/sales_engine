@@ -1,6 +1,8 @@
 require './test/test_helper'
 require './lib/invoice'
 require './lib/transaction_builder'
+require './lib/invoice_item_builder'
+require './lib/item_builder'
 
 
 class InvoiceTest < MiniTest::Unit::TestCase
@@ -233,12 +235,27 @@ class InvoiceTest < MiniTest::Unit::TestCase
       @i = Invoice.new(i)
 
       TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+      InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
+      ItemBuilder.parse_csv("./test/support/item_build.csv")
     end
 
     def test_if_transactions_of_an_invoice_can_be_retrieved
       transactions = @i.transactions
-      assert_equal 3, transactions.count
+      assert_equal 4, transactions.count
       assert_equal "4738848761455350", transactions[0].credit_card_number
+    end
+
+    def test_if_invoice_items_of_an_invoice_can_be_retrieved
+      invoice_items = @i.invoice_items
+      assert_equal 3, invoice_items.count
+      assert_equal "1832", invoice_items[0].item_id
+    end
+
+    def test_if_items_of_an_invoice_can_be_retrieved
+      items = @i.items
+      assert_equal 3, items.count
+      assert_equal "Item Est Consequuntur", items[0].name
+      assert_equal "34018", items[2].unit_price
     end
   end
 

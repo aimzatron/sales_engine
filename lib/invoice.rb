@@ -63,5 +63,15 @@ class Invoice
     Transaction.all.select{|transaction| transaction.invoice_id == self.id}
   end
 
+  def invoice_items
+    InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+  end
+
+  def items
+    Item.all.select do |item|
+      self.invoice_items.find{|invoice_item| invoice_item.item_id == item.id}
+    end
+  end
+
 end
 

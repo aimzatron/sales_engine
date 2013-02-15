@@ -43,25 +43,7 @@ class Merchant
   end
 
   def items
-
     Item.all.select {|item| self.id == item.merchant_id}
-
-    # # get access to all invoices
-    # invoices = Invoice.all
-
-    # # search invoices array for matches where id == merchant_id -> store in an merc_invoices array
-    # merc_invoices = invoices.select{|invoice| self.id == invoice.merchant_id}
-
-    # # use the invoices array to cycle through invoice_items and match all instances where id (invoice) == invoice_id (invoice_item) -> store in an invoice_item array
-    # invoice_items = InvoiceItem.all
-
-    # merc_invoice_items = merc_invoices.select do |invoice|
-    #   invoice_items.select{|invoice_item| invoice.id == invoice_item.invoice_id}
-    # end
-
-    # # use invoice_item array and cycle through items data and match all instances where item_id (invoice_item) == id (item)
-    # #@merchant_invoice_items = InvoiceItem.all.select{|invoice_item| }
-
   end
 
   def invoices
