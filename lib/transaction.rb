@@ -21,4 +21,9 @@ class Transaction
     @data
   end
 
+  def invoice
+    # Will I need to require invoice.rb when this is live? It currently passes without it
+    invoice = Invoice.all.find{|invoice| invoice.id == self.invoice_id}
+  end
+
 end

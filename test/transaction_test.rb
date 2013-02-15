@@ -1,5 +1,6 @@
 require './test/test_helper'
 require './lib/transaction'
+require './lib/invoice_builder'
 
 class TransactionTest < MiniTest::Unit::TestCase
 
@@ -21,14 +22,23 @@ class TransactionTest < MiniTest::Unit::TestCase
     end
   end
 
-  # describe "transaction relationships " do
-  #   before do
-  #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-  #     InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+  describe "transaction relationships " do
+    before do
+      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+      @t = {:id => '10', :invoice_id => '11',
+            :credit_card_number => '4354495077693036',
+            :credit_card_expiration_date => '',
+            :result => "success"}
 
-  #     @t = Transaction.find_by_id
-  #   end
-  # end
+    end
+
+    def test_if_invoice_is_returned_for_transaction
+      t = Transaction.new(@t)
+      invoice = t.invoice
+      assert_equal "177", invoice.merchant_id
+
+    end
+  end
 
 
 end
