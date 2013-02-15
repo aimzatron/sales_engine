@@ -15,7 +15,7 @@ class TransactionBuilderTest < MiniTest::Unit::TestCase
 
   def test_if_invoice_was_created
     output = TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-    cc_number = "4515551623735607"
+    cc_number = "4515551623735600"
     assert_equal cc_number, output[3].credit_card_number
   end
 

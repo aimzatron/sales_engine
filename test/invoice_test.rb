@@ -1,22 +1,25 @@
 require './test/test_helper'
 require './lib/invoice'
+require './lib/transaction_builder'
 
 
 class InvoiceTest < MiniTest::Unit::TestCase
 
-  def test_it_exists
-    invoice = Invoice.new({})
-    assert_kind_of Invoice, invoice
-  end
+  describe "creation of instances" do
+    def test_it_exists
+      invoice = Invoice.new({})
+      assert_kind_of Invoice, invoice
+    end
 
-  def test_it_is_initialized_from_a_hash_of_data
-    data = {:id => 3, :customer_id => 1, :merchant_id => 78, :status => "shipped"}
+    def test_it_is_initialized_from_a_hash_of_data
+      data = {:id => 3, :customer_id => 1, :merchant_id => 78, :status => "shipped"}
 
-    invoice = Invoice.new(data)
-    assert_equal data[:id], invoice.id
-    assert_equal data[:customer_id], invoice.customer_id
-    assert_equal data[:merchant_id], invoice.merchant_id
-    assert_equal data[:status], invoice.status
+      invoice = Invoice.new(data)
+      assert_equal data[:id], invoice.id
+      assert_equal data[:customer_id], invoice.customer_id
+      assert_equal data[:merchant_id], invoice.merchant_id
+      assert_equal data[:status], invoice.status
+    end
   end
 
   describe "test_find_methods" do
@@ -216,10 +219,27 @@ class InvoiceTest < MiniTest::Unit::TestCase
         invoices = Invoice.find_all_by_id("2012-03-27 23:54:09 UTC")
         assert_equal [], invoices
       end
+  end
 
+  describe "Invoice relationships" do
+    before do
+      i = {:id => '17',
+             :customer_id => "1",
+             :merchant_id => "60",
+             :status => "shipped",
+             :created_at => "2012-03-27 14:54:09 UTC",
+             :updated_at => "2012-03-27 15:00:00 UTC"}
 
+      @i = Invoice.new(i)
 
+      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+    end
 
+    def test_if_transactions_of_an_invoice_can_be_retrieved
+      transactions = @i.transactions
+      assert_equal 3, transactions.count
+      assert_equal "4738848761455350", transactions[0].credit_card_number
+    end
   end
 
 end

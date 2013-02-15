@@ -59,5 +59,9 @@ class Invoice
     @data.select {|invoice| invoice.updated_at.downcase == updated_at.downcase}
   end
 
+  def transactions
+    Transaction.all.select{|transaction| transaction.invoice_id == self.id}
+  end
+
 end
 
