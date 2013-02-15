@@ -18,4 +18,24 @@ class Customer
     @data
   end
 
+  def self.find_by_first_name(first_name)
+    @data.find {|customer| customer.first_name.downcase == first_name.downcase}
+  end
+
+  def self.find_all_by_first_name(first_name)
+    @data.select{|customer| customer.first_name.downcase == first_name.downcase}
+  end
+
+  def self.find_by_id(id)
+    @data.find {|customer| customer.id.downcase == id.downcase}
+  end
+
+  def self.find_all_by_id(id)
+    @data.select {|customer| customer.id.downcase == id.downcase}
+  end
+
+  def self.random
+    @data.sample
+  end
+
 end
