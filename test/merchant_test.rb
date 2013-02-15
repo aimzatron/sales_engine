@@ -1,6 +1,9 @@
 require './test/test_helper'
 require './lib/merchant'
 require './lib/merchant_builder'
+require './lib/item_builder'
+require './lib/invoice_builder'
+#require './lib/item'
 
 class MerchantTest < MiniTest::Unit::TestCase
 
@@ -127,6 +130,29 @@ class MerchantTest < MiniTest::Unit::TestCase
 
       merchants = Merchant.find_all_by_id("10")
       assert_equal [], merchants
+    end
+  end
+
+  describe "merchant relationships" do
+    # Ask why Item class did not need to be required for this test to work!!!!!!
+    before do
+      MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
+      ItemBuilder.parse_csv("./test/support/item_build.csv")
+      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+
+      @merc_data = Merchant.all
+      #@item_data = Item.all
+      @m = Merchant.find_by_id("1")
+    end
+
+    def test_if_list_of_items_are_returned_for_a_merchant
+      items = @m.items
+      assert_equal 6, items.count
+    end
+
+    def test_if_list_of_invoices_are_returned_for_a_merchant
+      invoices = @m.invoices
+      assert_equal 4, invoices.count
     end
   end
 
