@@ -1,6 +1,7 @@
 require './test/test_helper'
 require './lib/transaction'
 require './lib/invoice_builder'
+require './lib/transaction_builder'
 
 class TransactionTest < MiniTest::Unit::TestCase
 
@@ -29,7 +30,6 @@ class TransactionTest < MiniTest::Unit::TestCase
             :credit_card_number => '4354495077693036',
             :credit_card_expiration_date => '',
             :result => "success"}
-
     end
 
     def test_if_invoice_is_returned_for_transaction
@@ -37,6 +37,19 @@ class TransactionTest < MiniTest::Unit::TestCase
       invoice = t.invoice
       assert_equal "177", invoice.merchant_id
 
+    end
+  end
+
+  describe "find pending transactions" do
+    before do
+      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+    end
+
+    def test_if_unpaid_transactions_can_be_retrieved
+      invoice_id = "13"
+      transactions = Transaction.pending
+      #puts transactions
+      assert_equal 0, transactions[invoice_id]
     end
   end
 

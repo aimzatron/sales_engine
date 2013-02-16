@@ -13,8 +13,8 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
       data = {:id => '3', :item_id => '523', :invoice_id => '1', :quantity => '8', :unit_price => '34873'}
 
       invItem = InvoiceItem.new(data)
-      assert_equal data[:quantity], invItem.quantity
-      assert_equal data[:unit_price], invItem.unit_price
+      assert_equal '8', invItem.quantity
+      assert_equal '34873', invItem.unit_price
     end
   end
 

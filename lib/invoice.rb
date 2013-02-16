@@ -77,5 +77,14 @@ class Invoice
     Customer.all.find {|customer| customer.id == self.customer_id}
   end
 
+  def self.pending
+    transactions = Transaction.pending
+    puts transactions.inspect
+
+    @data.select do |invoice|
+      transactions.find {|invoice_id, no_of_trans| invoice_id == invoice.id}
+    end
+  end
+
 end
 
