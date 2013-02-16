@@ -1,6 +1,8 @@
 require './test/test_helper'
 require './lib/item'
 require './lib/item_builder'
+require './lib/invoice_item_builder'
+require './lib/merchant_builder'
 
 class ItemTest < MiniTest::Unit::TestCase
 
@@ -38,7 +40,7 @@ class ItemTest < MiniTest::Unit::TestCase
     end
   end
 
-  describe "test_find_methods" do
+  describe "test find methods" do
     before do
       @i1 = {:id => '1', :name => 'black shoes',
              :description => "cool stuff", :unit_price => "75107",
@@ -249,6 +251,36 @@ class ItemTest < MiniTest::Unit::TestCase
       items = Item.find_all_by_merchant_id("9")
       assert_equal [], items
     end
+  end
+
+  describe "Item relationships" do
+
+    before "" do
+      item = {:id => '1999', :name => 'black shoes',
+             :description => "cool stuff", :unit_price => "75107",
+             :merchant_id => "7",
+             :created_at => "2012-03-27 14:54:09 UTC",
+             :updated_at => "2012-03-27 14:54:09 UTC"}
+
+      @item = Item.new(item)
+
+      InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
+      MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
+
+    end
+
+    def test_if_invoice_items_are_returned_for_an_item
+      invoice_items = @item.invoice_items
+      assert_equal 4  , invoice_items.size
+      assert_equal '19', invoice_items[3].id
+    end
+
+    def test_if_a_merchant_is_returned_for_an_item
+      merchant = @item.merchant
+      assert_equal 'Bernhard-Johns', merchant.name
+      assert_equal '7', merchant.id
+    end
+
   end
 
 end

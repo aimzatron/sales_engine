@@ -15,8 +15,6 @@ class MerchantTest < MiniTest::Unit::TestCase
     end
 
     def test_it_is_initialized_from_a_hash_of_data
-      # data = {:id => '5', :name => 'Williamson Group'}
-
       merchant = Merchant.new({:id => '5', :name => 'Williamson Group'})
       assert_equal '5', merchant.id
       assert_equal 'Williamson Group', merchant.name
@@ -136,13 +134,17 @@ class MerchantTest < MiniTest::Unit::TestCase
   describe "merchant relationships" do
     # Ask why Item class did not need to be required for this test to work!!!!!!
     before do
-      MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
+
+      m = {:id => '1', :name => 'Duplicate Id LLC',
+            :created_at => "2012-03-27 14:54:09 UTC",
+            :updated_at => "2012-03-27 14:54:09 UTC"}
+
       ItemBuilder.parse_csv("./test/support/item_build.csv")
       InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
 
-      Merchant.all
-      #@item_data = Item.all
-      @m = Merchant.find_by_id("1")
+      #Merchant.all
+      @m = Merchant.new(m)
+      @item_data = Item.all
     end
 
     def test_if_list_of_items_are_returned_for_a_merchant

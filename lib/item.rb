@@ -64,4 +64,12 @@ class Item
     @data.select{|item| item.merchant_id.downcase == merchant_id.downcase}
   end
 
+  def invoice_items
+    InvoiceItem.all.select{|inv_item| inv_item.item_id == self.id}
+  end
+
+  def merchant
+    Merchant.all.find{|merchant| merchant.id == self.merchant_id}
+  end
+
 end

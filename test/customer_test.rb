@@ -131,15 +131,17 @@ class CustomerTest < MiniTest::Unit::TestCase
     before do
       InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
 
-       @c = {:id => '3', :first_name => 'MARY',
+       c = {:id => '3', :first_name => 'MARY',
              :last_name => 'Smith',
              :created_at => "2012-03-27 14:54:09 UTC",
              :updated_at => "2012-03-27 14:54:09 UTC"}
+
+        @c = Customer.new(c)
     end
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
-      c = Customer.new(@c)
-      invoices = Invoice.find_all_by_customer_id(c.id)
+     
+      invoices = Invoice.find_all_by_customer_id(@c.id)
       assert_equal 4, invoices.count
     end
 
