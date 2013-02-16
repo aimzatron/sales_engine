@@ -273,7 +273,6 @@ class InvoiceTest < MiniTest::Unit::TestCase
     before do
       TransactionBuilder.parse_csv("./data/transactions.csv")
       InvoiceBuilder.parse_csv("./data/invoices.csv")
-     # @invoices = Invoice.all
     end
 
     def test_if_pending_invoices_can_be_retrieved

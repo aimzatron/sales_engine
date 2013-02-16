@@ -79,7 +79,7 @@ class Invoice
 
   def self.pending
     transactions = Transaction.pending
-    puts transactions.inspect
+    #puts transactions.inspect
 
     @data.select do |invoice|
       transactions.find {|invoice_id, no_of_trans| invoice_id == invoice.id}
