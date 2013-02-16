@@ -27,26 +27,26 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
   describe "test_find_methods" do
     before do
-      @i1 = {:id => '2',
+      @i1 = {:id          => '2',
              :customer_id => "1",
              :merchant_id => "60",
-             :status => "shipped",
-             :created_at => "2012-03-27 14:54:09 UTC",
-             :updated_at => "2012-03-27 15:00:00 UTC"}
+             :status      => "shipped",
+             :created_at  => "2012-03-27 14:54:09 UTC",
+             :updated_at  => "2012-03-27 15:00:00 UTC"}
 
-      @i2 = {:id => '5',
+      @i2 = {:id        => '5',
            :customer_id => "6",
            :merchant_id => "75",
-           :status => "shipped",
-           :created_at => "2012-03-27 14:54:09 UTC",
-           :updated_at => "2012-03-27 15:00:00 UTC"}
+           :status      => "shipped",
+           :created_at  => "2012-03-27 14:54:09 UTC",
+           :updated_at  => "2012-03-27 15:00:00 UTC"}
 
-      @i3 = {:id => '5',
+      @i3 = {:id        => '5',
            :customer_id => "6",
            :merchant_id => "30",
-           :status => "not shipped",
-           :created_at => "2012-03-27 11:54:09 UTC",
-           :updated_at => "2012-03-27 12:00:00 UTC"}
+           :status      => "not shipped",
+           :created_at  => "2012-03-27 11:54:09 UTC",
+           :updated_at  => "2012-03-27 12:00:00 UTC"}
       end
 
       def test_find_by_id_matches_first_result
@@ -227,11 +227,11 @@ class InvoiceTest < MiniTest::Unit::TestCase
   describe "Invoice relationships" do
     before do
       i = {:id => '17',
-             :customer_id => "10",
-             :merchant_id => "60",
-             :status => "shipped",
-             :created_at => "2012-03-27 14:54:09 UTC",
-             :updated_at => "2012-03-27 15:00:00 UTC"}
+            :customer_id => "10",
+            :merchant_id => "60",
+            :status => "shipped",
+            :created_at => "2012-03-27 14:54:09 UTC",
+            :updated_at => "2012-03-27 15:00:00 UTC"}
 
       @i = Invoice.new(i)
 
