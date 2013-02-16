@@ -3,6 +3,7 @@ require './lib/invoice'
 require './lib/transaction_builder'
 require './lib/invoice_item_builder'
 require './lib/item_builder'
+require './lib/customer_builder'
 
 
 class InvoiceTest < MiniTest::Unit::TestCase
@@ -226,7 +227,7 @@ class InvoiceTest < MiniTest::Unit::TestCase
   describe "Invoice relationships" do
     before do
       i = {:id => '17',
-             :customer_id => "1",
+             :customer_id => "10",
              :merchant_id => "60",
              :status => "shipped",
              :created_at => "2012-03-27 14:54:09 UTC",
@@ -237,6 +238,8 @@ class InvoiceTest < MiniTest::Unit::TestCase
       TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
       InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
       ItemBuilder.parse_csv("./test/support/item_build.csv")
+      CustomerBuilder.parse_csv("./test/support/customer_build.csv")
+
     end
 
     def test_if_transactions_of_an_invoice_can_be_retrieved
@@ -256,6 +259,12 @@ class InvoiceTest < MiniTest::Unit::TestCase
       assert_equal 3, items.count
       assert_equal "Item Est Consequuntur", items[0].name
       assert_equal "34018", items[2].unit_price
+    end
+
+    def test_if_customer_is_returned_for_an_invoice
+      c = @i.customer
+      assert_equal '10', c.id
+      assert_equal 'Ramona', c.first_name
     end
   end
 

@@ -73,5 +73,9 @@ class Invoice
     end
   end
 
+  def customer
+    Customer.all.find {|customer| customer.id == self.customer_id}
+  end
+
 end
 
