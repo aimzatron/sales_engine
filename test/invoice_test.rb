@@ -4,6 +4,7 @@ require './lib/transaction_builder'
 require './lib/invoice_item_builder'
 require './lib/item_builder'
 require './lib/customer_builder'
+require './lib/invoice_builder'
 
 
 class InvoiceTest < MiniTest::Unit::TestCase
@@ -268,4 +269,17 @@ class InvoiceTest < MiniTest::Unit::TestCase
     end
   end
 
+  describe "Invoice Extensions" do
+    before do
+      TransactionBuilder.parse_csv("./data/transactions.csv")
+      InvoiceBuilder.parse_csv("./data/invoices.csv")
+    end
+
+    def test_if_pending_invoices_can_be_retrieved
+      pending_invoices = Invoice.pending
+      #puts pending_invoices.inspect
+      assert_equal 135, pending_invoices.size
+    end
+  end
 end
+

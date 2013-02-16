@@ -26,4 +26,26 @@ class Transaction
     invoice = Invoice.all.find{|invoice| invoice.id == self.invoice_id}
   end
 
+  def self.pending
+   results = group_transactions_by_invoice_id
+   extract_unpaid_transactions(results)
+  end
+
+  def self.group_transactions_by_invoice_id
+    @data.inject(Hash.new(0)) do |pending, t|
+      if t.result == "success"
+        pending[t.invoice_id] += 1
+      else
+        pending[t.invoice_id] += 0
+      end
+      pending
+    end
+  end
+
+  def self.extract_unpaid_transactions(results)
+    results.select do |invoice_id, good_trans|
+      good_trans == 0
+    end
+  end
+
 end

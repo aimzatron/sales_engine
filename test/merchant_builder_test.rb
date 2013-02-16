@@ -17,8 +17,7 @@ class MerchantBuilderTest < MiniTest::Unit::TestCase
 
   def test_if_merchant_was_created
     output = MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
-    merchant_name = "Schroeder-Jerde"
-    assert_equal merchant_name, output[0].name
+    assert_equal "Schroeder-Jerde", output[0].name
   end
 
 
