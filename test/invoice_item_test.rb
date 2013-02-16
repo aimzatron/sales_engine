@@ -18,14 +18,6 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
     end
   end
 
-  # describe "Invoice item relationships" do
-  #   before do
 
-  #   end
-
-  #   def test_if_x
-
-  #   end
-  # end
 
 end
