@@ -20,4 +20,12 @@ class InvoiceItem
     @data
   end
 
+  def invoice
+    Invoice.all.find {|invoice| invoice.id == self.invoice_id}
+  end
+
 end
+
+  # def customer
+  #   Customer.all.find {|customer| customer.id == self.customer_id}
+  # end
