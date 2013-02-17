@@ -1,3 +1,5 @@
+require 'Date'
+
 class Invoice
 
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
@@ -44,19 +46,19 @@ class Invoice
   end
 
   def self.find_by_created_at(created_at)
-    @data.find {|invoice| invoice.created_at.downcase == created_at.downcase}
+    @data.find {|invoice| invoice.created_at == created_at}
   end
 
   def self.find_all_by_created_at(created_at)
-    @data.select {|invoice| invoice.created_at.downcase == created_at.downcase}
+    @data.select {|invoice| invoice.created_at == created_at}
   end
 
   def self.find_by_updated_at(updated_at)
-    @data.find {|invoice| invoice.updated_at.downcase == updated_at.downcase}
+    @data.find {|invoice| invoice.updated_at == updated_at}
   end
 
   def self.find_all_by_updated_at(updated_at)
-    @data.select {|invoice| invoice.updated_at.downcase == updated_at.downcase}
+    @data.select {|invoice| invoice.updated_at == updated_at}
   end
 
   def transactions

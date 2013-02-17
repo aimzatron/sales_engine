@@ -57,7 +57,26 @@ class Merchant
       invoices = Invoice.extract_date_invoices(date, invoices)
     end
     paid_invoices = filter_pending_invoices(invoices)
-    sales = calc_revenue(paid_invoices)
+    sales = self.calc_revenue(paid_invoices)
+    sales.to_i
+  end
+
+  def self.revenue(date)
+    invoices = Invoice.all
+    invoices = Invoice.extract_date_invoices(date, invoices)
+
+    puts ""
+    puts "number of invoices after date filter"
+    puts invoices.count
+
+    paid_invoices = self.filter_all_pending_invoices(invoices)
+
+    puts ""
+    puts "number of invoices after pending filter"
+    #puts paid_invoices.inspect
+    puts paid_invoices.count
+
+    sales = self.calc_all_revenue(paid_invoices)
     sales.to_i
   end
 
@@ -68,6 +87,10 @@ class Merchant
   end
 
   def calc_revenue(paid_invoices)
+    paid_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+  end
+
+  def self.calc_all_revenue(paid_invoices)
     paid_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
   end
 
@@ -90,6 +113,10 @@ class Merchant
     Invoice.extract_pending(invoices)
   end
 
+  def self.filter_all_pending_invoices(invoices)
+    Invoice.extract_pending(invoices)
+  end
+
   def self.group_by_revenue
     merchants_revenue = @data.inject(Hash.new(0)) do |hash, merchant|
       sales = merchant.revenue
@@ -102,6 +129,8 @@ class Merchant
   def self.get_merchants(merchants)
     merchants.collect{|merchant| self.find_by_id(merchant[0])}
   end
+
+
 
 
 end

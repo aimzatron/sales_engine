@@ -5,6 +5,7 @@ require './lib/invoice_item_builder'
 require './lib/item_builder'
 require './lib/customer_builder'
 require './lib/invoice_builder'
+require 'Date'
 
 
 class InvoiceTest < MiniTest::Unit::TestCase
@@ -32,22 +33,22 @@ class InvoiceTest < MiniTest::Unit::TestCase
              :customer_id => "1",
              :merchant_id => "60",
              :status      => "shipped",
-             :created_at  => "2012-03-27 14:54:09 UTC",
-             :updated_at  => "2012-03-27 15:00:00 UTC"}
+             :created_at  => Date.parse("2012-03-27 14:54:09 UTC"),
+             :updated_at  => Date.parse("2012-03-27 15:00:00 UTC")}
 
       @i2 = {:id        => '5',
            :customer_id => "6",
            :merchant_id => "75",
            :status      => "shipped",
-           :created_at  => "2012-03-27 14:54:09 UTC",
-           :updated_at  => "2012-03-27 15:00:00 UTC"}
+           :created_at  => Date.parse("2012-03-27 14:54:09 UTC"),
+           :updated_at  => Date.parse("2012-03-27 14:54:09 UTC")}
 
       @i3 = {:id        => '5',
            :customer_id => "6",
            :merchant_id => "30",
            :status      => "not shipped",
-           :created_at  => "2012-03-27 11:54:09 UTC",
-           :updated_at  => "2012-03-27 12:00:00 UTC"}
+           :created_at  => Date.parse("2012-03-25 14:54:09 UTC"),
+           :updated_at  => Date.parse("2012-03-25 14:54:09 UTC")}
       end
 
       def test_find_by_id_matches_first_result
@@ -161,8 +162,8 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
         Invoice.store([i1, i2])
 
-        invoice = Invoice.find_by_created_at("2012-03-27 14:54:09 UTC")
-        assert_equal "2012-03-27 14:54:09 UTC", invoice.created_at
+        invoice = Invoice.find_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
+        assert_equal Date.parse("2012-03-27 14:54:09 UTC"), invoice.created_at
         refute_nil invoice
       end
 
@@ -174,7 +175,7 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
         Invoice.store([i1, i2, i3])
 
-        invoices = Invoice.find_all_by_created_at("2012-03-27 14:54:09 UTC")
+        invoices = Invoice.find_all_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
         assert_equal 2, invoices.count
       end
 
@@ -196,8 +197,8 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
         Invoice.store([i1, i2])
 
-        invoice = Invoice.find_by_updated_at("2012-03-27 15:00:00 UTC")
-        assert_equal "2012-03-27 15:00:00 UTC", invoice.updated_at
+        invoice = Invoice.find_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
+        assert_equal Date.parse("2012-03-27 15:00:00 UTC"), invoice.updated_at
         refute_nil invoice
       end
 
@@ -209,7 +210,7 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
         Invoice.store([i1, i2, i3])
 
-        invoices = Invoice.find_all_by_updated_at("2012-03-27 15:00:00 UTC")
+        invoices = Invoice.find_all_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
         assert_equal 2, invoices.count
       end
 
@@ -220,7 +221,7 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
         Invoice.store([i1, i2])
 
-        invoices = Invoice.find_all_by_id("2012-03-27 23:54:09 UTC")
+        invoices = Invoice.find_all_by_updated_at(Date.parse("2013-03-27 23:54:09 UTC"))
         assert_equal [], invoices
       end
   end

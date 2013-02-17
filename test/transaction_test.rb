@@ -49,7 +49,7 @@ class TransactionTest < MiniTest::Unit::TestCase
       invoice_id_1 = "12"
       invoice_id_2 = "13"
       transactions = Transaction.pending
-      puts transactions
+      #puts transactions
       assert_equal 0, transactions[invoice_id_1]
       assert_equal 0, transactions[invoice_id_2]
     end
