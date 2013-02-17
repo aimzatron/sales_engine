@@ -3,6 +3,9 @@ require './lib/merchant'
 require './lib/merchant_builder'
 require './lib/item_builder'
 require './lib/invoice_builder'
+require './lib/transaction_builder'
+require './lib/invoice_item_builder'
+
 #require './lib/item'
 
 class MerchantTest < MiniTest::Unit::TestCase
@@ -156,6 +159,26 @@ class MerchantTest < MiniTest::Unit::TestCase
       invoices = @m.invoices
       assert_equal 4, invoices.count
     end
+  end
+
+  describe "merchant business intelligence" do
+    before do
+      m = {:id => '1', :name => 'Acme',
+           :created_at => "2012-03-27 14:54:09 UTC",
+           :updated_at => "2012-03-27 14:54:09 UTC"}
+
+      @m = Merchant.new(m)
+      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+      InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
+    end
+
+    def test_if_correct_revenue_is_returned_for_a_merchant
+      sales = @m.revenue
+      puts sales
+      assert_equal 528913, sales
+    end
+
   end
 
 end

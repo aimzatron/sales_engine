@@ -46,10 +46,12 @@ class TransactionTest < MiniTest::Unit::TestCase
     end
 
     def test_if_unpaid_transactions_can_be_retrieved
-      invoice_id = "13"
+      invoice_id_1 = "12"
+      invoice_id_2 = "13"
       transactions = Transaction.pending
-      #puts transactions
-      assert_equal 0, transactions[invoice_id]
+      puts transactions
+      assert_equal 0, transactions[invoice_id_1]
+      assert_equal 0, transactions[invoice_id_2]
     end
   end
 

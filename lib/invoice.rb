@@ -86,5 +86,15 @@ class Invoice
     end
   end
 
+  def self.extract_pending(invoices)
+    invoices - pending
+  end
+
+  def revenue
+    self.invoice_items.inject(0) do |sum, inv_item|
+      sum + inv_item.line_item_revenue
+    end
+  end
+
 end
 

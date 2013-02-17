@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 class InvoiceItem
 
   attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at
@@ -26,6 +28,10 @@ class InvoiceItem
 
   def item
     Item.all.find{|item| item.id == self.item_id}
+  end
+
+  def line_item_revenue
+   self.quantity.to_i * self.unit_price.to_i
   end
 
 end

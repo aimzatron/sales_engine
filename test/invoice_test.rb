@@ -271,14 +271,14 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
   describe "Invoice Extensions" do
     before do
-      TransactionBuilder.parse_csv("./data/transactions.csv")
-      InvoiceBuilder.parse_csv("./data/invoices.csv")
+      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
     end
 
     def test_if_pending_invoices_can_be_retrieved
       pending_invoices = Invoice.pending
       #puts pending_invoices.inspect
-      assert_equal 135, pending_invoices.size
+      assert_equal 2, pending_invoices.size
     end
   end
 end
