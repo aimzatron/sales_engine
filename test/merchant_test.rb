@@ -202,7 +202,21 @@ class MerchantTest < MiniTest::Unit::TestCase
       assert_equal "Nader", customer.last_name
       assert_equal "5", customer.id
     end
+  end
 
+  describe "merchant business intel with full data" do
+    before do
+      MerchantBuilder.parse_csv("./data/merchants.csv")
+      InvoiceBuilder.parse_csv("./data/invoices.csv")
+      TransactionBuilder.parse_csv("./data/transactions.csv")
+      InvoiceItemBuilder.parse_csv("./data/invoice_items.csv")
+    end
+
+    def test_if_top_merchant_by_revenue_is_returned
+      merchants = Merchant.most_revenue(3)
+      puts merchants.inspect
+      assert_equal "Dicki-Bednar", merchants[0].name
+    end
   end
 
 end

@@ -57,11 +57,14 @@ class Merchant
       invoices = Invoice.extract_date_invoices(date, invoices)
     end
     paid_invoices = filter_pending_invoices(invoices)
-    calc_revenue(paid_invoices)
+    sales = calc_revenue(paid_invoices)
+    sales.to_i
   end
 
-  def self.most_revenue
-    revenue_has
+  def self.most_revenue(num)
+    merchants = self.group_by_revenue
+    #puts merchant_hash.inspect
+    top_merchants = get_merchants(merchants[0..(num-1)])
   end
 
   def calc_revenue(paid_invoices)
@@ -78,13 +81,26 @@ class Merchant
   def favorite_customer
     invoices = self.invoices
     paid_invoices = filter_pending_invoices(invoices)
-    customer_hash = Invoice.group_by_customer_id(paid_invoices)
-    puts customer_hash.inspect
-    Customer.find_by_id(customer_hash[0][0])
+    customers = Invoice.group_by_customer_id(paid_invoices)
+    #puts customer_hash.inspect
+    Customer.find_by_id(customers[0][0])
   end
 
   def filter_pending_invoices(invoices)
     Invoice.extract_pending(invoices)
+  end
+
+  def self.group_by_revenue
+    merchants_revenue = @data.inject(Hash.new(0)) do |hash, merchant|
+      sales = merchant.revenue
+      hash[merchant.id] = sales
+      hash
+    end
+    merchants_revenue = merchants_revenue.sort_by{|k, v| v}.reverse
+  end
+
+  def self.get_merchants(merchants)
+    merchants.collect{|merchant| self.find_by_id(merchant[0])}
   end
 
 
