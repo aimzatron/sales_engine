@@ -5,6 +5,7 @@ require './lib/item_builder'
 require './lib/invoice_builder'
 require './lib/transaction_builder'
 require './lib/invoice_item_builder'
+require './lib/customer_builder'
 
 #require './lib/item'
 
@@ -163,7 +164,7 @@ class MerchantTest < MiniTest::Unit::TestCase
 
   describe "merchant business intelligence" do
     before do
-      m = {:id => '1', :name => 'Acme',
+      m = {:id => '1', :name => 'Dicki-Bednar',
            :created_at => "2012-03-27 14:54:09 UTC",
            :updated_at => "2012-03-27 14:54:09 UTC"}
 
@@ -171,12 +172,29 @@ class MerchantTest < MiniTest::Unit::TestCase
       InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
       TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
       InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
+      CustomerBuilder.parse_csv("./test/support/customer_build.csv")
+
+      # InvoiceBuilder.parse_csv("./data/invoices.csv")
+      # TransactionBuilder.parse_csv("./data/transactions.csv")
+      # InvoiceItemBuilder.parse_csv("./data/invoice_items.csv")
     end
 
     def test_if_correct_revenue_is_returned_for_a_merchant
       sales = @m.revenue
+      #puts (sales.round(2).to_f)/100
+      assert_equal 5289.13, (sales.round(2).to_f)/100
+    end
+
+    def test_if_correct_revenue_for_date_is_returned_for_a_merchant
+      sales = @m.revenue("2012-03-25 07:54:10 UTC")
       puts sales
-      assert_equal 528913, sales
+      assert_equal 2801.21, (sales.round(2).to_f)/100
+    end
+
+    def test_if_customers_with_unpaid_invoices_are_returned
+      customers = @m.customers_with_pending_invoices
+      assert_equal 2, customers.size
+      assert_equal "Leanne", customers[1].first_name
     end
 
   end

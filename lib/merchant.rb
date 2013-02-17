@@ -50,14 +50,27 @@ class Merchant
     Invoice.all.select{|invoice| self.id == invoice.merchant_id}
   end
 
-  def revenue
-    merc_invoices = self.invoices
-    clean_invoices = Invoice.extract_pending(merc_invoices)
+  def revenue(date = "")
+    invoices = self.invoices
+    if date != ""
+      invoices = Invoice.extract_date_invoices(date, invoices)
+    end
+    clean_invoices = filter_pending_invoices(invoices)
     calc_revenue(clean_invoices)
   end
 
   def calc_revenue(clean_invoices)
     clean_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+  end
+
+  def customers_with_pending_invoices
+    invoices = self.invoices
+    pending_invoices = Invoice.get_pending(invoices)
+    customers = Invoice.get_customers(pending_invoices)
+  end
+
+  def filter_pending_invoices(invoices)
+    Invoice.extract_pending(invoices)
   end
 
 

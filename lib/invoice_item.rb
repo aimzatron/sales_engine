@@ -31,7 +31,7 @@ class InvoiceItem
   end
 
   def line_item_revenue
-   self.quantity.to_i * self.unit_price.to_i
+   BigDecimal(self.quantity) * BigDecimal(self.unit_price)
   end
 
 end
