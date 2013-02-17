@@ -141,7 +141,7 @@ class CustomerTest < MiniTest::Unit::TestCase
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
       invoices = Invoice.find_all_by_customer_id(@c.id)
-      assert_equal 3, invoices.count
+      assert_equal 4, invoices.count
     end
 
   end

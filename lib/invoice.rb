@@ -78,11 +78,13 @@ class Invoice
   end
 
   def self.pending
-    transactions = Transaction.pending
+    pending_transactions = Transaction.pending
     #puts transactions.inspect
 
     @data.select do |invoice|
-      transactions.find {|invoice_id, no_of_trans| invoice_id == invoice.id}
+      pending_transactions.find do |invoice_id, no_of_trans|
+        invoice_id == invoice.id
+      end
     end
   end
 
@@ -104,7 +106,6 @@ class Invoice
     customers = invoices.collect{|invoice| invoice.customer}
     #puts customers.uniq.inspect
     customers = customers.uniq
-
   end
 
   def self.extract_date_invoices(date, array)
@@ -112,6 +113,15 @@ class Invoice
     #puts date_array.inspect
     date_array & array
   end
+
+  def self.group_by_customer_id(invoices)
+    customer_hash = invoices.inject(Hash.new(0)) do |hash, invoice|
+      hash[invoice.customer_id] += 1
+      hash
+    end
+    customer_hash.sort_by{|k, v| v}.reverse
+  end
+
 
 end
 

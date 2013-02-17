@@ -1,3 +1,4 @@
+
 # require './lib/invoice'
 # require './lib/invoice_item'
 #require './lib/item'
@@ -55,18 +56,31 @@ class Merchant
     if date != ""
       invoices = Invoice.extract_date_invoices(date, invoices)
     end
-    clean_invoices = filter_pending_invoices(invoices)
-    calc_revenue(clean_invoices)
+    paid_invoices = filter_pending_invoices(invoices)
+    calc_revenue(paid_invoices)
   end
 
-  def calc_revenue(clean_invoices)
-    clean_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+  def self.most_revenue
+    revenue_has
+  end
+
+  def calc_revenue(paid_invoices)
+    paid_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
   end
 
   def customers_with_pending_invoices
     invoices = self.invoices
     pending_invoices = Invoice.get_pending(invoices)
+    #puts pending_invoices.inspect
     customers = Invoice.get_customers(pending_invoices)
+  end
+
+  def favorite_customer
+    invoices = self.invoices
+    paid_invoices = filter_pending_invoices(invoices)
+    customer_hash = Invoice.group_by_customer_id(paid_invoices)
+    puts customer_hash.inspect
+    Customer.find_by_id(customer_hash[0][0])
   end
 
   def filter_pending_invoices(invoices)

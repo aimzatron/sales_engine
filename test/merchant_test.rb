@@ -158,7 +158,7 @@ class MerchantTest < MiniTest::Unit::TestCase
 
     def test_if_list_of_invoices_are_returned_for_a_merchant
       invoices = @m.invoices
-      assert_equal 4, invoices.count
+      assert_equal 9, invoices.count
     end
   end
 
@@ -195,6 +195,12 @@ class MerchantTest < MiniTest::Unit::TestCase
       customers = @m.customers_with_pending_invoices
       assert_equal 2, customers.size
       assert_equal "Leanne", customers[1].first_name
+    end
+
+    def test_if_favorite_customer_is_found
+      customer = @m.favorite_customer
+      assert_equal "Nader", customer.last_name
+      assert_equal "5", customer.id
     end
 
   end
