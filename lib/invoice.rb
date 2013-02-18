@@ -94,6 +94,10 @@ class Invoice
     pending & invoices
   end
 
+  def self.get_clean
+    @data - pending
+  end
+
   def self.extract_pending(invoices)
     invoices - pending
   end
@@ -104,16 +108,30 @@ class Invoice
     end
   end
 
+  def self.total_revenue(invoices)
+    invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+  end
+
+  def self.total_items_qty(invoices)
+    invoices.inject(0){|sum, invoice| sum + invoice.get_quantity}
+  end
+
+  def get_quantity
+    invoice_items = self.invoice_items
+    invoice_items.inject(0){|sum, invItem| sum + invItem.quantity.to_i}
+  end
+
   def self.get_customers(invoices)
     customers = invoices.collect{|invoice| invoice.customer}
-    #puts customers.uniq.inspect
     customers = customers.uniq
   end
 
-  def self.extract_date_invoices(date, array)
-    date_array = self.find_all_by_created_at(date)
-    #puts date_array.inspect
-    date_array & array
+  def self.get_invoices_for_date(date)
+    invoices_on_date = self.find_all_by_created_at(date)
+  end
+
+  def self.extract_invoices_for_date(all_invoices, invoices_on_date)
+    all_invoices & invoices_on_date
   end
 
   def self.group_by_customer_id(invoices)

@@ -1,4 +1,3 @@
-
 # require './lib/invoice'
 # require './lib/invoice_item'
 #require './lib/item'
@@ -54,67 +53,44 @@ class Merchant
   def revenue(date = "")
     invoices = self.invoices
     if date != ""
-      invoices = Invoice.extract_date_invoices(date, invoices)
+      invoices_for_date = Invoice.get_invoices_for_date(date)
+      invoices = Invoice.extract_invoices_for_date(invoices, invoices_for_date)
     end
-    paid_invoices = filter_pending_invoices(invoices)
-    sales = self.calc_revenue(paid_invoices)
+    paid_invoices = Invoice.extract_pending(invoices)
+    sales = Invoice.total_revenue(paid_invoices)
     sales.to_i
   end
 
   def self.revenue(date)
-    invoices = Invoice.all
-    invoices = Invoice.extract_date_invoices(date, invoices)
-
-    puts ""
-    puts "number of invoices after date filter"
-    puts invoices.count
-
-    paid_invoices = self.filter_all_pending_invoices(invoices)
-
-    puts ""
-    puts "number of invoices after pending filter"
-    #puts paid_invoices.inspect
-    puts paid_invoices.count
-
-    sales = self.calc_all_revenue(paid_invoices)
-    sales.to_i
+    #invoices = Invoice.all
+    invoices = Invoice.get_invoices_for_date(date)
+    paid_invoices = Invoice.extract_pending(invoices)
+    sales = Invoice.total_revenue(paid_invoices).to_i
   end
 
   def self.most_revenue(num)
     merchants = self.group_by_revenue
-    #puts merchant_hash.inspect
+    puts merchants.inspect
     top_merchants = get_merchants(merchants[0..(num-1)])
   end
 
-  def calc_revenue(paid_invoices)
-    paid_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
-  end
-
-  def self.calc_all_revenue(paid_invoices)
-    paid_invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+  def self.most_items(num)
+    merchants = self.group_by_items_sold
+    puts merchants.inspect
+    top_merchants = get_merchants(merchants[0..(num-1)])
   end
 
   def customers_with_pending_invoices
     invoices = self.invoices
     pending_invoices = Invoice.get_pending(invoices)
-    #puts pending_invoices.inspect
     customers = Invoice.get_customers(pending_invoices)
   end
 
   def favorite_customer
     invoices = self.invoices
-    paid_invoices = filter_pending_invoices(invoices)
+    paid_invoices = Invoice.extract_pending(invoices)
     customers = Invoice.group_by_customer_id(paid_invoices)
-    #puts customer_hash.inspect
     Customer.find_by_id(customers[0][0])
-  end
-
-  def filter_pending_invoices(invoices)
-    Invoice.extract_pending(invoices)
-  end
-
-  def self.filter_all_pending_invoices(invoices)
-    Invoice.extract_pending(invoices)
   end
 
   def self.group_by_revenue
@@ -130,6 +106,19 @@ class Merchant
     merchants.collect{|merchant| self.find_by_id(merchant[0])}
   end
 
+  def self.group_by_items_sold
+    merchants_items = @data.inject(Hash.new(0)) do |hash, merchant|
+      qty = merchant.invoice_items
+      hash[merchant.id] = qty
+      hash
+    end
+    merchants_items = merchants_items.sort_by{|k,v| v}.reverse
+  end
+
+  def invoice_items
+    paid_invoices = Invoice.extract_pending(self.invoices)
+    Invoice.total_items_qty(paid_invoices)
+  end
 
 
 

@@ -13,6 +13,12 @@ class InvoiceItemBuilder
     end
 
     InvoiceItem.store(data)
+    # grouped_items = group_by_invoice_id(data)
+    # InvoiceItem.store_grouped(grouped_items)
   end
+
+  # def self.group_by_invoice_id(data)
+  #   data.group_by{|invoice_item| invoice_item.invoice_id}
+  # end
 
 end
