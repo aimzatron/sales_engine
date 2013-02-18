@@ -1,3 +1,4 @@
+
 require 'csv'
 require './lib/invoice'
 require 'Date'
@@ -22,16 +23,7 @@ class InvoiceBuilder
     end
 
     Invoice.store(data)
-
-    index = create_index(data)
-    puts index.inspect
-    Invoice.store_index(index)
   end
-
-  def self.create_index(data)
-    data.group_by{|invoice| invoice.merchant_id}
-  end
-
 end
 
 

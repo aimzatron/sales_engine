@@ -256,29 +256,21 @@ class ItemTest < MiniTest::Unit::TestCase
   describe "Item relationships" do
 
     before "" do
-      item = {:id => '1999', :name => 'black shoes',
-             :description => "cool stuff", :unit_price => "75107",
-             :merchant_id => "7",
-             :created_at => "2012-03-27 14:54:09 UTC",
-             :updated_at => "2012-03-27 14:54:09 UTC"}
+      ItemBuilder.parse_csv
+      InvoiceItemBuilder.parse_csv
+      MerchantBuilder.parse_csv
 
-      @item = Item.new(item)
-
-      InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
-      MerchantBuilder.parse_csv("./test/support/merchant_build.csv")
-
+      @item = Item.find_by_name("Item Saepe Ipsum")
     end
 
     def test_if_invoice_items_are_returned_for_an_item
       invoice_items = @item.invoice_items
-      assert_equal 4  , invoice_items.size
-      assert_equal '19', invoice_items[3].id
+      assert_equal 8  , invoice_items.size
     end
 
     def test_if_a_merchant_is_returned_for_an_item
       merchant = @item.merchant
-      assert_equal 'Bernhard-Johns', merchant.name
-      assert_equal '7', merchant.id
+      assert_equal "Kilback Inc", merchant.name
     end
 
   end

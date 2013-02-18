@@ -2,6 +2,7 @@ require './test/test_helper'
 require './lib/transaction'
 require './lib/invoice_builder'
 require './lib/transaction_builder'
+require './lib/customer_builder'
 
 class TransactionTest < MiniTest::Unit::TestCase
 
@@ -25,35 +26,42 @@ class TransactionTest < MiniTest::Unit::TestCase
 
   describe "transaction relationships " do
     before do
-      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-      @t = {:id => '10', :invoice_id => '11',
-            :credit_card_number => '4354495077693036',
+      InvoiceBuilder.parse_csv
+      t = {:id => '1138', :invoice_id => '982',
+            :credit_card_number => '4031429122375205',
             :credit_card_expiration_date => '',
-            :result => "success"}
+            :result => "success",
+            :created_at => "2012-03-27 14:54:56 UTC",
+            :updated_at => "2012-03-27 14:54:56 UTC"}
+
+      @t = Transaction.new(t)
+      CustomerBuilder.parse_csv
     end
 
     def test_if_invoice_is_returned_for_transaction
-      t = Transaction.new(@t)
-      invoice = t.invoice
-      assert_equal "177", invoice.merchant_id
+
+      invoice = @t.invoice
+      invoice_customer = Customer.find_by_id("192")
+      transaction_customer = @t.invoice.customer.first_name
+      assert_equal invoice_customer.first_name, transaction_customer
 
     end
   end
 
-  describe "find pending transactions" do
-    before do
-      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-    end
+  # describe "find pending transactions" do
+  #   before do
+  #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+  #   end
 
-    def test_if_unpaid_transactions_can_be_retrieved
-      invoice_id_1 = "12"
-      invoice_id_2 = "13"
-      transactions = Transaction.pending
-      #puts transactions
-      assert_equal 0, transactions[invoice_id_1]
-      assert_equal 0, transactions[invoice_id_2]
-    end
-  end
+  #   def test_if_unpaid_transactions_can_be_retrieved
+  #     invoice_id_1 = "12"
+  #     invoice_id_2 = "13"
+  #     transactions = Transaction.pending
+  #     #puts transactions
+  #     assert_equal 0, transactions[invoice_id_1]
+  #     assert_equal 0, transactions[invoice_id_2]
+  #   end
+  # end
 
 
 end

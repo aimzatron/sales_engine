@@ -25,30 +25,28 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
   describe "invoice item relationships" do
 
     before do
-      i = {:id         => '17',
-           :item_id    => '1830',
-           :invoice_id => '3',
-           :quantity   => "10",
-           :unit_price => "60",
-           :created_at => "2012-03-27 14:54:09 UTC",
-           :updated_at => "2012-03-27 15:00:00 UTC"}
+      ii = {:id         => '16934',
+           :item_id    => '1928',
+           :invoice_id => '3781',
+           :quantity   => '5',
+           :unit_price => '5488',
+           :created_at => '2012-03-27 14:54:09 UTC',
+           :updated_at => '2012-03-27 15:00:00 UTC'}
 
-      @i = InvoiceItem.new(i)
+      InvoiceBuilder.parse_csv
+      ItemBuilder.parse_csv
 
-      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-      ItemBuilder.parse_csv("./test/support/item_build.csv")
+      @ii = InvoiceItem.new(ii)
     end
 
     def test_if_an_invoice_can_be_retrieved_for_an_invoice_item
-      invoice = @i.invoice
-      assert_equal '3', invoice.id
-      assert_equal '78', invoice.merchant_id
+      invoice = @ii.invoice
+      refute_nil invoice
     end
 
     def test_if_an_item_ca_be_returned_for_an_invoice_item
-      item = @i.item
-      assert_equal '1830', item.id
-      assert_equal 'Item Quo Magnam', item.name
+      item = @ii.item
+      assert_equal "Item Cupiditate Magni", item.name
     end
   end
 end

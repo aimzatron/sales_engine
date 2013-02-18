@@ -228,59 +228,50 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
   describe "Invoice relationships" do
     before do
-      i = {:id => '17',
-            :customer_id => "10",
-            :merchant_id => "60",
-            :status => "shipped",
-            :created_at => "2012-03-27 14:54:09 UTC",
-            :updated_at => "2012-03-27 15:00:00 UTC"}
 
-      @i = Invoice.new(i)
+      InvoiceBuilder.parse_csv
+      TransactionBuilder.parse_csv
+      InvoiceItemBuilder.parse_csv
+      ItemBuilder.parse_csv
+      CustomerBuilder.parse_csv
 
-      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-      InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
-      ItemBuilder.parse_csv("./test/support/item_build.csv")
-      CustomerBuilder.parse_csv("./test/support/customer_build.csv")
+      @i = Invoice.find_by_id("1002")
 
     end
 
     def test_if_transactions_of_an_invoice_can_be_retrieved
       transactions = @i.transactions
-      assert_equal 4, transactions.count
-      assert_equal "4738848761455350", transactions[0].credit_card_number
+      assert_equal 1, transactions.count
     end
 
     def test_if_invoice_items_of_an_invoice_can_be_retrieved
       invoice_items = @i.invoice_items
       assert_equal 3, invoice_items.count
-      assert_equal "1832", invoice_items[0].item_id
     end
 
     def test_if_items_of_an_invoice_can_be_retrieved
-      items = @i.items
-      assert_equal 3, items.count
-      assert_equal "Item Est Consequuntur", items[0].name
-      assert_equal "34018", items[2].unit_price
+      item = @i.items.find {|i| i.name == 'Item Accusamus Officia' }
+      refute_nil item
     end
 
     def test_if_customer_is_returned_for_an_invoice
       c = @i.customer
-      assert_equal '10', c.id
-      assert_equal 'Ramona', c.first_name
+      assert_equal 'Eric', c.first_name
+      assert_equal 'Bergnaum', c.last_name
     end
   end
 
-  describe "Invoice Extensions" do
-    before do
-      TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-    end
+  # describe "Invoice Extensions" do
+  #   before do
+  #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
+  #     InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+  #   end
 
-    def test_if_pending_invoices_can_be_retrieved
-      pending_invoices = Invoice.pending
-      #puts pending_invoices.inspect
-      assert_equal 2, pending_invoices.size
-    end
-  end
+  #   def test_if_pending_invoices_can_be_retrieved
+  #     pending_invoices = Invoice.pending
+  #     #puts pending_invoices.inspect
+  #     assert_equal 2, pending_invoices.size
+  #   end
+  # end
 end
 
