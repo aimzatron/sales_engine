@@ -1,3 +1,4 @@
+
 require 'csv'
 require './lib/invoice'
 require 'Date'
@@ -22,7 +23,14 @@ class InvoiceBuilder
     end
 
     Invoice.store(data)
+    # grouped_invoices = group_by_invoice_id(data)
+    # Invoice.store_grouped(grouped_items)
   end
+
+  # def self.group_by_merchant_id(data)
+  #   data.group_by{|invoice| invoice.merchant_id}
+  # end
+
 
 end
 
