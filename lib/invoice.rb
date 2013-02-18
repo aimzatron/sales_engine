@@ -21,6 +21,14 @@ class Invoice
     @data
   end
 
+  def self.store_index(index)
+    @index = index
+  end
+
+  def index
+    @index = index
+  end
+
   def self.find_by_id(id)
     @data.find {|invoice| invoice.id.downcase == id.downcase}
   end
