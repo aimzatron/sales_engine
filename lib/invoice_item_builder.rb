@@ -13,13 +13,6 @@ class InvoiceItemBuilder
     end
 
     InvoiceItem.store(data)
-
-    index = create_index(data)
-    InvoiceItem.store_index(index)
-  end
-
-  def self.create_index(data)
-    data.group_by{|invoice_item| invoice_item.invoice_id}
   end
 
 end

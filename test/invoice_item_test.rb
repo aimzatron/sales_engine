@@ -25,7 +25,7 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
   describe "invoice item relationships" do
 
     before do
-      ii = {:id         => '16934',
+      ii = {:id        => '16934',
            :item_id    => '1928',
            :invoice_id => '3781',
            :quantity   => '5',
