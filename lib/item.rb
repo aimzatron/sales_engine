@@ -24,6 +24,14 @@ class Item
     @data.sample
   end
 
+  def self.store_merchant_index(index)
+    @merchant_index = index
+  end
+
+  def self.get_merchant_index
+    @merchant_index
+  end
+
   def self.find_by_name(name)
     @data.find{|item| item.name.downcase == name.downcase}
   end
@@ -65,7 +73,9 @@ class Item
   end
 
   def invoice_items
-    InvoiceItem.all.select{|inv_item| inv_item.item_id == self.id}
+    # InvoiceItem.all.select{|inv_item| inv_item.item_id == self.id}
+    hash =  InvoiceItem.get_item_index
+    items = hash[self.id]
   end
 
   def merchant

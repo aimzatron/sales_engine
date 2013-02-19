@@ -8,11 +8,52 @@ class InvoiceItemBuilder
   def self.parse_csv(file = DEFAULT_FILE)
     contents = CSV.open(file, headers: true, header_converters: :symbol)
 
-    data = contents.collect do |invoiceItem|
-      InvoiceItem.new(invoiceItem)
+    data = contents.collect do |ii|
+      ii_hash = {}
+      ii_hash[:id] = ii[:id]
+      ii_hash[:item_id] = ii[:item_id]
+      ii_hash[:invoice_id] = ii[:invoice_id]
+      ii_hash[:quantity] = ii[:quantity]
+      ii_hash[:unit_price] = ii[:unit_price]
+      ii_hash[:created_at] = ii[:created_at]
+      ii_hash[:updated_at] = ii[:updated_at]
+      ii_hash[:line_revenue] = ii[:quantity].to_i * ii[:unit_price].to_i
+
+      InvoiceItem.new(ii_hash)
     end
 
+    invoice_index = create_invoice_index(data)
+    revenue_index = create_revenue_index(invoice_index)
+    item_index = create_item_index(data)
+
+
+    InvoiceItem.store_invoice_index(invoice_index)
+    InvoiceItem.store_item_index(item_index)
+    InvoiceItem.store_revenue_index(revenue_index)
+
     InvoiceItem.store(data)
+  end
+
+  def self.create_invoice_index(data)
+    data.group_by{|invoiceItem| invoiceItem.invoice_id}
+  end
+
+  def self.create_item_index(data)
+    data.group_by{|invoiceItem| invoiceItem.item_id}
+  end
+
+  def self.create_revenue_index(invoice_index)
+    #data.group_by{|invoiceItem| invoiceItem.item_id}
+    revenue_hash = Hash.new(0)
+
+    invoice_index.each do |id, invoice_items|
+      sum = 0
+      invoice_items.each do |invoice_item|
+        sum = sum + invoice_item.line_revenue
+      end
+      revenue_hash[id] = sum
+    end
+    revenue_hash
   end
 
 end

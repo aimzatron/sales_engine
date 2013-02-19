@@ -130,20 +130,20 @@ class CustomerTest < MiniTest::Unit::TestCase
 
   describe "customer relationships " do
     before do
-      c = {:id         => '3',
-           :first_name => 'MARY',
-           :last_name  => 'Smith',
-           :created_at => "2012-03-27 14:54:09 UTC",
-           :updated_at => "2012-03-27 14:54:09 UTC"}
+      CustomerBuilder.parse_csv
+      InvoiceBuilder.parse_csv
 
-      @c = Customer.new(c)
+       # c = {:id => '3', :first_name => 'MARY',
+       #       :last_name => 'Smith',
+       #       :created_at => "2012-03-27 14:54:09 UTC",
+       #       :updated_at => "2012-03-27 14:54:09 UTC"}
 
-      InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
+        @c = Customer.find_by_id("999")
     end
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
-      invoices = Invoice.find_all_by_customer_id(@c.id)
-      assert_equal 4, invoices.count
+      invoices = @c.invoices
+      assert_equal 7, invoices.count
     end
 
   end
