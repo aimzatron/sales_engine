@@ -47,8 +47,23 @@ class Customer
   def transactions
     invoices = self.invoices
     transactions = invoices.collect do |invoice|
-      t = invoice.transactions
+      invoice.transactions
     end
+  end
+
+  def favorite_merchant
+    invoices = self.invoices
+    paid_invoices = Invoice.paid_invoices(invoices)
+
+    merchants = paid_invoices.inject(Hash.new(0)) do |hash, paid_invoice|
+      hash[paid_invoice.merchant_id] += 1
+      hash 
+    end
+
+    favorite_merchant = merchants.sort_by{|k, v| v}.reverse
+
+    Merchant.find_by_id(favorite_merchant[0][0])
+
   end
 
 end
