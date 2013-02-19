@@ -78,7 +78,9 @@ class Invoice
   end
 
   def transactions
-    Transaction.all.select{|transaction| transaction.invoice_id == self.id}
+    #Transaction.all.select{|transaction| transaction.invoice_id == self.id}
+    hash = Transaction.get_invoice_index
+    transactions = hash[self.id]
   end
 
   def invoice_items
@@ -101,14 +103,26 @@ class Invoice
   end
 
   def self.pending
-    pending_transactions = Transaction.pending
-    #puts transactions.inspect
+    # pending_transactions = Transaction.pending
+    # #puts transactions.inspect
 
-    @data.select do |invoice|
-      pending_transactions.find do |invoice_id, no_of_trans|
-        invoice_id == invoice.id
+    # @data.select do |invoice|
+    #   pending_transactions.find do |invoice_id, no_of_trans|
+    #     invoice_id == invoice.id
+    #   end
+    # end
+  end
+
+  def self.paid_invoices(invoices)
+    results_index = Transaction.get_results_index
+    good_invoices = []
+
+    invoices.each do |invoice|
+      results_index.each do |id, result|
+        good_invoices.push(invoice) if invoice.id == id && result == 1
       end
     end
+    good_invoices
   end
 
   def self.get_pending(invoices)
@@ -130,7 +144,18 @@ class Invoice
   end
 
   def self.total_revenue(invoices)
-    invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+    # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
+    hash = InvoiceItem.get_revenue_index
+    sum = 0
+    invoices.each do |invoice|
+      hash.each do |id, revenue|
+        if invoice.id == id
+          sum = sum + revenue
+        end
+      end
+    end
+    sum
+
   end
 
   def self.total_items_qty(invoices)

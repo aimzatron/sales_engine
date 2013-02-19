@@ -22,14 +22,12 @@ class InvoiceBuilder
       Invoice.new(invoice_hash)
     end
 
-    Invoice.store(data)
-
     merchant_index = create_merchant_index(data)
     customer_index = create_customer_index(data)
 
     Invoice.store_merchant_index(merchant_index)
     Invoice.store_customer_index(customer_index)
-    # puts index.inspect
+    Invoice.store(data)
   end
 
   def self.create_merchant_index(data)

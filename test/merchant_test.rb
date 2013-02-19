@@ -145,6 +145,7 @@ class MerchantTest < MiniTest::Unit::TestCase
       CustomerBuilder.parse_csv
 
       @m = Merchant.find_by_name("Kirlin, Jakubowski and Smitham")
+
     end
 
     def test_if_list_of_items_are_returned_for_a_merchant
@@ -163,34 +164,51 @@ class MerchantTest < MiniTest::Unit::TestCase
     # end
   end
 
-  # describe "merchant business intelligence" do
-  #   before do
+  describe "merchant business intelligence" do
+    before do
   #     m = {:id => '1', :name => 'Dicki-Bednar',
   #          :created_at => "2012-03-27 14:54:09 UTC",
   #          :updated_at => "2012-03-27 14:54:09 UTC"}
 
-  #     @m = Merchant.new(m)
+
+
+      
   #     InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
   #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
   #     InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
   #     CustomerBuilder.parse_csv("./test/support/customer_build.csv")
 
-  #     # InvoiceBuilder.parse_csv("./data/invoices.csv")
-  #     # TransactionBuilder.parse_csv("./data/transactions.csv")
-  #     # InvoiceItemBuilder.parse_csv("./data/invoice_items.csv")
-  #     # CustomerBuilder.parse_csv("./data/customers.csv")
-  #   end
+      MerchantBuilder.parse_csv
+      InvoiceBuilder.parse_csv
+      TransactionBuilder.parse_csv
+      InvoiceItemBuilder.parse_csv
+      CustomerBuilder.parse_csv
 
-  #   def test_if_correct_revenue_is_returned_for_a_merchant
-  #     sales = @m.revenue
-  #     #puts (sales.round(2).to_f)/100
-  #     assert_equal 5289.13, (sales.round(2).to_f)/100
-  #   end
+      @m1 = Merchant.find_by_name "Dicki-Bednar"
+      @m2 = Merchant.find_by_name("Willms and Sons")
+    end
 
-  #   def test_if_correct_revenue_for_date_is_returned_for_a_merchant
-  #     sales = @m.revenue(Date.parse("2012-03-25 07:54:10 UTC"))
-  #     assert_equal 2801.21, (sales.round(2).to_f)/100
-  #   end
+    def test_if_correct_revenue_is_returned_for_a_merchant
+      sales = @m1.revenue
+      #puts (sales.round(2).to_f)/100
+      assert_equal 1148393.74, (sales.round(2).to_f)/100
+    end
+
+    def test_if_top_merchant_by_revenue_is_returned
+      merchants = Merchant.most_revenue(3)
+      #puts merchants.inspect
+      assert_equal "Dicki-Bednar", merchants[0].name
+    end
+
+    def test_if_correct_revenue_for_date_is_returned_for_a_merchant
+      sales = @m2.revenue(Date.parse("Fri, 09 Mar 2012"))
+      assert_equal 8373.29, (sales.round(2).to_f)/100
+    end
+
+    def test_if_total_revenue_for_a_date_is_returned
+      sales = Merchant.revenue(Date.parse("Tue, 20 Mar 2012"))
+      assert_equal 2549722.91, (sales.round(2).to_f)/100
+    end
 
   #   def test_if_customers_with_unpaid_invoices_are_returned
   #     customers = @m.customers_with_pending_invoices
@@ -224,16 +242,12 @@ class MerchantTest < MiniTest::Unit::TestCase
   #   #   assert_equal "Dicki-Bednar", merchants[0].name
   #   # end
 
-  #   # def test_if_total_revenue_for_a_date_is_returned
-  #   #   sales = Merchant.revenue(Date.parse("Tue, 20 Mar 2012"))
-  #   #   assert_equal 30378203, sales
-  #   # end
 
   #   # def test_if_top_merchants_by_items_sold_is_returned
   #   #   merchants = Merchant.most_items(5)
   #   #   assert_equal "Kassulke, O'Hara and Quitzon", merchants[0].name
   #   #   assert_equal "Grant LLC", merchants[4].name
   #   # end
-  # end
+  end
 
 end

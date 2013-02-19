@@ -12,10 +12,9 @@ class ItemBuilder
       Item.new(item)
     end
 
-    Item.store(data)
-
     merchant_index = create_merchant_index(data)
     Item.store_merchant_index(merchant_index)
+    Item.store(data)
   end
 
   def self.create_merchant_index(data)

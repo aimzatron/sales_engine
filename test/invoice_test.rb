@@ -239,10 +239,10 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
     end
 
-    # def test_if_transactions_of_an_invoice_can_be_retrieved
-    #   transactions = @i.transactions
-    #   assert_equal 1, transactions.count
-    # end
+    def test_if_transactions_of_an_invoice_can_be_retrieved
+      transactions = @i.transactions
+      assert_equal 1, transactions.count
+    end
 
     def test_if_invoice_items_of_an_invoice_can_be_retrieved
       invoice_items = @i.invoice_items

@@ -15,8 +15,8 @@ class InvoiceItemBuilderTest < MiniTest::Unit::TestCase
 
   def test_if_invoice_item_was_created
     output = InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
-    unit_price = "34873"
-    assert_equal unit_price, output[2].unit_price
+    puts output.inspect
+    assert_equal "34873", output[2].unit_price
   end
 
 end

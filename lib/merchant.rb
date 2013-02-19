@@ -54,29 +54,32 @@ class Merchant
     invoices = hash[self.id]
   end
 
-  # def revenue(date = "")
-  #   invoices = self.invoices
-  #   if date != ""
-  #     invoices_for_date = Invoice.get_invoices_for_date(date)
-  #     invoices = Invoice.extract_invoices_for_date(invoices, invoices_for_date)
-  #   end
-  #   paid_invoices = Invoice.extract_pending(invoices)
-  #   sales = Invoice.total_revenue(paid_invoices)
-  #   sales.to_i
-  # end
+  def revenue(date = "")
+    invoices = self.invoices
 
-  # def self.revenue(date)
-  #   #invoices = Invoice.all
-  #   invoices = Invoice.get_invoices_for_date(date)
-  #   paid_invoices = Invoice.extract_pending(invoices)
-  #   sales = Invoice.total_revenue(paid_invoices).to_i
-  # end
+    if date != ""
+      invoices_for_date = Invoice.get_invoices_for_date(date)
+      invoices = Invoice.extract_invoices_for_date(invoices, invoices_for_date)
+    end
+    paid_invoices = Invoice.paid_invoices(invoices)
 
-  # def self.most_revenue(num)
-  #   merchants = self.group_by_revenue
-  #   puts merchants.inspect
-  #   top_merchants = get_merchants(merchants[0..(num-1)])
-  # end
+    #puts paid_invoices.inspect
+
+    sales = Invoice.total_revenue(paid_invoices)
+    sales.to_i
+  end
+
+  def self.revenue(date)
+    #invoices = Invoice.all
+    invoices = Invoice.get_invoices_for_date(date)
+    paid_invoices = Invoice.paid_invoices(invoices)
+    sales = Invoice.total_revenue(paid_invoices).to_i
+  end
+
+  def self.most_revenue(num)
+    merchants = self.group_by_revenue
+    top_merchants = get_merchants(merchants[0..(num-1)])
+  end
 
   # def self.most_items(num)
   #   merchants = self.group_by_items_sold
@@ -97,18 +100,18 @@ class Merchant
   #   Customer.find_by_id(customers[0][0])
   # end
 
-  # def self.group_by_revenue
-  #   merchants_revenue = @data.inject(Hash.new(0)) do |hash, merchant|
-  #     sales = merchant.revenue
-  #     hash[merchant.id] = sales
-  #     hash
-  #   end
-  #   merchants_revenue = merchants_revenue.sort_by{|k, v| v}.reverse
-  # end
+  def self.group_by_revenue
+    merchants_revenue = @data.inject(Hash.new(0)) do |hash, merchant|
+      sales = merchant.revenue
+      hash[merchant.id] = sales
+      hash
+    end
+    merchants_revenue = merchants_revenue.sort_by{|k, v| v}.reverse
+  end
 
-  # def self.get_merchants(merchants)
-  #   merchants.collect{|merchant| self.find_by_id(merchant[0])}
-  # end
+  def self.get_merchants(merchants)
+    merchants.collect{|merchant| self.find_by_id(merchant[0])}
+  end
 
   # def self.group_by_items_sold
   #   merchants_items = @data.inject(Hash.new(0)) do |hash, merchant|

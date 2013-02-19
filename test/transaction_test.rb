@@ -19,7 +19,7 @@ class TransactionTest < MiniTest::Unit::TestCase
               :result => "success"}
 
       transaction = Transaction.new(data)
-      assert_equal data[:credit_card_number], transaction.credit_card_number
+      assert_equal '4354495077693036', transaction.credit_card_number
       assert_equal data[:result], transaction.result
     end
   end
@@ -48,20 +48,20 @@ class TransactionTest < MiniTest::Unit::TestCase
     end
   end
 
-  # describe "find pending transactions" do
-  #   before do
-  #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-  #   end
+  describe "find pending transactions" do
+    before do
+      TransactionBuilder.parse_csv
+    end
 
-  #   def test_if_unpaid_transactions_can_be_retrieved
-  #     invoice_id_1 = "12"
-  #     invoice_id_2 = "13"
-  #     transactions = Transaction.pending
-  #     #puts transactions
-  #     assert_equal 0, transactions[invoice_id_1]
-  #     assert_equal 0, transactions[invoice_id_2]
-  #   end
-  # end
+    def test_if_unpaid_transactions_can_be_retrieved
+      invoice_id_1 = "12"
+      invoice_id_2 = "13"
+      transactions = Transaction.pending
+      #puts transactions
+      assert_equal 0, transactions[invoice_id_1]
+      assert_equal 0, transactions[invoice_id_2]
+    end
+  end
 
 
 end
