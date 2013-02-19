@@ -25,14 +25,15 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
   describe "invoice item relationships" do
 
     before do
-      ii = {:id        => '16934',
-           :item_id    => '1928',
-           :invoice_id => '3781',
-           :quantity   => '5',
-           :unit_price => '5488',
-           :created_at => '2012-03-27 14:54:09 UTC',
-           :updated_at => '2012-03-27 15:00:00 UTC'}
+      # ii = {:id        => '16934',
+      #      :item_id    => '1928',
+      #      :invoice_id => '3781',
+      #      :quantity   => '5',
+      #      :unit_price => '5488',
+      #      :created_at => '2012-03-27 14:54:09 UTC',
+      #      :updated_at => '2012-03-27 15:00:00 UTC'}
 
+      InvoiceItemBuilder.parse_csv
       InvoiceBuilder.parse_csv
       ItemBuilder.parse_csv
 

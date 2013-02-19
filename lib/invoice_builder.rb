@@ -23,7 +23,23 @@ class InvoiceBuilder
     end
 
     Invoice.store(data)
+
+    merchant_index = create_merchant_index(data)
+    customer_index = create_customer_index(data)
+
+    Invoice.store_merchant_index(merchant_index)
+    Invoice.store_customer_index(customer_index)
+    # puts index.inspect
   end
+
+  def self.create_merchant_index(data)
+    data.group_by{|invoice| invoice.merchant_id}
+  end
+
+  def self.create_customer_index(data)
+    data.group_by{|invoice| invoice.customer_id}
+  end
+
 end
 
 

@@ -21,6 +21,22 @@ class Invoice
     @data
   end
 
+  def self.store_merchant_index(index)
+    @merchant_index = index
+  end
+
+  def self.get_merchant_index
+    @merchant_index
+  end
+
+  def self.store_customer_index(index)
+    @customer_index = index
+  end
+
+  def self.get_customer_index
+    @customer_index
+  end
+
   def self.find_by_id(id)
     @data.find {|invoice| invoice.id.downcase == id.downcase}
   end
@@ -66,13 +82,18 @@ class Invoice
   end
 
   def invoice_items
-    InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+    #InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+    hash = InvoiceItem.get_invoice_index
+    invoice_items = hash[self.id]
   end
 
   def items
-    Item.all.select do |item|
-      self.invoice_items.find{|invoice_item| invoice_item.item_id == item.id}
-    end
+    # Item.all.select do |item|
+    #   self.invoice_items.find{|invoice_item| invoice_item.item_id == item.id}
+    # end
+
+    hash = Item.get_merchant_index
+    items = hash[self.merchant_id]
   end
 
   def customer

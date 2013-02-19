@@ -22,6 +22,22 @@ class InvoiceItem
     @data
   end
 
+  def self.store_invoice_index(index)
+    @invoice_index = index
+  end
+
+  def self.get_invoice_index
+    @invoice_index
+  end
+
+  def self.store_item_index(index)
+    @item_index = index
+  end
+
+  def self.get_item_index
+    @item_index
+  end
+
   def invoice
     Invoice.all.find{|invoice| invoice.id == self.invoice_id}
   end

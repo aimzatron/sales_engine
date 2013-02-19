@@ -13,6 +13,13 @@ class ItemBuilder
     end
 
     Item.store(data)
+
+    merchant_index = create_merchant_index(data)
+    Item.store_merchant_index(merchant_index)
+  end
+
+  def self.create_merchant_index(data)
+    data.group_by{|item| item.merchant_id}
   end
 
 end

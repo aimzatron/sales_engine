@@ -39,7 +39,9 @@ class Customer
   end
 
   def invoices
-    Invoice.find_all_by_customer_id(self.id)
+    #Invoice.find_all_by_customer_id(self.id)
+    hash = Invoice.get_customer_index
+    invoices = hash[self.id]
   end
 
 end

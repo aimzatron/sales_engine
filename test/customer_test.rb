@@ -142,7 +142,6 @@ class CustomerTest < MiniTest::Unit::TestCase
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
       invoices = @c.invoices
-      #puts invoices.inspect
       assert_equal 7, invoices.count
     end
 

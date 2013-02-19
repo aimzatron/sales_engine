@@ -157,10 +157,10 @@ class MerchantTest < MiniTest::Unit::TestCase
       assert_equal 43, invoices.count
     end
 
-    def test_if_invoice_for_customer_named_Block_exists
-      invoice = @m.invoices.find{|i| i.customer.last_name == 'Block'}
-      assert_equal "shipped", invoice.status
-    end
+    # def test_if_invoice_for_customer_named_Block_exists
+    #   invoice = @m.invoices.find{|i| i.customer.last_name == 'Block'}
+    #   assert_equal "shipped", invoice.status
+    # end
   end
 
   # describe "merchant business intelligence" do
