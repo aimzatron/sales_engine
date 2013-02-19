@@ -87,18 +87,25 @@ class Merchant
   #   top_merchants = get_merchants(merchants[0..(num-1)])
   # end
 
-  # def customers_with_pending_invoices
-  #   invoices = self.invoices
-  #   pending_invoices = Invoice.get_pending(invoices)
-  #   customers = Invoice.get_customers(pending_invoices)
-  # end
+  def customers_with_pending_invoices
+    invoices = self.invoices
+    # puts invoices.inspect
 
-  # def favorite_customer
-  #   invoices = self.invoices
-  #   paid_invoices = Invoice.extract_pending(invoices)
-  #   customers = Invoice.group_by_customer_id(paid_invoices)
-  #   Customer.find_by_id(customers[0][0])
-  # end
+    pending_invoices = Invoice.unpaid_invoices(invoices)
+    # puts pending_invoices.inspect
+
+    customers = Invoice.get_customers(pending_invoices)
+    #puts customers.inspect
+    #customers
+  end
+
+  def favorite_customer
+    invoices = self.invoices
+    paid_invoices = Invoice.paid_invoices(invoices)
+    customers = Invoice.group_by_customer_id(paid_invoices)
+    #puts customers.inspect
+    Customer.find_by_id(customers[0][0])
+  end
 
   def self.group_by_revenue
     merchants_revenue = @data.inject(Hash.new(0)) do |hash, merchant|

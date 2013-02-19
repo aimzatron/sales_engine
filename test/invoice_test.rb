@@ -269,7 +269,7 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
   #   def test_if_pending_invoices_can_be_retrieved
   #     pending_invoices = Invoice.pending
-  #     #puts pending_invoices.inspect
+  #     #© pending_invoices.inspect
   #     assert_equal 2, pending_invoices.size
   #   end
   # end

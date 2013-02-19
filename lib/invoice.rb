@@ -102,16 +102,16 @@ class Invoice
     Customer.all.find {|customer| customer.id == self.customer_id}
   end
 
-  def self.pending
-    # pending_transactions = Transaction.pending
-    # #puts transactions.inspect
+  # def self.pending
+  #   # pending_transactions = Transaction.pending
+  #   # #puts transactions.inspect
 
-    # @data.select do |invoice|
-    #   pending_transactions.find do |invoice_id, no_of_trans|
-    #     invoice_id == invoice.id
-    #   end
-    # end
-  end
+  #   # @data.select do |invoice|
+  #   #   pending_transactions.find do |invoice_id, no_of_trans|
+  #   #     invoice_id == invoice.id
+  #   #   end
+  #   # end
+  # end
 
   def self.paid_invoices(invoices)
     results_index = Transaction.get_results_index
@@ -123,25 +123,38 @@ class Invoice
       end
     end
     good_invoices
+
   end
 
-  def self.get_pending(invoices)
-    pending & invoices
-  end
+  def self.unpaid_invoices(invoices)
+    results_index = Transaction.get_results_index
 
-  def self.get_clean
-    @data - pending
-  end
-
-  def self.extract_pending(invoices)
-    invoices - pending
-  end
-
-  def revenue
-    self.invoice_items.inject(0) do |sum, inv_item|
-      sum + inv_item.line_item_revenue
+    results = invoices.select do |invoice|
+      if results_index[invoice.id] == 0
+        invoice.id
+      elsif results_index[invoice.id].nil?
+        invoice.id
+      end
     end
   end
+
+  # def self.get_pending(invoices)
+  #   pending & invoices
+  # end
+
+  # def self.get_clean
+  #   @data - pending
+  # end
+
+  # def self.extract_pending(invoices)
+  #   invoices - pending
+  # end
+
+  # def revenue
+  #   self.invoice_items.inject(0) do |sum, inv_item|
+  #     sum + inv_item.line_item_revenue
+  #   end
+  # end
 
   def self.total_revenue(invoices)
     # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
@@ -158,14 +171,22 @@ class Invoice
 
   end
 
-  def self.total_items_qty(invoices)
-    invoices.inject(0){|sum, invoice| sum + invoice.get_quantity}
+  def self.items_qty(invoices)
+    # #invoices.inject(0){|sum, invoice| sum + invoice.get_quantity}
+    hash = InvoiceItem.get_qty_index
+    sum = 0
+    invoices.each do |invoice|
+      hash.each do |id, qty|
+        sum += qty if invoice.id == id
+      end
+    end
+    sum
   end
 
-  def get_quantity
-    invoice_items = self.invoice_items
-    invoice_items.inject(0){|sum, invItem| sum + invItem.quantity.to_i}
-  end
+  # def get_quantity
+  #   invoice_items = self.invoice_items
+  #   invoice_items.inject(0){|sum, invItem| sum + invItem.quantity.to_i}
+  # end
 
   def self.get_customers(invoices)
     customers = invoices.collect{|invoice| invoice.customer}

@@ -170,14 +170,6 @@ class MerchantTest < MiniTest::Unit::TestCase
   #          :created_at => "2012-03-27 14:54:09 UTC",
   #          :updated_at => "2012-03-27 14:54:09 UTC"}
 
-
-
-      
-  #     InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-  #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-  #     InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
-  #     CustomerBuilder.parse_csv("./test/support/customer_build.csv")
-
       MerchantBuilder.parse_csv
       InvoiceBuilder.parse_csv
       TransactionBuilder.parse_csv
@@ -186,6 +178,8 @@ class MerchantTest < MiniTest::Unit::TestCase
 
       @m1 = Merchant.find_by_name "Dicki-Bednar"
       @m2 = Merchant.find_by_name("Willms and Sons")
+      @m3 = Merchant.find_by_name("Terry-Moore")
+      @m4 = Merchant.find_by_name("Parisian Group")
     end
 
     def test_if_correct_revenue_is_returned_for_a_merchant
@@ -210,18 +204,18 @@ class MerchantTest < MiniTest::Unit::TestCase
       assert_equal 2549722.91, (sales.round(2).to_f)/100
     end
 
-  #   def test_if_customers_with_unpaid_invoices_are_returned
-  #     customers = @m.customers_with_pending_invoices
-  #     #assert_equal 4, customers.size
-  #     assert_equal "Leanne", customers[1].first_name
-  #   end
+    def test_if_customers_with_unpaid_invoices_are_returned
+      customers = @m4.customers_with_pending_invoices
+      assert_equal 4, customers.size
+      #assert_equal "Leanne", customers[1].first_name
+    end
 
-  #   def test_if_favorite_customer_is_found
-  #     customer = @m.favorite_customer
-  #     assert_equal "Nader", customer.last_name
-  #     assert_equal "5", customer.id
-  #   end
-  # end
+    def test_if_favorite_customer_is_found
+      customer = @m3.favorite_customer
+      assert_equal "Hammes", customer.last_name
+      #assert_equal "5", customer.id
+    end
+  end
 
   # describe "merchant business intel with full data" do
   #   before do
@@ -248,6 +242,6 @@ class MerchantTest < MiniTest::Unit::TestCase
   #   #   assert_equal "Kassulke, O'Hara and Quitzon", merchants[0].name
   #   #   assert_equal "Grant LLC", merchants[4].name
   #   # end
-  end
+  # end
 
 end

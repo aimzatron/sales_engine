@@ -47,6 +47,14 @@ class InvoiceItem
     @revenue_index
   end
 
+  def self.store_qty_index(index)
+    @qty_index = index
+  end
+
+  def self.get_qty_index
+    @qty_index
+  end
+
   def invoice
     Invoice.all.find{|invoice| invoice.id == self.invoice_id}
   end

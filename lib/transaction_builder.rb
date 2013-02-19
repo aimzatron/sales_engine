@@ -14,6 +14,7 @@ class TransactionBuilder
 
     invoice_index = create_invoice_index(data)
     results_index = create_results_index(data)
+    #puts results_index.inspect
 
     Transaction.store_invoice_index(invoice_index)
     Transaction.store_results_index(results_index)
@@ -25,13 +26,13 @@ class TransactionBuilder
   end
 
   def self.create_results_index(data)
-    data.inject(Hash.new(0)) do |pending, t|
+    data.inject(Hash.new(0)) do |results, t|
       if t.result == "success"
-        pending[t.invoice_id] += 1
+        results[t.invoice_id] += 1
       else
-        pending[t.invoice_id] += 0
+        results[t.invoice_id] += 0
       end
-      pending
+      results
     end
   end
 
