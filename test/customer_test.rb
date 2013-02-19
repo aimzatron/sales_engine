@@ -2,6 +2,7 @@ require './test/test_helper'
 require './lib/customer'
 require './lib/customer_builder'
 require './lib/invoice_builder'
+require './lib/transaction_builder'
 
 class CustomerTest < MiniTest::Unit::TestCase
 
@@ -129,14 +130,15 @@ class CustomerTest < MiniTest::Unit::TestCase
 
   describe "customer relationships " do
     before do
+      c = {:id         => '3',
+           :first_name => 'MARY',
+           :last_name  => 'Smith',
+           :created_at => "2012-03-27 14:54:09 UTC",
+           :updated_at => "2012-03-27 14:54:09 UTC"}
+
+      @c = Customer.new(c)
+
       InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-
-       c = {:id => '3', :first_name => 'MARY',
-             :last_name => 'Smith',
-             :created_at => "2012-03-27 14:54:09 UTC",
-             :updated_at => "2012-03-27 14:54:09 UTC"}
-
-        @c = Customer.new(c)
     end
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
@@ -146,4 +148,32 @@ class CustomerTest < MiniTest::Unit::TestCase
 
   end
 
+  describe "business intelligence" do
+
+    before do
+      # c = {:id         => '3',
+      #     :first_name => 'MARY',
+      #     :last_name  => 'Smith',
+      #     :created_at => "2012-03-27 14:54:09 UTC",
+      #     :updated_at => "2012-03-27 14:54:09 UTC"}
+
+      CustomerBuilder.parse_csv
+      TransactionBuilder.parse_csv
+      InvoiceBuilder.parse_csv
+
+      @c = Customer.find_by_id("2")
+    end
+
+    def test_if_all_transactions_for_a_customer_can_be_retrieved
+      transactions = @c.transactions
+      assert_equal 1, transactions.size
+    end
+
+  end
+
+
 end
+
+
+
+

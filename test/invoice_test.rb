@@ -227,12 +227,12 @@ class InvoiceTest < MiniTest::Unit::TestCase
 
   describe "Invoice relationships" do
     before do
-      i = {:id => '17',
-            :customer_id => "10",
-            :merchant_id => "60",
-            :status => "shipped",
-            :created_at => "2012-03-27 14:54:09 UTC",
-            :updated_at => "2012-03-27 15:00:00 UTC"}
+      i = {:id         => '17',
+          :customer_id => "10",
+          :merchant_id => "60",
+          :status      => "shipped",
+          :created_at  => "2012-03-27 14:54:09 UTC",
+          :updated_at  => "2012-03-27 15:00:00 UTC"}
 
       @i = Invoice.new(i)
 

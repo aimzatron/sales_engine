@@ -42,4 +42,18 @@ class Customer
     Invoice.find_all_by_customer_id(self.id)
   end
 
+  def transactions
+    invoices = self.invoices
+    transactions = invoices.collect do |invoice|
+      t = invoice.transactions
+    end
+  end
+
 end
+
+
+
+
+
+
+
