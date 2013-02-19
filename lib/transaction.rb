@@ -41,12 +41,12 @@ class Transaction
     invoice = Invoice.all.find{|invoice| invoice.id == self.invoice_id}
   end
 
-  def self.pending
-   results = group_transactions_by_invoice_id
-   puts results.inspect
-   #unpaid = extract_unpaid_transactions(results)
-   #puts unpaid.inspect
-  end
+  # def self.pending
+  #  results = group_transactions_by_invoice_id
+  #  puts results.inspect
+  #  #unpaid = extract_unpaid_transactions(results)
+  #  #puts unpaid.inspect
+  # end
 
   # def self.group_transactions_by_invoice_id
   #   @data.inject(Hash.new(0)) do |pending, t|
