@@ -130,9 +130,8 @@ class Invoice
     results_index = Transaction.get_results_index
 
     results = invoices.select do |invoice|
-      if results_index[invoice.id] == 0
-        invoice.id
-      elsif results_index[invoice.id].nil?
+      target = results_index[invoice_id]
+      if target.nil? || target == 0
         invoice.id
       end
     end

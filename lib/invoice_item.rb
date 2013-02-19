@@ -23,37 +23,48 @@ class InvoiceItem
     @data
   end
 
-  def self.store_invoice_index(index)
-    @invoice_index = index
+  def self.store_index(attribute, index_data)
+    @indexes ||= {}
+    @indexes[attribute.to_sym] = index_data
   end
 
-  def self.get_invoice_index
-    @invoice_index
+  def self.get_index(attribute)
+    @indexes[attribute]
   end
 
-  def self.store_item_index(index)
-    @item_index = index
-  end
+  #InvoiceItem.get_index(:invoice)
 
-  def self.get_item_index
-    @item_index
-  end
+  # def self.store_invoice_index(index)
+  #   @invoice_index = index
+  # end
 
-  def self.store_revenue_index(index)
-    @revenue_index = index
-  end
+  # def self.get_invoice_index
+  #   @invoice_index
+  # end
 
-  def self.get_revenue_index
-    @revenue_index
-  end
+  # def self.store_item_index(index)
+  #   @item_index = index
+  # end
 
-  def self.store_qty_index(index)
-    @qty_index = index
-  end
+  # def self.get_item_index
+  #   @item_index
+  # end
 
-  def self.get_qty_index
-    @qty_index
-  end
+  # def self.store_revenue_index(index)
+  #   @revenue_index = index
+  # end
+
+  # def self.get_revenue_index
+  #   @revenue_index
+  # end
+
+  # def self.store_qty_index(index)
+  #   @qty_index = index
+  # end
+
+  # def self.get_qty_index
+  #   @qty_index
+  # end
 
   def invoice
     Invoice.all.find{|invoice| invoice.id == self.invoice_id}
