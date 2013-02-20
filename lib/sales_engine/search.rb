@@ -18,7 +18,7 @@ module Search
 
   #  #  puts result.class
   #  # # puts "class of the result is:"
-    
+
 
 
   #   # puts ""
