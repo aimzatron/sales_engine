@@ -21,21 +21,30 @@ class Invoice
     @data
   end
 
-  def self.store_merchant_index(index)
-    @merchant_index = index
+  def self.store_index(attribute, index_data)
+    @indexes ||= {}
+    @indexes[attribute.to_sym] = index_data
   end
 
-  def self.get_merchant_index
-    @merchant_index
+  def self.get_index(attribute)
+    @indexes[attribute]
   end
 
-  def self.store_customer_index(index)
-    @customer_index = index
-  end
+  # def self.store_merchant_index(index)
+  #   @merchant_index = index
+  # end
 
-  def self.get_customer_index
-    @customer_index
-  end
+  # def self.get_merchant_index
+  #   @merchant_index
+  # end
+
+  # def self.store_customer_index(index)
+  #   @customer_index = index
+  # end
+
+  # def self.get_customer_index
+  #   @customer_index
+  # end
 
   def self.find_by_id(id)
     @data.find {|invoice| invoice.id.downcase == id.downcase}
@@ -79,13 +88,13 @@ class Invoice
 
   def transactions
     #Transaction.all.select{|transaction| transaction.invoice_id == self.id}
-    hash = Transaction.get_invoice_index
+    hash = Transaction.get_index(:invoice_id)
     transactions = hash[self.id]
   end
 
   def invoice_items
     #InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
-    hash = InvoiceItem.get_invoice_index
+    hash = InvoiceItem.get_index(:invoice_id)
     invoice_items = hash[self.id]
   end
 
@@ -94,7 +103,7 @@ class Invoice
     #   self.invoice_items.find{|invoice_item| invoice_item.item_id == item.id}
     # end
 
-    hash = Item.get_merchant_index
+    hash = Item.get_index(:merchant_id)
     items = hash[self.merchant_id]
   end
 
@@ -114,7 +123,7 @@ class Invoice
   # end
 
   def self.paid_invoices(invoices)
-    results_index = Transaction.get_results_index
+    results_index = Transaction.get_index(:results)
     good_invoices = []
 
     invoices.each do |invoice|
@@ -127,12 +136,12 @@ class Invoice
   end
 
   def self.unpaid_invoices(invoices)
-    results_index = Transaction.get_results_index
+    results_index = Transaction.get_index(:results)
 
     results = invoices.select do |invoice|
-      target = results_index[invoice_id]
+      target = results_index[invoice.id]
       if target.nil? || target == 0
-        invoice.id
+        invoice
       end
     end
   end
@@ -157,7 +166,7 @@ class Invoice
 
   def self.total_revenue(invoices)
     # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
-    hash = InvoiceItem.get_revenue_index
+    hash = InvoiceItem.get_index(:revenue)
     sum = 0
     invoices.each do |invoice|
       hash.each do |id, revenue|

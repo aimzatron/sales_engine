@@ -45,9 +45,9 @@ class InvoiceItemTest < MiniTest::Unit::TestCase
       refute_nil invoice
     end
 
-    # def test_if_an_item_ca_be_returned_for_an_invoice_item
-    #   item = @ii.item
-    #   assert_equal "Item Cupiditate Magni", item.name
-    # end
+    def test_if_an_item_can_be_returned_for_an_invoice_item
+      item = @ii.item
+      assert_equal "Item Cupiditate Magni", item.name
+    end
   end
 end

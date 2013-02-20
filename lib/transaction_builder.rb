@@ -4,26 +4,38 @@ require './lib/transaction'
 class TransactionBuilder
 
   DEFAULT_FILE = "./data/transactions.csv"
+  DATA_REPOSITORY = Transaction
 
-  def self.parse_csv(file = DEFAULT_FILE)
+  def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
     contents = CSV.open(file, headers: true, header_converters: :symbol)
 
     data = contents.collect do |transaction|
-      Transaction.new(transaction)
+      repo.new(transaction)
     end
 
-    invoice_index = create_invoice_index(data)
+    invoice_index = index_by(:invoice_id, data, repo)
+
+
+    # invoice_index = create_invoice_index(data)
     results_index = create_results_index(data)
+    repo.store_index(:results, results_index)
+
     #puts results_index.inspect
 
-    Transaction.store_invoice_index(invoice_index)
-    Transaction.store_results_index(results_index)
-    Transaction.store(data)
+    # Transaction.store_invoice_index(invoice_index)
+    # Transaction.store_results_index(results_index)
+    repo.store(data)
   end
 
-  def self.create_invoice_index(data)
-    data.group_by{|transaction| transaction.invoice_id}
+  def self.index_by(attribute, data, repo)
+    index = data.group_by { |transaction| transaction.send(attribute) }
+   # puts index.inspect
+    repo.store_index(attribute, index)
   end
+
+  # def self.create_invoice_index(data)
+  #   data.group_by{|transaction| transaction.invoice_id}
+  # end
 
   def self.create_results_index(data)
     data.inject(Hash.new(0)) do |results, t|

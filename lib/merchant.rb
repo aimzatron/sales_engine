@@ -44,13 +44,13 @@ class Merchant
 
   def items
     # Item.all.select {|item| self.id == item.merchant_id}
-    hash = Item.get_merchant_index
+    hash = Item.get_index(:merchant_id)
     items = hash[self.id]
   end
 
   def invoices
     #Invoice.all.select{|invoice| self.id == invoice.merchant_id}
-    hash = Invoice.get_merchant_index
+    hash = Invoice.get_index(:merchant_id)
     invoices = hash[self.id]
   end
 

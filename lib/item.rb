@@ -20,17 +20,26 @@ class Item
     @data
   end
 
+  def self.store_index(attribute, index_data)
+    @indexes ||= {}
+    @indexes[attribute.to_sym] = index_data
+  end
+
+  def self.get_index(attribute)
+    @indexes[attribute]
+  end
+
   def self.random
     @data.sample
   end
 
-  def self.store_merchant_index(index)
-    @merchant_index = index
-  end
+  # def self.store_merchant_index(index)
+  #   @merchant_index = index
+  # end
 
-  def self.get_merchant_index
-    @merchant_index
-  end
+  # def self.get_merchant_index
+  #   @merchant_index
+  # end
 
   def self.find_by_name(name)
     @data.find{|item| item.name.downcase == name.downcase}
@@ -74,7 +83,7 @@ class Item
 
   def invoice_items
     # InvoiceItem.all.select{|inv_item| inv_item.item_id == self.id}
-    hash =  InvoiceItem.get_item_index
+    hash =  InvoiceItem.get_index(:item_id)
     items = hash[self.id]
   end
 

@@ -40,7 +40,7 @@ class Customer
 
   def invoices
     #Invoice.find_all_by_customer_id(self.id)
-    hash = Invoice.get_customer_index
+    hash = Invoice.get_index(:customer_id)
     invoices = hash[self.id]
   end
 

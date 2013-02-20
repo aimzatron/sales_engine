@@ -21,21 +21,30 @@ class Transaction
     @data
   end
 
-  def self.store_invoice_index(index)
-    @invoice_index = index
+  def self.store_index(attribute, index_data)
+    @indexes ||= {}
+    @indexes[attribute.to_sym] = index_data
   end
 
-  def self.get_invoice_index
-    @invoice_index
+  def self.get_index(attribute)
+    @indexes[attribute]
   end
 
-  def self.store_results_index(index)
-    @results_index = index
-  end
+  # def self.store_invoice_index(index)
+  #   @invoice_index = index
+  # end
 
-  def self.get_results_index
-    @results_index
-  end
+  # def self.get_invoice_index
+  #   @invoice_index
+  # end
+
+  # def self.store_results_index(index)
+  #   @results_index = index
+  # end
+
+  # def self.get_results_index
+  #   @results_index
+  # end
 
   def invoice
     invoice = Invoice.all.find{|invoice| invoice.id == self.invoice_id}

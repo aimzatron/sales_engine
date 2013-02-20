@@ -12,7 +12,6 @@ class InvoiceItemBuilder
     data = contents.collect do |ii|
       #puts ii.class
       ii_hash = ii.to_hash.merge(line_revenue: ii[:quantity].to_i * ii[:unit_price].to_i)
-
       repo.new(ii_hash)
     end
 
@@ -21,6 +20,7 @@ class InvoiceItemBuilder
 
     revenue_index = create_revenue_index(invoice_index)
     repo.store_index(:revenue, revenue_index)
+
     repo.store(data)
 
     #qty_index = create_qty_index(invoice_index)
@@ -36,6 +36,7 @@ class InvoiceItemBuilder
 
   def self.index_by(attribute, data, repo)
     index = data.group_by { |invoice_item| invoice_item.send(attribute) }
+   # puts index.inspect
     repo.store_index(attribute, index)
   end
 

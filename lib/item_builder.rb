@@ -4,21 +4,30 @@ require './lib/item'
 class ItemBuilder
 
   DEFAULT_FILE = "./data/items.csv"
+  DATA_REPOSITORY = Item
 
-  def self.parse_csv(file = DEFAULT_FILE)
+  def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
     contents = CSV.open(file, headers: true, header_converters: :symbol)
 
     data = contents.collect do |item|
-      Item.new(item)
+      repo.new(item)
     end
 
-    merchant_index = create_merchant_index(data)
-    Item.store_merchant_index(merchant_index)
-    Item.store(data)
+    # merchant_index = create_merchant_index(data)
+    # repo.store_merchant_index(merchant_index)
+    customer_index = index_by(:merchant_id, data, repo)
+    repo.store(data)
   end
 
-  def self.create_merchant_index(data)
-    data.group_by{|item| item.merchant_id}
+  def self.index_by(attribute, data, repo)
+    index = data.group_by { |invoice| invoice.send(attribute) }
+    repo.store_index(attribute, index)
   end
+
+
+
+  # def self.create_merchant_index(data)
+  #   data.group_by{|item| item.merchant_id}
+  # end
 
 end
