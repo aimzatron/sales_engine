@@ -40,7 +40,11 @@ module SalesEngine
     end
 
     def self.find_all_by_invoice_id(inv_id)
-      @data.select { |trans| trans.invoice_id.to_i == inv_id }
+      @data.select { |trans| trans.invoice_id == inv_id }
+    end
+
+    def self.find_by_id(id)
+      @data.find{|transaction| transaction.id == id}
     end
 
     def invoice
