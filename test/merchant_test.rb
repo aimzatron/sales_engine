@@ -38,7 +38,7 @@ class MerchantTest < MiniTest::Unit::TestCase
 
       20.times do
         break if m1.id != m2.id
-        m1 = SalesEngine::Merchant.random
+        m1 = Merchant.random
       end
 
       refute_equal m1.id, m2.id
