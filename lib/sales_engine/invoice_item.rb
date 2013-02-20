@@ -31,12 +31,28 @@ module SalesEngine
       @indexes[attribute]
     end
 
+    def self.find_by_item_id(item_id)
+      @data.find{|invoice_item| invoice_item.item_id == item_id}
+    end
+
+    def self.find_by_id(id)
+      @data.find{|invoice_item| invoice_item.id == id}
+    end
+
+    def self.find_all_by_quantity(quantity)
+      @data.select{|invoice_item| invoice_item.quantity == quantity}
+    end
+
     def invoice
       Invoice.all.find{|invoice| invoice.id == self.invoice_id}
     end
 
     def item
       Item.all.find{|item| item.id == self.item_id}
+    end
+
+    def self.random
+      @data.sample
     end
 
     def self.paid_invoice_items(ii)
