@@ -18,8 +18,18 @@ class InvoiceItemBuilder
     invoice_index = index_by(:invoice_id, data, repo)
     item_index    = index_by(:item_id, data, repo)
 
-    revenue_index = create_revenue_index(invoice_index)
-    repo.store_index(:revenue, revenue_index)
+    invoice_revenue_index = create_invoice_revenue_index(invoice_index)
+    repo.store_index(:invoice_revenue, invoice_revenue_index)
+
+    invoice_qty_index = create_invoice_qty_index(invoice_index)
+    repo.store_index(:invoice_qty, invoice_qty_index)
+
+    item_revenue_index = create_item_revenue_index(item_index)
+    repo.store_index(:item_revenue, item_revenue_index)
+
+    item_qty_index = create_item_qty_index(item_index)
+    #puts item_qty_index.inspect
+    repo.store_index(:item_qty, item_qty_index)
 
     repo.store(data)
 
@@ -48,7 +58,7 @@ class InvoiceItemBuilder
   #   data.group_by{|invoiceItem| invoiceItem.item_id}
   # end
 
-  def self.create_revenue_index(invoice_index)
+  def self.create_invoice_revenue_index(invoice_index)
     #data.group_by{|invoiceItem| invoiceItem.item_id}
     revenue_hash = Hash.new(0)
 
@@ -62,18 +72,45 @@ class InvoiceItemBuilder
     revenue_hash
   end
 
-  # def self.create_qty_index(invoice_index)
-  #   qty_hash = Hash.new(0)
+  def self.create_item_revenue_index(item_index)
+    #data.group_by{|invoiceItem| invoiceItem.item_id}
+    item_hash = Hash.new(0)
 
-  #   invoice_index.each do |id, invoice_items|
-  #     sum = 0
-  #     invoice_items.each do |invoice_item|
-  #       sum = sum + invoice_item.quantity
-  #     end
-  #     qty_hash[id] = sum
-  #   end
-  #   qty_hash
-  # end
+    item_index.each do |id, invoice_items|
+      sum = 0
+      invoice_items.each do |invoice_item|
+        sum = sum + invoice_item.line_revenue
+      end
+      item_hash[id] = sum
+    end
+    item_hash
+  end
+
+  def self.create_invoice_qty_index(invoice_index)
+    qty_hash = Hash.new(0)
+
+    invoice_index.each do |id, invoice_items|
+      sum = 0
+      invoice_items.each do |invoice_item|
+        sum = sum + invoice_item.quantity.to_i
+      end
+      qty_hash[id] = sum
+    end
+    qty_hash
+  end
+
+  def self.create_item_qty_index(item_index)
+    qty_hash = Hash.new(0)
+
+    item_index.each do |id, invoice_items|
+      sum = 0
+      invoice_items.each do |invoice_item|
+        sum = sum + invoice_item.quantity.to_i
+      end
+      qty_hash[id] = sum
+    end
+    qty_hash
+  end
 
 
 end
