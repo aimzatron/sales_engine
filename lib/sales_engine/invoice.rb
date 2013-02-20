@@ -180,6 +180,7 @@ module SalesEngine
     def self.total_revenue(invoices)
       # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
       hash = InvoiceItem.get_index(:invoice_revenue)
+      #puts hash.inspect
       sum = 0
       invoices.each do |invoice|
         hash.each do |id, revenue|

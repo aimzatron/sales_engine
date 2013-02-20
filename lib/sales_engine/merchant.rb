@@ -62,14 +62,33 @@ module SalesEngine
       #puts paid_invoices.inspect
 
       sales = Invoice.total_revenue(paid_invoices)
-      sales.to_i
     end
 
     def self.revenue(date)
-      #invoices = Invoice.all
       invoices = Invoice.get_invoices_for_date(date)
-      paid_invoices = Invoice.paid_invoices(invoices)
-      sales = Invoice.total_revenue(paid_invoices).to_i
+      #puts invoices.inspect
+      paid_invoice_ids = Transaction.get_paid_invoice_list
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+
+      #puts revenue_index.inspect
+
+      sum = 0
+      merch_id_rev = invoices.inject(Hash.new(0)) do |memo, inv|
+        if paid_invoice_ids.include?(inv.id)
+          sum += revenue_index[inv.id]
+        end
+        #memo
+      end
+
+      #puts sum
+      sum
+
+      #puts merch_id_rev.inspect
+      #sorted = merch_id_rev.sort_by { |k,v| v }.reverse
+      #sorted[0,num.to_i].map { |pair| Item.find_by_id(pair[0]) }
+
+      # paid_invoices = Invoice.paid_invoices(invoices)
+      # sales = Invoice.total_revenue(paid_invoices).to_i
     end
 
     def self.most_revenue(num)
