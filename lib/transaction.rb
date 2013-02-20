@@ -30,6 +30,14 @@ class Transaction
     @indexes[attribute]
   end
 
+  def self.store_paid_invoice_list(list)
+    @paid_invoice_list = list
+  end
+
+  def self.get_paid_invoice_list
+    @paid_invoice_list
+  end
+
   # def self.store_invoice_index(index)
   #   @invoice_index = index
   # end

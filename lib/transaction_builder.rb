@@ -20,6 +20,9 @@ class TransactionBuilder
     results_index = create_results_index(data)
     repo.store_index(:results, results_index)
 
+    paid_invoices = create_paid_invoice_list(results_index)
+    repo.store_paid_invoice_list(paid_invoices)
+
     #puts results_index.inspect
 
     # Transaction.store_invoice_index(invoice_index)
@@ -36,6 +39,15 @@ class TransactionBuilder
   # def self.create_invoice_index(data)
   #   data.group_by{|transaction| transaction.invoice_id}
   # end
+
+  def self.create_paid_invoice_list(index)
+
+    paid = index.select do |invoice_id, result|
+      invoice_id if result == 1
+    end
+    paid.keys
+
+  end
 
   def self.create_results_index(data)
     data.inject(Hash.new(0)) do |results, t|

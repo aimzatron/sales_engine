@@ -39,13 +39,6 @@ class InvoiceItemBuilder
     repo.store_index(attribute, index)
   end
 
-  # def self.create_invoice_index(data)
-  #   data.group_by{|invoiceItem| invoiceItem.invoice_id}
-  # end
-
-  # def self.create_item_index(data)
-  #   data.group_by{|invoiceItem| invoiceItem.item_id}
-  # end
 
   def self.create_invoice_revenue_index(invoice_index)
     #data.group_by{|invoiceItem| invoiceItem.item_id}
