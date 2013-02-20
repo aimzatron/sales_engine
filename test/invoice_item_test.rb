@@ -10,8 +10,8 @@ module SalesEngine
       end
 
       def test_it_is_initialized_from_a_hash_of_data
-        data = {:id => '3', :item_id => '523',
-          :invoice_id => '1', :quantity => '8', :unit_price => '34873'}
+        data = {:id => 3, :item_id => 523,
+          :invoice_id => 1, :quantity => '8', :unit_price => '34873'}
 
         invItem = InvoiceItem.new(data)
         assert_equal '8', invItem.quantity
@@ -19,12 +19,31 @@ module SalesEngine
       end
     end
 
+    describe "test_random" do
+      before do
+        InvoiceItemBuilder.parse_csv
+        @data = InvoiceItem.all
+      end
+
+      def test_if_random
+        ii1 = InvoiceItem.random
+        ii2 = InvoiceItem.random
+
+        10.times do
+          break if ii1.id != ii2.id
+          c1 = SalesEngine::InvoiceItem.random
+        end
+
+        refute_equal ii1.id, ii2.id
+      end
+    end
+
     describe "invoice item relationships" do
 
       before do
-        ii = {:id        => '16934',
-             :item_id    => '1928',
-             :invoice_id => '3781',
+        ii = {:id        => 16934,
+             :item_id    => 1928,
+             :invoice_id => 3781,
              :quantity   => '5',
              :unit_price => '5488',
              :created_at => '2012-03-27 14:54:09 UTC',

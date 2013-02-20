@@ -13,7 +13,6 @@ module SalesEngine
       end
 
       customer_index = index_by(:merchant_id, data, repo)
-      #puts customer_index.inspect
       repo.store(data)
     end
 
