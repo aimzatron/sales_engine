@@ -120,6 +120,15 @@ class Invoice
   #   #     invoice_id == invoice.id
   #   #   end
   #   # end
+
+  #   pending_transactions = Transaction.pending
+  #   #puts transactions.inspect
+
+  #   @data.select do |invoice|
+  #     pending_transactions.find do |invoice_id, no_of_trans|
+  #       invoice_id == invoice.id
+  #     end
+  #   end
   # end
 
   def self.paid_invoices(invoices)

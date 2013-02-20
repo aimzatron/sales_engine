@@ -3,6 +3,8 @@ require './lib/customer'
 require './lib/customer_builder'
 require './lib/invoice_builder'
 require './lib/transaction_builder'
+require './lib/merchant'
+require './lib/merchant_builder'
 
 class CustomerTest < MiniTest::Unit::TestCase
 
@@ -160,6 +162,7 @@ class CustomerTest < MiniTest::Unit::TestCase
       CustomerBuilder.parse_csv
       TransactionBuilder.parse_csv
       InvoiceBuilder.parse_csv
+      MerchantBuilder.parse_csv
 
       @c = Customer.find_by_id("2")
     end
@@ -167,6 +170,12 @@ class CustomerTest < MiniTest::Unit::TestCase
     def test_if_all_transactions_for_a_customer_can_be_retrieved
       transactions = @c.transactions
       assert_equal 1, transactions.size
+    end
+
+    def test_if_a_favorite_merchant_can_be_returned_for_a_customer
+      favorite_merchant = @c.favorite_merchant
+      # puts favorite_merchant.inspect
+      assert_equal "Shields, Hirthe and Smith", favorite_merchant.name
     end
 
   end
