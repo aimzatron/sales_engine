@@ -22,6 +22,10 @@ module SalesEngine
       @data
     end
 
+    def self.random
+      @data.sample
+    end
+
     def self.store_index(attribute, index_data)
       @indexes ||= {}
       @indexes[attribute.to_sym] = index_data
@@ -45,6 +49,10 @@ module SalesEngine
 
     def self.find_by_id(id)
       @data.find{|transaction| transaction.id == id}
+    end
+
+    def self.find_by_credit_card_number(cc_num)
+      @data.find {|trans| trans.credit_card_number == cc_num }
     end
 
     def invoice

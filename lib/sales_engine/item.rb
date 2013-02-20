@@ -135,7 +135,7 @@ module SalesEngine
       end
 
       sorted = days.sort_by{|k,v| v}.reverse
-      puts "#{sorted[0][0]} is the best date"
+      #puts "#{sorted[0][0]} is the best date"
       sorted[0][0]
     end
 
