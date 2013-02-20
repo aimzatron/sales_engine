@@ -32,40 +32,6 @@ class InvoiceItem
     @indexes[attribute]
   end
 
-  #InvoiceItem.get_index(:invoice)
-
-  # def self.store_invoice_index(index)
-  #   @invoice_index = index
-  # end
-
-  # def self.get_invoice_index
-  #   @invoice_index
-  # end
-
-  # def self.store_item_index(index)
-  #   @item_index = index
-  # end
-
-  # def self.get_item_index
-  #   @item_index
-  # end
-
-  # def self.store_revenue_index(index)
-  #   @revenue_index = index
-  # end
-
-  # def self.get_revenue_index
-  #   @revenue_index
-  # end
-
-  # def self.store_qty_index(index)
-  #   @qty_index = index
-  # end
-
-  # def self.get_qty_index
-  #   @qty_index
-  # end
-
   def invoice
     Invoice.all.find{|invoice| invoice.id == self.invoice_id}
   end
@@ -74,8 +40,17 @@ class InvoiceItem
     Item.all.find{|item| item.id == self.item_id}
   end
 
-  # def line_item_revenue
-  #  BigDecimal(self.quantity) * BigDecimal(self.unit_price)
-  # end
+  def self.paid_invoice_items(ii)
+    paid_invoice_items_list = Transaction.get_paid_invoice_list
+    exit if ii.nil?
+    ii.inject([]) do |memo, inv_item|
+     # puts "in select loop"
+      if paid_invoice_items_list.include?(inv_item.invoice_id)
+        memo << inv_item
+      end
+      memo
+    end
+
+  end
 
 end

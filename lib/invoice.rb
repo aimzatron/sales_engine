@@ -30,22 +30,6 @@ class Invoice
     @indexes[attribute]
   end
 
-  # def self.store_merchant_index(index)
-  #   @merchant_index = index
-  # end
-
-  # def self.get_merchant_index
-  #   @merchant_index
-  # end
-
-  # def self.store_customer_index(index)
-  #   @customer_index = index
-  # end
-
-  # def self.get_customer_index
-  #   @customer_index
-  # end
-
   def self.find_by_id(id)
     @data.find {|invoice| invoice.id.downcase == id.downcase}
   end
@@ -99,10 +83,6 @@ class Invoice
   end
 
   def items
-    # Item.all.select do |item|
-    #   self.invoice_items.find{|invoice_item| invoice_item.item_id == item.id}
-    # end
-
     hash = Item.get_index(:merchant_id)
     items = hash[self.merchant_id]
   end
@@ -155,24 +135,6 @@ class Invoice
     end
   end
 
-  # def self.get_pending(invoices)
-  #   pending & invoices
-  # end
-
-  # def self.get_clean
-  #   @data - pending
-  # end
-
-  # def self.extract_pending(invoices)
-  #   invoices - pending
-  # end
-
-  # def revenue
-  #   self.invoice_items.inject(0) do |sum, inv_item|
-  #     sum + inv_item.line_item_revenue
-  #   end
-  # end
-
   def self.total_revenue(invoices)
     # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
     hash = InvoiceItem.get_index(:invoice_revenue)
@@ -185,7 +147,6 @@ class Invoice
       end
     end
     sum
-
   end
 
   def self.total_qty(invoices)
@@ -199,11 +160,6 @@ class Invoice
     end
     sum
   end
-
-  # def get_quantity
-  #   invoice_items = self.invoice_items
-  #   invoice_items.inject(0){|sum, invItem| sum + invItem.quantity.to_i}
-  # end
 
   def self.get_customers(invoices)
     customers = invoices.collect{|invoice| invoice.customer}

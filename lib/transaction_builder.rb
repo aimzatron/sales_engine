@@ -15,18 +15,11 @@ class TransactionBuilder
 
     invoice_index = index_by(:invoice_id, data, repo)
 
-
-    # invoice_index = create_invoice_index(data)
     results_index = create_results_index(data)
     repo.store_index(:results, results_index)
 
     paid_invoices = create_paid_invoice_list(results_index)
     repo.store_paid_invoice_list(paid_invoices)
-
-    #puts results_index.inspect
-
-    # Transaction.store_invoice_index(invoice_index)
-    # Transaction.store_results_index(results_index)
     repo.store(data)
   end
 
@@ -35,10 +28,6 @@ class TransactionBuilder
    # puts index.inspect
     repo.store_index(attribute, index)
   end
-
-  # def self.create_invoice_index(data)
-  #   data.group_by{|transaction| transaction.invoice_id}
-  # end
 
   def self.create_paid_invoice_list(index)
 

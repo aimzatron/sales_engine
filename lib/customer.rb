@@ -57,7 +57,7 @@ class Customer
 
     merchants = paid_invoices.inject(Hash.new(0)) do |hash, paid_invoice|
       hash[paid_invoice.merchant_id] += 1
-      hash 
+      hash
     end
 
     favorite_merchant = merchants.sort_by{|k, v| v}.reverse

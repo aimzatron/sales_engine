@@ -130,11 +130,4 @@ class Merchant
     merchants_items = merchants_items.sort_by{|k,v| v}.reverse
   end
 
-  # def invoice_items
-  #   paid_invoices = Invoice.paid_invoices(self.invoices)
-  #   Invoice.total_items_qty(paid_invoices)
-  # end
-
-
-
 end

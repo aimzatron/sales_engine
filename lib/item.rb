@@ -33,14 +33,6 @@ class Item
     @data.sample
   end
 
-  # def self.store_merchant_index(index)
-  #   @merchant_index = index
-  # end
-
-  # def self.get_merchant_index
-  #   @merchant_index
-  # end
-
   def self.find_by_name(name)
     @data.find{|item| item.name.downcase == name.downcase}
   end
@@ -90,5 +82,90 @@ class Item
   def merchant
     Merchant.all.find{|merchant| merchant.id == self.merchant_id}
   end
+
+  def self.most_revenue(num)
+    invoice_items = InvoiceItem.all
+    paid_invoice_ids = Transaction.get_paid_invoice_list
+
+    item_id_rev = invoice_items.inject(Hash.new(0)) do |memo, inv_item|
+      if paid_invoice_ids.include?(inv_item.invoice_id)
+        memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity) * BigDecimal.new(inv_item.unit_price)
+      end
+      #puts inv_item.id
+      memo
+    end
+    sorted = item_id_rev.sort_by { |k,v| v }.reverse
+    sorted[0,num.to_i].map { |pair| Item.find_by_id(pair[0]) }
+  end
+
+  def self.most_items(num)
+    invoice_items = InvoiceItem.all
+    paid_invoice_ids = Transaction.get_paid_invoice_list
+
+    item_id_qty = invoice_items.inject(Hash.new(0)) do |memo, inv_item|
+      #puts "in inject"
+      if paid_invoice_ids.include?(inv_item.invoice_id)
+        memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity)
+        ## Why didn't .to_i work???? are there nil values?
+      end
+      memo
+    end
+    sorted = item_id_qty.sort_by { |k,v| v }.reverse
+    #puts sorted.inspect
+    sorted[0,num.to_i].map { |pair| Item.find_by_id(pair[0]) }
+  end
+
+  def best_day
+    merchant_index = Invoice.get_index(:merchant_id)
+    invoice_revenue = InvoiceItem.get_index(:invoice_revenue)
+    invoices = merchant_index.select do |merchant_id, invoices|
+      invoices if merchant_id == self.merchant_id
+    end
+
+    paid_invoice_ids = Transaction.get_paid_invoice_list
+
+    days = invoices.values.flatten.inject(Hash.new(0)) do |memo, invoice|
+      if paid_invoice_ids.include?(invoice.id)
+        revenue = invoice_revenue[invoice.id]
+        memo[invoice.created_at] += revenue
+      end
+      memo
+    end
+
+    sorted = days.sort_by{|k,v| v}.reverse
+    puts "#{sorted[0][0]} is the best date"
+    sorted[0][0]
+  end
+
+  def paid_invoice_items
+    InvoiceItem.paid_invoice_items(self.invoice_items)
+
+  end
+
+  # def self.group_by_revenue
+  #   top_items = @data.inject(Hash.new(0)) do |hash, item|
+  #     ii = item.invoice_items
+  #     # #puts ii.inspect
+  #     paid_ii = InvoiceItem.paid_invoice_items(ii)
+
+  #     revenue = item.calculate_revenue(ii)
+  #     puts revenue
+
+  #     hash[item.id] = revenue
+  #     hash
+  #   end
+  #   puts top_items.inspect
+  #   top_items = top_items.sort_by{|k,v| v}.reverse
+  # end
+
+  # def self.get_items(items)
+  #   items.collect{|item| self.find_by_id(item[0])}
+  # end
+
+  # def calculate_revenue(ii)
+  #   ii.inject(0) do |sum, invoice_item|
+  #     sum += invoice_item.line_revenue
+  #   end
+  # end
 
 end

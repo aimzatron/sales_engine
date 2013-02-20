@@ -38,21 +38,9 @@ class Transaction
     @paid_invoice_list
   end
 
-  # def self.store_invoice_index(index)
-  #   @invoice_index = index
-  # end
-
-  # def self.get_invoice_index
-  #   @invoice_index
-  # end
-
-  # def self.store_results_index(index)
-  #   @results_index = index
-  # end
-
-  # def self.get_results_index
-  #   @results_index
-  # end
+  def self.find_all_by_invoice_id(inv_id)
+    @data.select { |trans| trans.invoice_id.to_i == inv_id }
+  end
 
   def invoice
     invoice = Invoice.all.find{|invoice| invoice.id == self.invoice_id}

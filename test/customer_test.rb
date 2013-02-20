@@ -135,12 +135,7 @@ class CustomerTest < MiniTest::Unit::TestCase
       CustomerBuilder.parse_csv
       InvoiceBuilder.parse_csv
 
-       # c = {:id => '3', :first_name => 'MARY',
-       #       :last_name => 'Smith',
-       #       :created_at => "2012-03-27 14:54:09 UTC",
-       #       :updated_at => "2012-03-27 14:54:09 UTC"}
-
-        @c = Customer.find_by_id("999")
+      @c = Customer.find_by_id("999")
     end
 
     def test_if_all_invoices_of_a_customer_can_be_retrieved
@@ -153,11 +148,6 @@ class CustomerTest < MiniTest::Unit::TestCase
   describe "business intelligence" do
 
     before do
-      # c = {:id         => '3',
-      #     :first_name => 'MARY',
-      #     :last_name  => 'Smith',
-      #     :created_at => "2012-03-27 14:54:09 UTC",
-      #     :updated_at => "2012-03-27 14:54:09 UTC"}
 
       CustomerBuilder.parse_csv
       TransactionBuilder.parse_csv

@@ -3,6 +3,9 @@ require './lib/item'
 require './lib/item_builder'
 require './lib/invoice_item_builder'
 require './lib/merchant_builder'
+require './lib/transaction_builder'
+require './lib/invoice_builder'
+require 'date'
 
 class ItemTest < MiniTest::Unit::TestCase
 
@@ -255,7 +258,7 @@ class ItemTest < MiniTest::Unit::TestCase
 
   describe "Item relationships" do
 
-    before "" do
+    before do
       ItemBuilder.parse_csv
       InvoiceItemBuilder.parse_csv
       MerchantBuilder.parse_csv
@@ -271,6 +274,37 @@ class ItemTest < MiniTest::Unit::TestCase
     def test_if_a_merchant_is_returned_for_an_item
       merchant = @item.merchant
       assert_equal "Kilback Inc", merchant.name
+    end
+
+  end
+
+  describe "Business intelligence" do
+
+    before do
+      ItemBuilder.parse_csv
+      InvoiceItemBuilder.parse_csv
+      TransactionBuilder.parse_csv
+      InvoiceBuilder.parse_csv
+
+      @item = Item.find_by_name("Item Accusamus Ut")
+    end
+
+    def test_if_items_sorted_by_most_revenue_is_returned
+      top_items = Item.most_revenue(5)
+      assert_equal "Item Dicta Autem", top_items.first.name
+      assert_equal "Item Amet Accusamus", top_items.last.name
+    end
+
+    def test_if_top_n_items_ranked_by_most_sold
+      top_items = Item.most_items(37)
+
+      assert_equal "Item Nam Magnam", top_items[1].name
+      assert_equal "Item Ut Quaerat", top_items.last.name
+    end
+
+    def test_if_best_day_returned_is_returned_for_an_item
+      day = @item.best_day
+      assert_equal Date.parse("Sat, 24 Mar 2012"), day
     end
 
   end

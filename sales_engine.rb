@@ -1,3 +1,4 @@
+require 'bigdecimal'
 require './lib/merchant_builder.rb'
 
 class SalesEngine

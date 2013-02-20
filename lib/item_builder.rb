@@ -13,8 +13,6 @@ class ItemBuilder
       repo.new(item)
     end
 
-    # merchant_index = create_merchant_index(data)
-    # repo.store_merchant_index(merchant_index)
     customer_index = index_by(:merchant_id, data, repo)
     repo.store(data)
   end
@@ -23,11 +21,5 @@ class ItemBuilder
     index = data.group_by { |invoice| invoice.send(attribute) }
     repo.store_index(attribute, index)
   end
-
-
-
-  # def self.create_merchant_index(data)
-  #   data.group_by{|item| item.merchant_id}
-  # end
 
 end
