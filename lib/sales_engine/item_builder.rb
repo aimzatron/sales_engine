@@ -9,10 +9,11 @@ module SalesEngine
 
       data = contents.collect do |item|
         item_hash = item.to_hash.merge({id: item[:id].to_i, merchant_id: item[:merchant_id].to_i})
-        repo.new(item)
+        repo.new(item_hash)
       end
 
       customer_index = index_by(:merchant_id, data, repo)
+      #puts customer_index.inspect
       repo.store(data)
     end
 

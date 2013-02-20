@@ -9,7 +9,7 @@ module SalesEngine
 
       data = contents.collect do |ii|
         #puts ii.class
-        ii_hash = ii.to_hash.merge(line_revenue: ii[:quantity].to_i * ii[:unit_price].to_i)
+        ii_hash = ii.to_hash.merge({line_revenue: ii[:quantity].to_i * ii[:unit_price].to_i, id: ii[:id].to_i, item_id: ii[:item_id].to_i, invoice_id: ii[:invoice_id].to_i})
         repo.new(ii_hash)
       end
 
