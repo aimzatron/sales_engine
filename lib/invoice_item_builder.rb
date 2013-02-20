@@ -28,20 +28,9 @@ class InvoiceItemBuilder
     repo.store_index(:item_revenue, item_revenue_index)
 
     item_qty_index = create_item_qty_index(item_index)
-    #puts item_qty_index.inspect
     repo.store_index(:item_qty, item_qty_index)
 
     repo.store(data)
-
-    #qty_index = create_qty_index(invoice_index)
-    #puts qty_index.inspect
-
-
-    # repo.store_invoice_index(invoice_index)
-    # repo.store_item_index(item_index)
-    # repo.store_revenue_index(revenue_index)
-    #InvoiceItem.store_qty_index(qty_index)
-
   end
 
   def self.index_by(attribute, data, repo)

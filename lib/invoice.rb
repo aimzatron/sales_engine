@@ -188,9 +188,9 @@ class Invoice
 
   end
 
-  def self.items_qty(invoices)
+  def self.total_qty(invoices)
     # #invoices.inject(0){|sum, invoice| sum + invoice.get_quantity}
-    hash = InvoiceItem.get_qty_index
+    hash = InvoiceItem.get_index(:invoice_qty)
     sum = 0
     invoices.each do |invoice|
       hash.each do |id, qty|

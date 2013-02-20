@@ -81,11 +81,11 @@ class Merchant
     top_merchants = get_merchants(merchants[0..(num-1)])
   end
 
-  # def self.most_items(num)
-  #   merchants = self.group_by_items_sold
-  #   puts merchants.inspect
-  #   top_merchants = get_merchants(merchants[0..(num-1)])
-  # end
+  def self.most_items(num)
+    merchants = self.group_by_items_sold
+    #puts merchants.inspect
+    top_merchants = get_merchants(merchants[0..(num-1)])
+  end
 
   def customers_with_pending_invoices
     invoices = self.invoices
@@ -120,17 +120,18 @@ class Merchant
     merchants.collect{|merchant| self.find_by_id(merchant[0])}
   end
 
-  # def self.group_by_items_sold
-  #   merchants_items = @data.inject(Hash.new(0)) do |hash, merchant|
-  #     qty = merchant.invoice_items
-  #     hash[merchant.id] = qty
-  #     hash
-  #   end
-  #   merchants_items = merchants_items.sort_by{|k,v| v}.reverse
-  # end
+  def self.group_by_items_sold
+    merchants_items = @data.inject(Hash.new(0)) do |hash, merchant|
+      paid_invoices = Invoice.paid_invoices(merchant.invoices)
+      qty = Invoice.total_qty(paid_invoices)
+      hash[merchant.id] = qty
+      hash
+    end
+    merchants_items = merchants_items.sort_by{|k,v| v}.reverse
+  end
 
   # def invoice_items
-  #   paid_invoices = Invoice.extract_pending(self.invoices)
+  #   paid_invoices = Invoice.paid_invoices(self.invoices)
   #   Invoice.total_items_qty(paid_invoices)
   # end
 

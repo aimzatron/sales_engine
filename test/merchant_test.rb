@@ -166,9 +166,6 @@ class MerchantTest < MiniTest::Unit::TestCase
 
   describe "merchant business intelligence" do
     before do
-  #     m = {:id => '1', :name => 'Dicki-Bednar',
-  #          :created_at => "2012-03-27 14:54:09 UTC",
-  #          :updated_at => "2012-03-27 14:54:09 UTC"}
 
       MerchantBuilder.parse_csv
       InvoiceBuilder.parse_csv
@@ -215,6 +212,13 @@ class MerchantTest < MiniTest::Unit::TestCase
       assert_equal "Hammes", customer.last_name
       #assert_equal "5", customer.id
     end
+
+    def test_if_top_merchants_by_items_sold_is_returned
+      merchants = Merchant.most_items(5)
+      assert_equal "Kassulke, O'Hara and Quitzon", merchants[0].name
+      assert_equal "Daugherty Group", merchants[4].name
+    end
+
   end
 
   # describe "merchant business intel with full data" do
