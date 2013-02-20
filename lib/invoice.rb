@@ -21,6 +21,31 @@ class Invoice
     @data
   end
 
+  def self.create(info)
+    id = @data.size + 1
+    customer = info[:customer] #= data[customer
+    merchant = info[:merchant] #= customer
+    status = info[:status] #= customer
+    items = info[:items]
+
+    data[:id] = id
+    data[:customer_id] = customer.id
+    data[:merchant_id] = merchant.id
+    data[:status] = status
+    data[:created_at] = Date.today
+    data[:updated_at] = Date.today
+
+
+    invoice = new(data)
+  end
+
+  def self.add_invoice_item({})
+    item_id = 
+  end
+
+  def charge
+  end
+
   def self.store_index(attribute, index_data)
     @indexes ||= {}
     @indexes[attribute.to_sym] = index_data
