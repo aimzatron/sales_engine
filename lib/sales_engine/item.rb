@@ -43,11 +43,11 @@ module SalesEngine
     end
 
     def self.find_by_id(id)
-      @data.find{|item| item.id.downcase == id.downcase}
+      @data.find{|item| item.id == id}
     end
 
     def self.find_all_by_id(id)
-      @data.select{|item| item.id.downcase == id.downcase}
+      @data.select{|item| item.id == id}
     end
 
     def self.find_by_desc(desc)
@@ -59,19 +59,20 @@ module SalesEngine
     end
 
     def self.find_by_unit_price(unit_price)
-      @data.find{|item| item.unit_price.downcase == unit_price.downcase}
+      @data.find{|item| item.unit_price == unit_price}
+      # puts variable.inspect
     end
 
     def self.find_all_by_unit_price(unit_price)
-      @data.select{|item| item.unit_price.downcase == unit_price.downcase}
+      @data.select{|item| item.unit_price == unit_price}
     end
 
     def self.find_by_merchant_id(merchant_id)
-      @data.find{|item| item.merchant_id.downcase == merchant_id.downcase}
+      @data.find{|item| item.merchant_id == merchant_id}
     end
 
     def self.find_all_by_merchant_id(merchant_id)
-      @data.select{|item| item.merchant_id.downcase == merchant_id.downcase}
+      @data.select{|item| item.merchant_id == merchant_id}
     end
 
     def invoice_items
@@ -92,7 +93,7 @@ module SalesEngine
         if paid_invoice_ids.include?(inv_item.invoice_id)
           memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity) * BigDecimal.new(inv_item.unit_price)
         end
-        #puts inv_item.id
+        # puts inv_item.id
         memo
       end
       sorted = item_id_rev.sort_by { |k,v| v }.reverse
