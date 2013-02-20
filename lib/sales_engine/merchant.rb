@@ -27,11 +27,11 @@ module SalesEngine
     end
 
     def self.find_by_id(id)
-      @data.find {|merchant| merchant.id.downcase == id.downcase}
+      @data.find {|merchant| merchant.id == id}
     end
 
     def self.find_all_by_id(id)
-      @data.select{|merchant| merchant.id.downcase == id.downcase}
+      @data.select{|merchant| merchant.id == id}
     end
 
     def self.random

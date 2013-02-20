@@ -27,12 +27,20 @@ module SalesEngine
       @data.select{|customer| customer.first_name.downcase == first_name.downcase}
     end
 
+    def self.find_by_last_name(last_name)
+      @data.find {|customer| customer.last_name.downcase == last_name.downcase}
+    end
+
+    def self.find_all_by_last_name(last_name)
+      @data.select{|customer| customer.first_name.downcase == first_name.downcase}
+    end
+
     def self.find_by_id(id)
-      @data.find {|customer| customer.id.downcase == id.downcase}
+      @data.find {|customer| customer.id == id}
     end
 
     def self.find_all_by_id(id)
-      @data.select {|customer| customer.id.downcase == id.downcase}
+      @data.select {|customer| customer.id == id}
     end
 
     def self.random
@@ -40,7 +48,6 @@ module SalesEngine
     end
 
     def invoices
-      #Invoice.find_all_by_customer_id(self.id)
       hash = Invoice.get_index(:customer_id)
       invoices = hash[self.id]
     end

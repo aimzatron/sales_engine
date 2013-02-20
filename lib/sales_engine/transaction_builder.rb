@@ -7,8 +7,9 @@ module SalesEngine
     def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
-      data = contents.collect do |transaction|
-        repo.new(transaction)
+      data = contents.collect do |trans|
+        trans_hash = trans.to_hash.merge({id: trans[:id].to_i, invoice_id: trans[:invoice_id].to_i})
+        repo.new(trans_hash)
       end
 
       invoice_index = index_by(:invoice_id, data, repo)

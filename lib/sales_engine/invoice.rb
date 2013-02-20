@@ -56,19 +56,19 @@ module SalesEngine
     end
 
     def self.find_by_id(id)
-      @data.find {|invoice| invoice.id.downcase == id.downcase}
+      @data.find {|invoice| invoice.id == id}
     end
 
     def self.find_all_by_id(id)
-      @data.select {|invoice| invoice.id.downcase == id.downcase}
+      @data.select {|invoice| invoice.id == id}
     end
 
     def self.find_by_customer_id(customer_id)
-      @data.find {|invoice| invoice.customer_id.downcase == customer_id.downcase}
+      @data.find {|invoice| invoice.customer_id == customer_id}
     end
 
     def self.find_all_by_customer_id(customer_id)
-      @data.select {|invoice| invoice.customer_id.downcase == customer_id.downcase}
+      @data.select {|invoice| invoice.customer_id == customer_id}
     end
 
     def self.find_by_status(status)

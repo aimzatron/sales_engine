@@ -7,7 +7,8 @@ module SalesEngine
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
       data = contents.collect do |merchant|
-        Merchant.new(merchant)
+        merch_hash = merchant.to_hash.merge(id: merchant[:id].to_i)
+        Merchant.new(merch_hash)
       end
 
       Merchant.store(data)
