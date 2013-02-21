@@ -10,8 +10,10 @@ module SalesEngine
       data = contents.collect do |ii|
         #puts ii.class
 
-        ii_hash = ii.to_hash.merge({line_revenue: BigDecimal.new(ii[:quantity].to_i * ii[:unit_price].to_i) / 100,
-          id: ii[:id].to_i, item_id: ii[:item_id].to_i, invoice_id: ii[:invoice_id].to_i,
+        ii_hash = ii.to_hash.merge({
+          line_revenue: BigDecimal.new(ii[:quantity].to_i * ii[:unit_price].to_i) / 100,
+          id: ii[:id].to_i, item_id: ii[:item_id].to_i,
+          invoice_id: ii[:invoice_id].to_i,
           quantity: ii[:quantity].to_i})
 
         repo.new(ii_hash)
