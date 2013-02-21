@@ -87,6 +87,23 @@ module SalesEngine
       top_merchants = get_merchants(merchants[0..(num-1)])
     end
 
+    def self.dates_by_revenue(num = "")
+      paid_invoice_ids = Transaction.get_paid_invoice_list
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+
+      dates = Invoice.all.inject(Hash.new(0)) do |memo, invoice|
+        if paid_invoice_ids.include?(invoice.id)
+          memo[invoice.created_at] += revenue_index[invoice.id]
+        end
+        memo
+      end
+
+      num != "" ? num = num.to_i - 1 : num = -1
+
+      sorted = dates.sort_by{|k, v| v}.reverse
+      sorted[0..num].map{ |pair| pair[0] }
+    end
+
     def self.most_items(num)
       merchants = self.group_by_items_sold
       #puts merchants.inspect
@@ -95,21 +112,14 @@ module SalesEngine
 
     def customers_with_pending_invoices
       invoices = self.invoices
-      # puts invoices.inspect
-
       pending_invoices = Invoice.unpaid_invoices(invoices)
-      # puts pending_invoices.inspect
-
       customers = Invoice.get_customers(pending_invoices)
-      #puts customers.inspect
-      #customers
     end
 
     def favorite_customer
       invoices = self.invoices
       paid_invoices = Invoice.paid_invoices(invoices)
       customers = Invoice.group_by_customer_id(paid_invoices)
-      #puts customers.inspect
       Customer.find_by_id(customers[0][0])
     end
 

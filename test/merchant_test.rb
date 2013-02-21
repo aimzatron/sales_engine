@@ -212,31 +212,29 @@ module SalesEngine
 
     end
 
-    # describe "merchant business intel with full data" do
-    #   before do
-    #     # MerchantBuilder.parse_csv("./data/merchants.csv")
-    #     # InvoiceBuilder.parse_csv("./data/invoices.csv")
-    #     # TransactionBuilder.parse_csv("./data/transactions.csv")
-    #     # InvoiceItemBuilder.parse_csv("./data/invoice_items.csv")
+    describe "Merchant Extensions" do
+      before do
+        MerchantBuilder.parse_csv
+        InvoiceBuilder.parse_csv
+        TransactionBuilder.parse_csv
+        InvoiceItemBuilder.parse_csv
+      end
 
-    #     MerchantBuilder.parse_csv("./test/support/merchant_biz_intel.csv")
-    #     InvoiceBuilder.parse_csv("./test/support/invoice_biz_intel.csv")
-    #     TransactionBuilder.parse_csv("./test/support/transaction_biz_intel.csv")
-    #     InvoiceItemBuilder.parse_csv("./test/support/invoice_item_biz_intel.csv")
-    #   end
+      def test_if_array_of_dates_are_returned_in_desc_order_by_sales
+        dates = Merchant.dates_by_revenue
+        assert_equal DateTime.parse("2012-03-06"), dates[21]
+        assert_equal DateTime.parse("2012-03-09"), dates.first
+      end
 
-    #   # def test_if_top_merchant_by_revenue_is_returned
-    #   #   merchants = Merchant.most_revenue(3)
-    #   #   #puts merchants.inspect
-    #   #   assert_equal "Dicki-Bednar", merchants[0].name
-    #   # end
+      def test_if_to_x_days_of_revenue_returned_
+        dates = Merchant.dates_by_revenue(5)
+        puts dates.inspect
+        assert_equal 5, dates.size
+        assert_equal DateTime.parse("2012-03-08"), dates[1]
+        assert_equal DateTime.parse("2012-03-15"), dates.last
+      end
 
 
-    #   # def test_if_top_merchants_by_items_sold_is_returned
-    #   #   merchants = Merchant.most_items(5)
-    #   #   assert_equal "Kassulke, O'Hara and Quitzon", merchants[0].name
-    #   #   assert_equal "Grant LLC", merchants[4].name
-    #   # end
-    # end
+    end
   end
 end
