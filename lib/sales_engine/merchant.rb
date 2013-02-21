@@ -50,16 +50,35 @@ module SalesEngine
       invoices = hash[self.id]
     end
 
-    def revenue(date = "")
+    def revenue(args = "")
       invoices = self.invoices
 
-      if date != ""
-        invoices_for_date = Invoice.get_invoices_for_date(date)
-        invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+      if args.class == Range
+        revenue_range(args, invoices)
+      else
+        if args != ""
+          invoices_for_date = Invoice.get_invoices_for_date(args)
+          invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+        end
+        paid_invoices = Invoice.paid_invoices(invoices)
+        sales = Invoice.total_revenue(paid_invoices)
       end
-      paid_invoices = Invoice.paid_invoices(invoices)
-      sales = Invoice.total_revenue(paid_invoices)
     end
+
+
+    def revenue_range(range, invoices)
+      range_invoices = Invoice.get_invoices_for_date_range(range)
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+      selected = invoices & range_invoices
+
+      paid_invoices = Invoice.paid_invoices(selected)
+
+      sales = paid_invoices.inject(0) do |sales, invoice|
+        sales += revenue_index[invoice.id]
+      end
+
+    end
+
 
     def self.revenue(args)
       if args.class == Range
@@ -102,7 +121,6 @@ module SalesEngine
     end
 
     def self.revenue_range(range)
-      puts "in revenue range"
       paid_invoice_ids = Transaction.get_paid_invoice_list
 
       revenue_index = InvoiceItem.get_index(:invoice_revenue)
@@ -116,6 +134,7 @@ module SalesEngine
       end
       sum
     end
+
 
     def self.most_items(num)
       merchants = self.group_by_items_sold

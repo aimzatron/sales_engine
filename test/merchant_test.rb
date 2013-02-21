@@ -241,6 +241,16 @@ module SalesEngine
         assert_equal BigDecimal("8226179.74"), revenue
       end
 
+      def test_if_revenue_for_range_is_returned_for_a_merchant
+        date_1 = Date.parse("2012-03-01")
+        date_2 = Date.parse("2012-03-07")
+        merchant = Merchant.find_by_id(7)
+
+        revenue = merchant.revenue(date_1..date_2)
+        assert_equal BigDecimal("57103.77"), revenue
+
+      end
+
 
     end
   end
