@@ -26,6 +26,7 @@ task :harness => :gem do
     sh "git pull"
     sh "bundle exec rspec spec"
   end
+end
 
 namespace :sanitation do
   desc "Check line lengths & whitespace with Cane"

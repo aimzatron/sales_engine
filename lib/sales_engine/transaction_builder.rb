@@ -7,12 +7,7 @@ module SalesEngine
     def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
-      data = contents.collect do |trans|
-        trans_hash = trans.to_hash.merge({id: trans[:id].to_i,
-          invoice_id: trans[:invoice_id].to_i})
-
-        repo.new(trans_hash)
-      end
+      data = process_data(contents, repo)
 
       invoice_index = index_by(:invoice_id, data, repo)
 
@@ -22,6 +17,15 @@ module SalesEngine
       paid_invoices = create_paid_invoice_list(results_index)
       repo.store_paid_invoice_list(paid_invoices)
       repo.store(data)
+    end
+
+    def self.process_data(contents, repo)
+      data = contents.collect do |trans|
+        trans_hash = trans.to_hash.merge({id: trans[:id].to_i,
+          invoice_id: trans[:invoice_id].to_i})
+
+        repo.new(trans_hash)
+      end
     end
 
     def self.index_by(attribute, data, repo)

@@ -7,16 +7,7 @@ module SalesEngine
     def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
-      data = contents.collect do |ii|
-        #puts ii.class
-
-        ii_hash = ii.to_hash.merge!({id: ii[:id].to_i})
-        ii_hash.merge!({item_id: ii[:item_id].to_i})
-        ii_hash.merge!({invoice_id: ii[:invoice_id].to_i,})
-        ii_hash.merge!({quantity: ii[:quantity].to_i})
-        ii_hash.merge!({line_revenue: calc(ii[:quantity], ii[:unit_price])})
-        repo.new(ii_hash)
-      end
+      data = process_data(contents, repo)
 
       invoice_index = index_by(:invoice_id, data, repo)
       item_index    = index_by(:item_id, data, repo)
@@ -33,9 +24,19 @@ module SalesEngine
       # item_qty_index = create_item_qty_index(item_index)
       # repo.store_index(:item_qty, item_qty_index)
 
-
-      #puts data.inspect
       repo.store(data)
+    end
+
+    def self.process_data(contents, repo)
+      data = contents.collect do |ii|
+
+        ii_hash = ii.to_hash.merge!({id: ii[:id].to_i})
+        ii_hash.merge!({item_id: ii[:item_id].to_i})
+        ii_hash.merge!({invoice_id: ii[:invoice_id].to_i,})
+        ii_hash.merge!({quantity: ii[:quantity].to_i})
+        ii_hash.merge!({line_revenue: calc(ii[:quantity], ii[:unit_price])})
+        repo.new(ii_hash)
+      end   
     end
 
     def self.calc(qty, unit_price)
