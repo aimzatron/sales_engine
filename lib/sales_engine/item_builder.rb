@@ -13,7 +13,7 @@ module SalesEngine
       repo.store(data)
     end
 
-    def self.process_data(contents, repo)      
+    def self.process_data(contents, repo)
       data = contents.collect do |i|
         item_hash = i.to_hash.merge!({id: i[:id].to_i})
         item_hash.merge!({merchant_id: i[:merchant_id].to_i})

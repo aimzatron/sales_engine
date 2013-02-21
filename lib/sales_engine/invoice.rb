@@ -145,8 +145,6 @@ module SalesEngine
 
     def transactions
       Transaction.all.select{|transaction| transaction.invoice_id == self.id}
-      # hash = Transaction.get_index(:invoice_id)
-      # transactions = hash[self.id]
     end
 
     def invoice_items

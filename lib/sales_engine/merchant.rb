@@ -73,13 +73,6 @@ module SalesEngine
         end
       end
       sum
-
-      #puts merch_id_rev.inspect
-      #sorted = merch_id_rev.sort_by { |k,v| v }.reverse
-      #sorted[0,num.to_i].map { |pair| Item.find_by_id(pair[0]) }
-
-      # paid_invoices = Invoice.paid_invoices(invoices)
-      # sales = Invoice.total_revenue(paid_invoices).to_i
     end
 
     def self.most_revenue(num)
@@ -89,20 +82,13 @@ module SalesEngine
 
     def self.most_items(num)
       merchants = self.group_by_items_sold
-      #puts merchants.inspect
       top_merchants = get_merchants(merchants[0..(num-1)])
     end
 
     def customers_with_pending_invoices
       invoices = self.invoices
-      # puts invoices.inspect
-
       pending_invoices = Invoice.unpaid_invoices(invoices)
-      # puts pending_invoices.inspect
-
       customers = Invoice.get_customers(pending_invoices)
-      #puts customers.inspect
-      #customers
     end
 
     def favorite_customer

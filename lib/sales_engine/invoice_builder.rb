@@ -27,7 +27,7 @@ module SalesEngine
           updated_at: Date.parse(invoice[:updated_at])})
 
         repo.new(invoice_hash)
-      end      
+      end
     end
 
     def self.index_by(attribute, data, repo)
