@@ -60,7 +60,6 @@ module SalesEngine
 
     def self.find_by_unit_price(unit_price)
       @data.find{|item| item.unit_price == unit_price}
-      # puts variable.inspect
     end
 
     def self.find_all_by_unit_price(unit_price)

@@ -39,213 +39,116 @@ module SalesEngine
 
     describe "test find methods" do
       before do
-        @i1 = {:id => '1', :name => 'black shoes',
-               :description => "cool stuff", :unit_price => "75107",
-               :merchant_id => "2",
-               :created_at => "2012-03-27 14:54:09 UTC",
-               :updated_at => "2012-03-27 14:54:09 UTC"}
+        i1 = {:id => 2, :name => 'black shoes',
+              :description => "cool stuff", :unit_price => BigDecimal.new("935.19"),
+              :merchant_id => 2,
+              :created_at => "2012-03-27 14:54:09 UTC",
+              :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @i2 = {:id => '2', :name => 'blue shoes',
-               :description => "more cool stuff", :unit_price => "57107",
-               :merchant_id => "2",
-               :created_at => "2012-03-27 14:54:09 UTC",
-               :updated_at => "2012-03-27 14:54:09 UTC"}
+        i2 = {:id => 2, :name => 'blue shoes',
+              :description => "more cool stuff", :unit_price => 57107,
+              :merchant_id => 2,
+              :created_at => "2012-03-27 14:54:09 UTC",
+              :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @i3 = {:id => '4', :name => 'Black shoes',
-               :description => "more cool stuff", :unit_price => "57107",
-               :merchant_id => "4",
-               :created_at => "2012-03-27 14:54:09 UTC",
-               :updated_at => "2012-03-27 14:54:09 UTC"}
+        i3 = {:id => 4, :name => 'Black shoes',
+              :description => "more cool stuff", :unit_price => 57107,
+              :merchant_id => 4,
+              :created_at => "2012-03-27 14:54:09 UTC",
+              :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @i4 = {:id => '2', :name => 'red shoes',
-               :description => "even more cool stuff", :unit_price => 75107,
-               :merchant_id => "3",
-               :created_at => "2012-03-27 14:54:09 UTC",
-               :updated_at => "2012-03-27 14:54:09 UTC"}
+
+        @i1 = Item.new(i1)
+        @i2 = Item.new(i2)
+        @i3 = Item.new(i3)
+
+        Item.store([@i1, @i2, @i3])
+
       end
 
       def test_find_by_name_matches_first_result
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
         item = Item.find_by_name("Black shoes")
         assert_equal "black shoes", item.name
-        assert_equal "1", item.id
+        assert_equal 2, item.id
       end
 
       def test_find_all_by_name
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
         items = Item.find_all_by_name("Black shoes")
         assert_equal 2, items.count
       end
 
       def test_if_find_all_by_name_returns_empty_array_if_name_not_found
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i3)
-
-        Item.store([i1, i2])
-
         items = Item.find_all_by_name("blue jeans")
         assert_equal [], items
       end
 
 
       def test_find_by_id_matches_first_result
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i4)
-
-
-        Item.store([i1, i2])
-
-        item = Item.find_by_id("2")
-        assert_equal "blue shoes", item.name
-        assert_equal "2", item.id
+        item = Item.find_by_id(4)
+        assert_equal "Black shoes", item.name
+        assert_equal 4, item.id
       end
 
       def test_find_all_by_id
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i4)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_id("2")
+        items = Item.find_all_by_id(2)
         assert_equal 2, items.count
       end
 
       def test_if_find_all_by_id_returns_empty_array_if_id_not_found
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i4)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_id("10")
+        items = Item.find_all_by_id(10)
         assert_equal [], items
       end
 
       def test_find_by_desc_matches_first_result
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
         item = Item.find_by_desc("more cool stuff")
         assert_equal "more cool stuff", item.description
-        assert_equal "2", item.id
+        assert_equal 2, item.id
       end
 
       def test_find_all_by_desc
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
         items = Item.find_all_by_desc("more cool stuff")
         assert_equal 2, items.count
       end
 
       def test_if_find_all_by_desc_returns_empty_array_if_id_not_found
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
         items = Item.find_all_by_desc("Purple Shoes")
         assert_equal [], items
       end
 
+      def test_find_by_unit_price
+        item = Item.find_by_unit_price(BigDecimal.new("935.19"))
+        assert_equal "black shoes", item.name
+      end
+
       def test_find_by_unit_price_matches_first_result
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
-        item = Item.find_by_unit_price("57107")
-        assert_equal "57107", item.unit_price
-        assert_equal "2", item.id
+        item = Item.find_by_unit_price(57107)
+        assert_equal 57107, item.unit_price
+        assert_equal 2, item.id
       end
 
       def test_find_all_by_unit_price
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_unit_price("57107")
+        items = Item.find_all_by_unit_price(57107)
         assert_equal 2, items.count
       end
 
       def test_if_find_all_by_unit_price_returns_empty_array_if_id_not_found
-
-        i1 = Item.new(@i2)
-        i2 = Item.new(@i3)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_unit_price("77107")
+        items = Item.find_all_by_unit_price(77107)
         assert_equal [], items
       end
 
       def test_find_by_merchant_id_matches_first_result
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i2)
-
-
-        Item.store([i1, i2])
-
-        item = Item.find_by_merchant_id("2")
-        assert_equal "2", item.merchant_id
-        assert_equal "1", item.id
+        item = Item.find_by_merchant_id(2)
+        assert_equal 2, item.merchant_id
+        assert_equal "cool stuff", item.description
       end
 
       def test_find_all_by_merchant_id
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i2)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_merchant_id("2")
+        items = Item.find_all_by_merchant_id(2)
         assert_equal 2, items.count
       end
 
       def test_if_find_all_by_merchant_id_returns_empty_array_if_id_not_found
-
-        i1 = Item.new(@i1)
-        i2 = Item.new(@i2)
-
-
-        Item.store([i1, i2])
-
-        items = Item.find_all_by_merchant_id("9")
+        items = Item.find_all_by_merchant_id(9)
         assert_equal [], items
       end
     end
