@@ -222,8 +222,14 @@ module SalesEngine
 
     end
 
-    def self.average_items
+    def self.average_items(date = "")
       invoices = @data
+
+      if date != ""
+        invoices_for_date = Invoice.get_invoices_for_date(date)
+        invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+      end
+
       paid = paid_invoices(invoices)
 
       count = paid.size
@@ -234,7 +240,6 @@ module SalesEngine
       end
 
       avg_qty = BigDecimal.new(total_qty) / count
-      #puts avg_qty
       avg_qty.round(2)
 
     end
