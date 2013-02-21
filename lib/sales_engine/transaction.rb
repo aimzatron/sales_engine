@@ -44,7 +44,7 @@ module SalesEngine
     end
 
     def self.find_all_by_invoice_id(inv_id)
-      @data.select { |trans| trans.invoice_id == inv_id }
+      @data.select{|trans| trans.invoice_id == inv_id }
     end
 
     def self.find_by_id(id)
@@ -53,6 +53,10 @@ module SalesEngine
 
     def self.find_by_credit_card_number(cc_num)
       @data.find {|trans| trans.credit_card_number == cc_num }
+    end
+
+    def self.find_all_by_result(result)
+      @data.select{|trans| trans.result == result }
     end
 
     def invoice
