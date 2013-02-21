@@ -1,4 +1,4 @@
-require 'test_helper'
+require './test/test_helper'
 
 module SalesEngine
   class CustomerTest < MiniTest::Unit::TestCase
@@ -10,7 +10,7 @@ module SalesEngine
     end
 
     def test_it_is_initialized_from_a_hash_of_data
-      data = {:id => '1', :first_name => 'Joey'}
+      data = {:id => 1, :first_name => 'Joey'}
 
       customer = Customer.new(data)
       assert_equal data[:id], customer.id

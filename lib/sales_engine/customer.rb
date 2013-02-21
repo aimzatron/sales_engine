@@ -61,7 +61,10 @@ module SalesEngine
 
     def favorite_merchant
       invoices = self.invoices
+
       paid_invoices = Invoice.paid_invoices(invoices)
+
+      puts paid_invoices.inspect
 
       merchants = paid_invoices.inject(Hash.new(0)) do |hash, paid_invoice|
         hash[paid_invoice.merchant_id] += 1
@@ -70,7 +73,7 @@ module SalesEngine
 
       favorite_merchant = merchants.sort_by{|k, v| v}.reverse
 
-      Merchant.find_by_id(favorite_merchant[0][0])
+      h = Merchant.find_by_id(favorite_merchant[0][0])
 
     end
 
