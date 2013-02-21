@@ -1,4 +1,4 @@
-require 'test_helper'
+require './test/test_helper'
 
 module SalesEngine
   class MerchantTest < MiniTest::Unit::TestCase
@@ -173,7 +173,7 @@ module SalesEngine
       def test_if_correct_revenue_is_returned_for_a_merchant
         sales = @m1.revenue
         #puts (sales.round(2).to_f)/100
-        assert_equal 1148393.74, (sales.round(2).to_f)/100
+        assert_equal 1148393.74, (sales.round(2).to_f)
       end
 
       def test_if_top_merchant_by_revenue_is_returned
@@ -184,12 +184,12 @@ module SalesEngine
 
       def test_if_correct_revenue_for_date_is_returned_for_a_merchant
         sales = @m2.revenue(Date.parse("Fri, 09 Mar 2012"))
-        assert_equal 8373.29, (sales.round(2).to_f)/100
+        assert_equal 8373.29, (sales.round(2).to_f)
       end
 
       def test_if_total_revenue_for_a_date_is_returned
         sales = Merchant.revenue(Date.parse("Tue, 20 Mar 2012"))
-        assert_equal 2549722.91, (sales.round(2).to_f)/100
+        assert_equal 2549722.91, (sales.round(2).to_f)
       end
 
       def test_if_customers_with_unpaid_invoices_are_returned

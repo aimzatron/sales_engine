@@ -1,4 +1,4 @@
-require 'test_helper'
+require './test/test_helper'
 
 module SalesEngine
   class CustomerTest < MiniTest::Unit::TestCase
@@ -10,7 +10,7 @@ module SalesEngine
     end
 
     def test_it_is_initialized_from_a_hash_of_data
-      data = {:id => '1', :first_name => 'Joey'}
+      data = {:id => 1, :first_name => 'Joey'}
 
       customer = Customer.new(data)
       assert_equal data[:id], customer.id
@@ -38,17 +38,17 @@ module SalesEngine
 
     describe "test_find_methods" do
       before do
-        @c1 = {:id => '5', :first_name => 'MARY',
+        @c1 = {:id => 5, :first_name => 'MARY',
                :last_name => 'Smith',
                :created_at => "2012-03-27 14:54:09 UTC",
                :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @c2 = {:id => '7', :first_name => 'mary',
+        @c2 = {:id => 7, :first_name => 'mary',
               :last_name => 'Smitty',
               :created_at => "2012-03-27 14:54:09 UTC",
               :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @c3 = {:id => '7', :first_name => 'Mary Ellen',
+        @c3 = {:id => 7, :first_name => 'Mary Ellen',
               :last_name => 'Smutty',
               :created_at => "2012-03-27 14:54:09 UTC",
               :updated_at => "2012-03-27 14:54:09 UTC"}
@@ -64,7 +64,7 @@ module SalesEngine
 
         customer = Customer.find_by_first_name("Mary")
         assert_equal "MARY", customer.first_name
-        assert_equal "5", customer.id
+        assert_equal 5, customer.id
       end
 
       def test_find_all_by_first_name
@@ -97,9 +97,9 @@ module SalesEngine
 
         Customer.store([c1, c2])
 
-        customer = Customer.find_by_id("7")
+        customer = Customer.find_by_id(7)
         assert_equal "mary", customer.first_name
-        assert_equal "7", customer.id
+        assert_equal 7, customer.id
       end
 
       def test_find_all_by_id
@@ -109,7 +109,7 @@ module SalesEngine
 
         Customer.store([c1, c2])
 
-        customers = Customer.find_all_by_id("7")
+        customers = Customer.find_all_by_id(7)
         assert_equal 2, customers.count
       end
 
@@ -120,7 +120,7 @@ module SalesEngine
 
         Customer.store([c1, c2])
 
-        customers = Customer.find_all_by_id("10")
+        customers = Customer.find_all_by_id(10)
         assert_equal [], customers
       end
     end
@@ -130,7 +130,7 @@ module SalesEngine
         CustomerBuilder.parse_csv
         InvoiceBuilder.parse_csv
 
-        @c = Customer.find_by_id("999")
+        @c = Customer.find_by_id(999)
       end
 
       def test_if_all_invoices_of_a_customer_can_be_retrieved
@@ -149,7 +149,7 @@ module SalesEngine
         InvoiceBuilder.parse_csv
         MerchantBuilder.parse_csv
 
-        @c = Customer.find_by_id("2")
+        @c = Customer.find_by_id(2)
       end
 
       def test_if_all_transactions_for_a_customer_can_be_retrieved
@@ -159,7 +159,6 @@ module SalesEngine
 
       def test_if_a_favorite_merchant_can_be_returned_for_a_customer
         favorite_merchant = @c.favorite_merchant
-        # puts favorite_merchant.inspect
         assert_equal "Shields, Hirthe and Smith", favorite_merchant.name
       end
 
