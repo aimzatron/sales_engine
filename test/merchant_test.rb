@@ -228,10 +228,17 @@ module SalesEngine
 
       def test_if_to_x_days_of_revenue_returned_
         dates = Merchant.dates_by_revenue(5)
-        puts dates.inspect
         assert_equal 5, dates.size
         assert_equal DateTime.parse("2012-03-08"), dates[1]
         assert_equal DateTime.parse("2012-03-15"), dates.last
+      end
+
+      def test_if_revenue_for_invoices_in_date_range_is_returned
+        date_1 = Date.parse("2012-03-14")
+        date_2 = Date.parse("2012-03-16")
+        revenue = Merchant.revenue(date_1..date_2)
+        #puts revenue
+        assert_equal BigDecimal("8226179.74"), revenue
       end
 
 
