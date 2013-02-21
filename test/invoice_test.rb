@@ -216,6 +216,7 @@ module SalesEngine
       before do
         TransactionBuilder.parse_csv
         InvoiceBuilder.parse_csv
+        InvoiceItemBuilder.parse_csv
       end
 
       def test_if_pending_invoices_can_be_retrieved
@@ -226,6 +227,11 @@ module SalesEngine
 
         assert_equal invoice, pending_invoices[1]
         assert_equal 195, pending_invoices.count
+      end
+
+      def test_if_average_revenue_of_all_paid_invoices_is_returned
+        avg_revenue = Invoice.average_revenue
+        assert_equal BigDecimal("12369.53"), avg_revenue
       end
     end
 

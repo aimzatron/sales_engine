@@ -200,6 +200,22 @@ module SalesEngine
       # end
     end
 
+    def self.average_revenue
+      invoices = @data
+      paid = paid_invoices(invoices)
+      count = paid.size
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+
+      revenue = paid.inject(0) do |sales, invoice|
+        sales += revenue_index[invoice.id]
+      end
+
+      avg_revenue = revenue / count
+      puts avg_revenue
+      avg_revenue.round(2)
+
+    end
+
     def self.paid_invoices(invoices)
       results_index = Transaction.get_index(:results)
       good_invoices = []
