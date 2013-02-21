@@ -21,6 +21,24 @@ module SalesEngine
       end
     end
 
+    describe "test_random" do
+      before do
+        TransactionBuilder.parse_csv
+      end
+
+      def test_if_random
+        t1 = Transaction.random
+        t2 = Transaction.random
+
+        20.times do
+          break if t1.id != t2.id
+          t1 = Transaction.random
+        end
+
+        refute_equal t1.id, t2.id
+      end
+    end
+
     describe "transaction relationships " do
       before do
         InvoiceBuilder.parse_csv

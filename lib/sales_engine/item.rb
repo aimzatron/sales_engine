@@ -93,7 +93,6 @@ module SalesEngine
         if paid_invoice_ids.include?(inv_item.invoice_id)
           memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity) * BigDecimal.new(inv_item.unit_price)
         end
-        # puts inv_item.id
         memo
       end
       sorted = item_id_rev.sort_by { |k,v| v }.reverse
@@ -135,7 +134,6 @@ module SalesEngine
       end
 
       sorted = days.sort_by{|k,v| v}.reverse
-      #puts "#{sorted[0][0]} is the best date"
       sorted[0][0]
     end
 

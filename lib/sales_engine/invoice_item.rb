@@ -59,14 +59,11 @@ module SalesEngine
       paid_invoice_items_list = Transaction.get_paid_invoice_list
       exit if ii.nil?
       ii.inject([]) do |memo, inv_item|
-       # puts "in select loop"
         if paid_invoice_items_list.include?(inv_item.invoice_id)
           memo << inv_item
         end
         memo
       end
-
     end
-
   end
 end

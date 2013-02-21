@@ -32,7 +32,7 @@ module SalesEngine
     end
 
     def self.find_all_by_last_name(last_name)
-      @data.select{|customer| customer.first_name.downcase == first_name.downcase}
+      @data.select{|customer| customer.last_name.downcase == last_name.downcase}
     end
 
     def self.find_by_id(id)

@@ -26,11 +26,11 @@ module SalesEngine
       invoice_qty_index = create_invoice_qty_index(invoice_index)
       repo.store_index(:invoice_qty, invoice_qty_index)
 
-      item_revenue_index = create_item_revenue_index(item_index)
-      repo.store_index(:item_revenue, item_revenue_index)
+      # item_revenue_index = create_item_revenue_index(item_index)
+      # repo.store_index(:item_revenue, item_revenue_index)
 
-      item_qty_index = create_item_qty_index(item_index)
-      repo.store_index(:item_qty, item_qty_index)
+      # item_qty_index = create_item_qty_index(item_index)
+      # repo.store_index(:item_qty, item_qty_index)
 
 
       #puts data.inspect
@@ -58,19 +58,19 @@ module SalesEngine
       revenue_hash
     end
 
-    def self.create_item_revenue_index(item_index)
-      #data.group_by{|invoiceItem| invoiceItem.item_id}
-      item_hash = Hash.new(0)
+    # def self.create_item_revenue_index(item_index)
+    #   #data.group_by{|invoiceItem| invoiceItem.item_id}
+    #   item_hash = Hash.new(0)
 
-      item_index.each do |id, invoice_items|
-        sum = 0
-        invoice_items.each do |invoice_item|
-          sum = sum + invoice_item.line_revenue
-        end
-        item_hash[id] = sum
-      end
-      item_hash
-    end
+    #   item_index.each do |id, invoice_items|
+    #     sum = 0
+    #     invoice_items.each do |invoice_item|
+    #       sum = sum + invoice_item.line_revenue
+    #     end
+    #     item_hash[id] = sum
+    #   end
+    #   item_hash
+    # end
 
     def self.create_invoice_qty_index(invoice_index)
       qty_hash = Hash.new(0)
@@ -85,18 +85,18 @@ module SalesEngine
       qty_hash
     end
 
-    def self.create_item_qty_index(item_index)
-      qty_hash = Hash.new(0)
+    # def self.create_item_qty_index(item_index)
+    #   qty_hash = Hash.new(0)
 
-      item_index.each do |id, invoice_items|
-        sum = 0
-        invoice_items.each do |invoice_item|
-          sum = sum + invoice_item.quantity.to_i
-        end
-        qty_hash[id] = sum
-      end
-      qty_hash
-    end
+    #   item_index.each do |id, invoice_items|
+    #     sum = 0
+    #     invoice_items.each do |invoice_item|
+    #       sum = sum + invoice_item.quantity.to_i
+    #     end
+    #     qty_hash[id] = sum
+    #   end
+    #   qty_hash
+    # end
 
 
   end

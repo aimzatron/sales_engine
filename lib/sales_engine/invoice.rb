@@ -53,8 +53,6 @@ module SalesEngine
       end
 
       details.each do |item, qty|
-        # puts "adding item_id: #{item.id}"
-        # puts " "
         ii_hash = {}
         ii_hash[:id] = id_counter += 1
         ii_hash[:item_id] = item.id
@@ -156,15 +154,11 @@ module SalesEngine
 
     def items
       all_items = Item.all
-
       invoice_items = self.invoice_items
-      #puts invoice_items.inspect
-
       found_items = all_items.select do |item|
         invoice_items.find {|ii| ii.item_id == item.id }
       end
 
-      #puts found_items.inspect
       found_items
       # hash = Item.get_index(:merchant_id)
       # items = hash[self.merchant_id]

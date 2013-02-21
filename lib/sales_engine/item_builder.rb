@@ -8,8 +8,10 @@ module SalesEngine
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
       data = contents.collect do |item|
-        item_hash = item.to_hash.merge({id: item[:id].to_i, merchant_id: item[:merchant_id].to_i,
+        item_hash = item.to_hash.merge({id: item[:id].to_i,
+          merchant_id: item[:merchant_id].to_i,
           unit_price: BigDecimal.new(item[:unit_price]) / 100})
+
         repo.new(item_hash)
       end
 
