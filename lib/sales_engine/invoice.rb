@@ -145,7 +145,7 @@ module SalesEngine
     end
 
     def invoice_items
-      invoice_items = InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+      InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
       #puts invoice_items.inspect
       #invoice_items
       #hash = InvoiceItem.get_index(:invoice_id)
@@ -251,7 +251,7 @@ module SalesEngine
       invoices_on_date = self.find_all_by_created_at(date)
     end
 
-    def self.extract_invoices_for_date(all_invoices, invoices_on_date)
+    def self.filter_for_date(all_invoices, invoices_on_date)
       all_invoices & invoices_on_date
     end
 

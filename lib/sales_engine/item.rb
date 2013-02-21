@@ -92,7 +92,8 @@ module SalesEngine
 
       item_id_rev = invoice_items.inject(Hash.new(0)) do |memo, inv_item|
         if paid_invoice_ids.include?(inv_item.invoice_id)
-          memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity) * BigDecimal.new(inv_item.unit_price)
+          memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity) *
+            BigDecimal.new(inv_item.unit_price)
         end
         memo
       end

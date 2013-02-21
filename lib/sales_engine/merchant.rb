@@ -55,7 +55,7 @@ module SalesEngine
 
       if date != ""
         invoices_for_date = Invoice.get_invoices_for_date(date)
-        invoices = Invoice.extract_invoices_for_date(invoices, invoices_for_date)
+        invoices = Invoice.filter_for_date(invoices, invoices_for_date)
       end
       paid_invoices = Invoice.paid_invoices(invoices)
       sales = Invoice.total_revenue(paid_invoices)
