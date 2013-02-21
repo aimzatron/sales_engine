@@ -21,6 +21,23 @@ module SalesEngine
       end
     end
 
+    describe "find by methods" do
+      before do
+        TransactionBuilder.parse_csv
+      end
+
+      def test_if_trans_can_be_found_by_result
+        trans = Transaction.find_all_by_result("success")
+        assert_operator 4600, :<=, trans.count
+      end
+
+      def test_if_trans_can_be_found_by_result
+        t = Transaction.find_by_credit_card_number("4634664005836219")
+        assert_equal 5536, t.id
+      end
+
+    end
+
     describe "test_random" do
       before do
         TransactionBuilder.parse_csv

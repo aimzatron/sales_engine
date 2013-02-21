@@ -105,15 +105,12 @@ module SalesEngine
       paid_invoice_ids = Transaction.get_paid_invoice_list
 
       item_id_qty = invoice_items.inject(Hash.new(0)) do |memo, inv_item|
-        #puts "in inject"
         if paid_invoice_ids.include?(inv_item.invoice_id)
           memo[inv_item.item_id] += BigDecimal.new(inv_item.quantity)
-          ## Why didn't .to_i work???? are there nil values?
         end
         memo
       end
       sorted = item_id_qty.sort_by { |k,v| v }.reverse
-      #puts sorted.inspect
       sorted[0,num.to_i].map { |pair| Item.find_by_id(pair[0]) }
     end
 
@@ -133,9 +130,7 @@ module SalesEngine
         end
         memo
       end
-
-      sorted = days.sort_by{|k,v| v}.reverse
-      sorted[0][0]
+      sorted = days.sort_by{|k,v| v}.reverse[0][0]
     end
 
     def paid_invoice_items

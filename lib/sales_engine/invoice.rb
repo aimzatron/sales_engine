@@ -22,67 +22,71 @@ module SalesEngine
     end
 
     def self.create(info)
+      invoice = Invoice.new(build_invoice(info))
+      Invoice.all.push(invoice)
+      add_invoice_item(invoice, info[:items])
+      invoice
+    end
 
+    def self.build_invoice(info)
       id = @data.size + 1
-      customer = info[:customer]
-      merchant = info[:merchant]
-      status = info[:status]
-      items = info[:items]
-
       data = {}
       data[:id] = id
-      data[:customer_id] = customer.id
-      data[:merchant_id] = merchant.id
-      data[:status] = status
+      data[:customer_id] = info[:customer].id
+      data[:merchant_id] = info[:merchant].id
+      data[:status] = info[:status]
       data[:created_at] = Date.today
       data[:updated_at] = Date.today
-
-      invoice = Invoice.new(data)
-      Invoice.all.push(invoice)
-      add_invoice_item(invoice, items)
-      invoice
+      data
     end
 
     def self.add_invoice_item(invoice, items)
 
       invoice_items = InvoiceItem.all
-      id_counter = invoice_items.size
+      id = invoice_items.size + 1
 
-      details = items.inject(Hash.new(0)) do |hash, item|
+      details = group_items(items)
+
+      details.each do |item, qty|
+        ii = InvoiceItem.new(build_invoice_item(id, item, qty, invoice.id))
+        InvoiceItem.all.push(ii)
+        id += 1
+      end
+    end
+
+    def self.build_invoice_item(id, item, qty, inv_id)
+      ii_hash = {}
+      ii_hash[:id] = id
+      ii_hash[:item_id] = item.id
+      ii_hash[:invoice_id] = inv_id
+      ii_hash[:quantity] = qty
+      ii_hash[:unit_price] = item.unit_price
+      ii_hash[:created_at] = Date.today; ii_hash[:updated_at] = Date.today
+      ii_hash
+    end
+
+    def self.group_items(items)
+      items.inject(Hash.new(0)) do |hash, item|
         hash[item] += 1
         hash
       end
-
-      details.each do |item, qty|
-        ii_hash = {}
-        ii_hash[:id] = id_counter += 1
-        ii_hash[:item_id] = item.id
-        ii_hash[:invoice_id] = invoice.id
-        ii_hash[:quantity] = qty
-        ii_hash[:unit_price] = item.unit_price
-        ii_hash[:created_at] = Date.today
-        ii_hash[:updated_at] = Date.today
-        ii = InvoiceItem.new(ii_hash)
-        InvoiceItem.all.push(ii)
-      end
-
     end
 
     def charge(info)
-      id_counter = Transaction.all.size
+      tran_id = Transaction.all.size + 1
+      t = Transaction.new(build_transaction(info, tran_id, self.id))
+      Transaction.all.push(t)
+    end
 
+    def self.build_transaction(info, inv_id)
       data = {}
-      data[:id] = id_counter += 1
-      data[:invoice_id] = self.id
+      data[:id] = tran_id
+      data[:invoice_id] = inv_id
       data[:credit_card_number] = info[:credit_card_number]
       data[:credit_card_expiration_date] = info[:credit_card_expiration_date]
       data[:result] = info[:result]
-      data[:created_at] = Date.today
-      data[:updated_at] = Date.today
-
-      t = Transaction.new(data)
-      #puts t.inspect
-      Transaction.all.push(t)
+      data[:created_at] = Date.today; data[:updated_at] = Date.today
+      data
     end
 
     def self.store_index(attribute, index_data)
