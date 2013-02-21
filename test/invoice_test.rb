@@ -223,8 +223,6 @@ module SalesEngine
         invoice =  Invoice.find_by_id(13)
         pending_invoices = Invoice.pending
 
-        puts pending_invoices[1].inspect
-
         assert_equal invoice, pending_invoices[1]
         assert_equal 195, pending_invoices.count
       end
@@ -232,6 +230,12 @@ module SalesEngine
       def test_if_average_revenue_of_all_paid_invoices_is_returned
         avg_revenue = Invoice.average_revenue
         assert_equal BigDecimal("12369.53"), avg_revenue
+      end
+
+      def test_if_avg_revenue_of_paid_invoices_are_returned_for_a_date
+        date = Date.parse("March 17, 2012")
+        avg_revenue = Invoice.average_revenue(date)
+        assert_equal BigDecimal("11603.14"), avg_revenue
       end
     end
 

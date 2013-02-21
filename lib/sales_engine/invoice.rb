@@ -200,9 +200,16 @@ module SalesEngine
       # end
     end
 
-    def self.average_revenue
+    def self.average_revenue(date = "")
       invoices = @data
+
+      if date != ""
+        invoices_for_date = Invoice.get_invoices_for_date(date)
+        invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+      end
+
       paid = paid_invoices(invoices)
+
       count = paid.size
       revenue_index = InvoiceItem.get_index(:invoice_revenue)
 
@@ -211,7 +218,6 @@ module SalesEngine
       end
 
       avg_revenue = revenue / count
-      puts avg_revenue
       avg_revenue.round(2)
 
     end
