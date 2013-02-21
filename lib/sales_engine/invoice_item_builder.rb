@@ -10,10 +10,11 @@ module SalesEngine
       data = contents.collect do |ii|
         #puts ii.class
 
-        ii_hash = ii.to_hash.merge({line_revenue: BigDecimal.new(ii[:quantity].to_i * ii[:unit_price].to_i) / 100,
-          id: ii[:id].to_i, item_id: ii[:item_id].to_i, invoice_id: ii[:invoice_id].to_i,
-          quantity: ii[:quantity].to_i})
-
+        ii_hash = ii.to_hash.merge!({id: ii[:id].to_i})
+        ii_hash.merge!({item_id: ii[:item_id].to_i})
+        ii_hash.merge!({invoice_id: ii[:invoice_id].to_i,})
+        ii_hash.merge!({quantity: ii[:quantity].to_i})
+        ii_hash.merge!({line_revenue: calc(ii[:quantity], ii[:unit_price])})
         repo.new(ii_hash)
       end
 
@@ -26,15 +27,19 @@ module SalesEngine
       invoice_qty_index = create_invoice_qty_index(invoice_index)
       repo.store_index(:invoice_qty, invoice_qty_index)
 
-      item_revenue_index = create_item_revenue_index(item_index)
-      repo.store_index(:item_revenue, item_revenue_index)
+      # item_revenue_index = create_item_revenue_index(item_index)
+      # repo.store_index(:item_revenue, item_revenue_index)
 
-      item_qty_index = create_item_qty_index(item_index)
-      repo.store_index(:item_qty, item_qty_index)
+      # item_qty_index = create_item_qty_index(item_index)
+      # repo.store_index(:item_qty, item_qty_index)
 
 
       #puts data.inspect
       repo.store(data)
+    end
+
+    def self.calc(qty, unit_price)
+      BigDecimal.new(qty.to_i * unit_price.to_i) / 100
     end
 
     def self.index_by(attribute, data, repo)
@@ -58,19 +63,19 @@ module SalesEngine
       revenue_hash
     end
 
-    def self.create_item_revenue_index(item_index)
-      #data.group_by{|invoiceItem| invoiceItem.item_id}
-      item_hash = Hash.new(0)
+    # def self.create_item_revenue_index(item_index)
+    #   #data.group_by{|invoiceItem| invoiceItem.item_id}
+    #   item_hash = Hash.new(0)
 
-      item_index.each do |id, invoice_items|
-        sum = 0
-        invoice_items.each do |invoice_item|
-          sum = sum + invoice_item.line_revenue
-        end
-        item_hash[id] = sum
-      end
-      item_hash
-    end
+    #   item_index.each do |id, invoice_items|
+    #     sum = 0
+    #     invoice_items.each do |invoice_item|
+    #       sum = sum + invoice_item.line_revenue
+    #     end
+    #     item_hash[id] = sum
+    #   end
+    #   item_hash
+    # end
 
     def self.create_invoice_qty_index(invoice_index)
       qty_hash = Hash.new(0)
@@ -85,18 +90,18 @@ module SalesEngine
       qty_hash
     end
 
-    def self.create_item_qty_index(item_index)
-      qty_hash = Hash.new(0)
+    # def self.create_item_qty_index(item_index)
+    #   qty_hash = Hash.new(0)
 
-      item_index.each do |id, invoice_items|
-        sum = 0
-        invoice_items.each do |invoice_item|
-          sum = sum + invoice_item.quantity.to_i
-        end
-        qty_hash[id] = sum
-      end
-      qty_hash
-    end
+    #   item_index.each do |id, invoice_items|
+    #     sum = 0
+    #     invoice_items.each do |invoice_item|
+    #       sum = sum + invoice_item.quantity.to_i
+    #     end
+    #     qty_hash[id] = sum
+    #   end
+    #   qty_hash
+    # end
 
 
   end

@@ -1,7 +1,8 @@
 module SalesEngine
   class InvoiceItem
 
-    attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :line_revenue, :created_at, :updated_at
+    attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price,
+                :line_revenue, :created_at, :updated_at
 
     def initialize(data)
       @id         = data[:id]
@@ -59,14 +60,11 @@ module SalesEngine
       paid_invoice_items_list = Transaction.get_paid_invoice_list
       exit if ii.nil?
       ii.inject([]) do |memo, inv_item|
-       # puts "in select loop"
         if paid_invoice_items_list.include?(inv_item.invoice_id)
           memo << inv_item
         end
         memo
       end
-
     end
-
   end
 end

@@ -20,200 +20,132 @@ module SalesEngine
       end
     end
 
+    describe "test_random" do
+
+      before do
+        InvoiceBuilder.parse_csv
+        #@data = Customer.all
+      end
+
+      def test_if_random
+        i1 = Invoice.random
+        i2 = Invoice.random
+
+        20.times do
+          break if i1.id != i2.id
+          i1 = Invoice.random
+        end
+
+        refute_equal i1.id, i2.id
+      end
+    end
+
     describe "test_find_methods" do
       before do
-        @i1 = {:id          => '2',
-               :customer_id => "1",
-               :merchant_id => "60",
+        i1 = {:id           => 2,
+               :customer_id => 1,
+               :merchant_id => 60,
                :status      => "shipped",
                :created_at  => Date.parse("2012-03-27 14:54:09 UTC"),
                :updated_at  => Date.parse("2012-03-27 15:00:00 UTC")}
 
-        @i2 = {:id        => '5',
-             :customer_id => "6",
-             :merchant_id => "75",
+        i2 = {:id         => 5,
+             :customer_id => 6,
+             :merchant_id => 75,
              :status      => "shipped",
              :created_at  => Date.parse("2012-03-27 14:54:09 UTC"),
              :updated_at  => Date.parse("2012-03-27 14:54:09 UTC")}
 
-        @i3 = {:id        => '5',
-             :customer_id => "6",
-             :merchant_id => "30",
+        i3 = {:id         => 5,
+             :customer_id => 6,
+             :merchant_id => 30,
              :status      => "not shipped",
              :created_at  => Date.parse("2012-03-25 14:54:09 UTC"),
              :updated_at  => Date.parse("2012-03-25 14:54:09 UTC")}
+
+
+          @i1 = Invoice.new(i1)
+          @i2 = Invoice.new(i2)
+          @i3 = Invoice.new(i3)
+
+          Invoice.store([@i1, @i2, @i3])
         end
 
         def test_find_by_id_matches_first_result
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
-          invoice = Invoice.find_by_id("2")
-          assert_equal "2", invoice.id
+          invoice = Invoice.find_by_id(2)
+          assert_equal 2, invoice.id
         end
 
         def test_find_all_by_id
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-          i3 = Invoice.new(@i3)
-
-          Invoice.store([i1, i2, i3])
-
-          invoices = Invoice.find_all_by_id("5")
+          invoices = Invoice.find_all_by_id(5)
           assert_equal 2, invoices.count
         end
 
         def test_if_find_all_by_id_returns_empty_array_if_id_not_found
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
-          invoices = Invoice.find_all_by_id("2345")
+          invoices = Invoice.find_all_by_id(2345)
           assert_equal [], invoices
         end
 
         def test_find_by_customer_id_matches_first_result
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
-          invoice = Invoice.find_by_customer_id("1")
-          assert_equal "1", invoice.customer_id
+          invoice = Invoice.find_by_customer_id(1)
+          assert_equal 1, invoice.customer_id
           refute_nil invoice
         end
 
         def test_find_all_by_customer_id
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-          i3 = Invoice.new(@i3)
-
-          Invoice.store([i1, i2, i3])
-
-          invoices = Invoice.find_all_by_customer_id("6")
+          invoices = Invoice.find_all_by_customer_id(6)
           assert_equal 2, invoices.count
         end
 
         def test_if_find_all_by_customer_id_returns_empty_array_if_id_not_found
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
-          invoices = Invoice.find_all_by_id("2345")
+          invoices = Invoice.find_all_by_id(2345)
           assert_equal [], invoices
         end
 
         def test_find_by_status_matches_first_result
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoice = Invoice.find_by_status("shipped")
           assert_equal "shipped", invoice.status
           refute_nil invoice
         end
 
         def test_find_all_by_status
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-          i3 = Invoice.new(@i3)
-
-          Invoice.store([i1, i2, i3])
-
           invoices = Invoice.find_all_by_status("shipped")
           assert_equal 2, invoices.count
         end
 
         def test_if_find_all_by_status_returns_empty_array_if_id_not_found
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoices = Invoice.find_all_by_status("failed")
           assert_equal [], invoices
         end
 
         def test_find_by_created_at_matches_first_result
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoice = Invoice.find_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
           assert_equal Date.parse("2012-03-27 14:54:09 UTC"), invoice.created_at
           refute_nil invoice
         end
 
         def test_find_all_by_created_at
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-          i3 = Invoice.new(@i3)
-
-          Invoice.store([i1, i2, i3])
-
           invoices = Invoice.find_all_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
           assert_equal 2, invoices.count
         end
 
         def test_if_find_all_by_created_at_returns_empty_array_if_id_not_found
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoices = Invoice.find_all_by_id("2012-03-27 16:54:09 UTC")
           assert_equal [], invoices
         end
 
         def test_find_by_updated_at_matches_first_result
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoice = Invoice.find_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
           assert_equal Date.parse("2012-03-27 15:00:00 UTC"), invoice.updated_at
           refute_nil invoice
         end
 
         def test_find_all_by_updated_at
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-          i3 = Invoice.new(@i3)
-
-          Invoice.store([i1, i2, i3])
-
           invoices = Invoice.find_all_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
           assert_equal 2, invoices.count
         end
 
         def test_if_find_all_by_updated_at_returns_empty_array_if_id_not_found
-
-          i1 = Invoice.new(@i1)
-          i2 = Invoice.new(@i2)
-
-          Invoice.store([i1, i2])
-
           invoices = Invoice.find_all_by_updated_at(Date.parse("2013-03-27 23:54:09 UTC"))
           assert_equal [], invoices
         end
@@ -275,7 +207,6 @@ module SalesEngine
       def test_if_new_invoice_is_successfully_created
         items = [@i1, @i2, @i3]
         invoice = Invoice.create(customer: @c, merchant: @m, items: items)
-
         assert_equal 7, invoice.customer_id
       end
 

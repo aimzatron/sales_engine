@@ -1,7 +1,8 @@
 module SalesEngine
   class Invoice
 
-    attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
+    attr_reader :id, :customer_id, :merchant_id, :status,
+                :created_at, :updated_at
 
     def initialize(data)
       @id          = data[:id]
@@ -53,8 +54,6 @@ module SalesEngine
       end
 
       details.each do |item, qty|
-        # puts "adding item_id: #{item.id}"
-        # puts " "
         ii_hash = {}
         ii_hash[:id] = id_counter += 1
         ii_hash[:item_id] = item.id
@@ -146,7 +145,7 @@ module SalesEngine
     end
 
     def invoice_items
-      invoice_items = InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+      InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
       #puts invoice_items.inspect
       #invoice_items
       #hash = InvoiceItem.get_index(:invoice_id)
@@ -156,15 +155,11 @@ module SalesEngine
 
     def items
       all_items = Item.all
-
       invoice_items = self.invoice_items
-      #puts invoice_items.inspect
-
       found_items = all_items.select do |item|
         invoice_items.find {|ii| ii.item_id == item.id }
       end
 
-      #puts found_items.inspect
       found_items
       # hash = Item.get_index(:merchant_id)
       # items = hash[self.merchant_id]
@@ -256,7 +251,7 @@ module SalesEngine
       invoices_on_date = self.find_all_by_created_at(date)
     end
 
-    def self.extract_invoices_for_date(all_invoices, invoices_on_date)
+    def self.filter_for_date(all_invoices, invoices_on_date)
       all_invoices & invoices_on_date
     end
 

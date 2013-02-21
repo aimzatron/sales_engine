@@ -8,7 +8,9 @@ module SalesEngine
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
       data = contents.collect do |trans|
-        trans_hash = trans.to_hash.merge({id: trans[:id].to_i, invoice_id: trans[:invoice_id].to_i})
+        trans_hash = trans.to_hash.merge({id: trans[:id].to_i,
+          invoice_id: trans[:invoice_id].to_i})
+
         repo.new(trans_hash)
       end
 
@@ -24,7 +26,6 @@ module SalesEngine
 
     def self.index_by(attribute, data, repo)
       index = data.group_by { |transaction| transaction.send(attribute) }
-     # puts index.inspect
       repo.store_index(attribute, index)
     end
 

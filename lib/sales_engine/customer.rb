@@ -20,27 +20,27 @@ module SalesEngine
     end
 
     def self.find_by_first_name(first_name)
-      @data.find {|customer| customer.first_name.downcase == first_name.downcase}
+      @data.find {|c| c.first_name.downcase == first_name.downcase}
     end
 
     def self.find_all_by_first_name(first_name)
-      @data.select{|customer| customer.first_name.downcase == first_name.downcase}
+      @data.select{|c| c.first_name.downcase == first_name.downcase}
     end
 
     def self.find_by_last_name(last_name)
-      @data.find {|customer| customer.last_name.downcase == last_name.downcase}
+      @data.find {|c| c.last_name.downcase == last_name.downcase}
     end
 
     def self.find_all_by_last_name(last_name)
-      @data.select{|customer| customer.first_name.downcase == first_name.downcase}
+      @data.select{|c| c.last_name.downcase == last_name.downcase}
     end
 
     def self.find_by_id(id)
-      @data.find {|customer| customer.id == id}
+      @data.find {|c| c.id == id}
     end
 
     def self.find_all_by_id(id)
-      @data.select {|customer| customer.id == id}
+      @data.select {|c| c.id == id}
     end
 
     def self.random
@@ -63,9 +63,6 @@ module SalesEngine
       invoices = self.invoices
 
       paid_invoices = Invoice.paid_invoices(invoices)
-
-      # puts paid_invoices.inspect
-
       merchants = paid_invoices.inject(Hash.new(0)) do |hash, paid_invoice|
         hash[paid_invoice.merchant_id] += 1
         hash

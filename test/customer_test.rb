@@ -38,29 +38,31 @@ module SalesEngine
 
     describe "test_find_methods" do
       before do
-        @c1 = {:id => 5, :first_name => 'MARY',
+        c1 = {:id => 5, :first_name => 'MARY',
                :last_name => 'Smith',
                :created_at => "2012-03-27 14:54:09 UTC",
                :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @c2 = {:id => 7, :first_name => 'mary',
+        c2 = {:id => 7, :first_name => 'mary',
               :last_name => 'Smitty',
               :created_at => "2012-03-27 14:54:09 UTC",
               :updated_at => "2012-03-27 14:54:09 UTC"}
 
-        @c3 = {:id => 7, :first_name => 'Mary Ellen',
-              :last_name => 'Smutty',
+        c3 = {:id => 7, :first_name => 'Mary Ellen',
+              :last_name => 'Smitty',
               :created_at => "2012-03-27 14:54:09 UTC",
               :updated_at => "2012-03-27 14:54:09 UTC"}
-        end
+
+
+        @c1 = Customer.new(c1)
+        @c2 = Customer.new(c2)
+        @c3 = Customer.new(c3)
+
+        Customer.store([@c1, @c2, @c3])
+
+      end
 
       def test_find_by_first_name_matches_first_result
-
-        c2 = Customer.new(@c2)
-        c1 = Customer.new(@c1)
-
-
-        Customer.store([c1, c2])
 
         customer = Customer.find_by_first_name("Mary")
         assert_equal "MARY", customer.first_name
@@ -68,58 +70,42 @@ module SalesEngine
       end
 
       def test_find_all_by_first_name
-
-        c1 = Customer.new(@c1)
-        c2 = Customer.new(@c2)
-        c3 = Customer.new(@c3)
-
-        Customer.store([c1, c2, c3])
-
         customers = Customer.find_all_by_first_name("Mary")
         assert_equal 2, customers.count
       end
 
-      def test_if_find_all_by_name_returns_empty_array_if_name_not_found
-
-        c1 = Customer.new(@c1)
-        c2 = Customer.new(@c2)
-
-        Customer.store([c1, c2])
-
+      def test_if_find_all_by_first_name_returns_empty_array_if_name_not_found
         customers = Customer.find_all_by_first_name("Joey")
         assert_equal [], customers
       end
 
+      def test_find_by_last_name_matches_first_result
+        customer = Customer.find_by_last_name("Smith")
+        assert_equal "Smith", customer.last_name
+      end
+
+      def test_find_all_by_last_name
+        customers = Customer.find_all_by_last_name("Smitty")
+        assert_equal 2, customers.count
+      end
+
+      def test_if_find_all_by_first_name_returns_empty_array_if_name_not_found
+        customers = Customer.find_all_by_last_name("Grant")
+        assert_equal [], customers
+      end
+
       def test_find_by_id_matches_first_result
-
-        c1 = Customer.new(@c2)
-        c2 = Customer.new(@c3)
-
-        Customer.store([c1, c2])
-
         customer = Customer.find_by_id(7)
         assert_equal "mary", customer.first_name
         assert_equal 7, customer.id
       end
 
       def test_find_all_by_id
-
-        c1 = Customer.new(@c2)
-        c2 = Customer.new(@c3)
-
-        Customer.store([c1, c2])
-
         customers = Customer.find_all_by_id(7)
         assert_equal 2, customers.count
       end
 
       def test_if_find_all_by_id_returns_empty_array_if_id_not_found
-
-        c1 = Customer.new(@c2)
-        c2 = Customer.new(@c3)
-
-        Customer.store([c1, c2])
-
         customers = Customer.find_all_by_id(10)
         assert_equal [], customers
       end
