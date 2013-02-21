@@ -61,6 +61,16 @@ module SalesEngine
         refute_nil invoice
       end
 
+      def test_if_invoice_items_can_be_retrieved_for_an_item_id
+        invoice_item = InvoiceItem.find_by_item_id(123)
+        assert_equal "Item Doloribus Ducimus", invoice_item.item.name
+      end
+
+      def test_if_all_invoices_items_with_given_quantity_can_be_returned
+        invoice_items = InvoiceItem.find_all_by_quantity(10)
+        assert_equal 2140, invoice_items.count
+      end
+
       def test_if_an_item_can_be_returned_for_an_invoice_item
         item = @ii.item
         assert_equal "Item Cupiditate Magni", item.name
