@@ -1,4 +1,4 @@
-require './test/test_helper'
+require 'test_helper'
 
 module SalesEngine
   class ItemTest < MiniTest::Unit::TestCase

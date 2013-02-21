@@ -1,8 +1,15 @@
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|
-  t.pattern = "test/*_test.rb"
+  t.libs = [ "lib", "test" ]
+  t.pattern = "test/**/*_test.rb"
 end
+
+# Rake::TestTask.new "test:merchant_builder" do |t|
+#   t.libs = [ "lib", "test" ]
+#   t.pattern = "test/merchant_builder_test.rb"
+# end
+
 
 task :gem do
   sh "gem build sales_engine.gemspec"

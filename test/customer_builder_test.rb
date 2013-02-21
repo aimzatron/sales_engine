@@ -1,6 +1,4 @@
-require 'simplecov'
-SimpleCov.start
-require './test/test_helper'
+require 'test_helper'
 
 module SalesEngine
   class MerchantBuilderTest < MiniTest::Unit::TestCase

@@ -20,31 +20,62 @@ module SalesEngine
       @data
     end
 
-    # def self.create(info)
-    #   id = @data.size + 1
-    #   customer = info[:customer] #= data[customer
-    #   merchant = info[:merchant] #= customer
-    #   status = info[:status] #= customer
-    #   items = info[:items]
+    def self.create(info)
 
-    #   # INVOICE - :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
-    #   data[:id] = id
-    #   data[:customer_id] = customer.id
-    #   data[:merchant_id] = merchant.id
-    #   data[:status] = status
-    #   data[:created_at] = Date.today
-    #   data[:updated_at] = Date.today
+      puts info.inspect
+      puts ""
+      
+      id = @data.size + 1
+      customer = info[:customer] #= data[customer
+      merchant = info[:merchant] #= customer
+      status = info[:status] #= customer
+      #puts status.class
+      items = info[:items]
 
+      # INVOICE - :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
+      data = {}
+      data[:id] = id
+      data[:customer_id] = customer.id
+      data[:merchant_id] = merchant.id
+      data[:status] = status
+      data[:created_at] = Date.today
+      data[:updated_at] = Date.today
 
-    #   invoice = new(data)
-    # end
+      invoice = Invoice.new(data)
+      puts invoice.inspect
 
-    # def self.add_invoice_item()
-    #   # item_id = 
-    # end
+      add_invoice_item(invoice, items)
+    end
 
-    # def charge
-    # end
+    def self.add_invoice_item(invoice, items)
+
+      invoice_items = InvoiceItem.all
+      count = invoice_items.size
+
+      details = items.inject(Hash.new(0)) do |hash, item|
+        hash[item] += 1
+        hash
+      end
+
+      #puts details.inspect
+
+      details.each do |item, qty|
+        ii_hash = {}
+        ii_hash[:id] = count + 1
+        ii_hash[:item_id] = item.id
+        ii_hash[:invoice_id] = invoice.id
+        ii_hash[:quantity] = qty
+        ii_hash[:unit_price] = item.unit_price
+        ii_hash[:created_at] = Date.today
+        ii_hash[:updated_at] = Date.today
+        InvoiceItem.new(ii_hash)
+      end
+
+    end
+
+    def charge
+      # find_by_id(new_id)
+    end
 
     def self.store_index(attribute, index_data)
       @indexes ||= {}

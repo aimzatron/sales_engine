@@ -1,4 +1,4 @@
-require './test/test_helper'
+require 'test_helper'
 
 module SalesEngine
   class InvoiceTest < MiniTest::Unit::TestCase
@@ -252,6 +252,34 @@ module SalesEngine
         assert_equal 'Eric', c.first_name
         assert_equal 'Bergnaum', c.last_name
       end
+    end
+
+    describe "Invoice Business Intelligence" do
+
+      before do
+        InvoiceBuilder.parse_csv
+        TransactionBuilder.parse_csv
+        InvoiceItemBuilder.parse_csv
+        ItemBuilder.parse_csv
+        MerchantBuilder.parse_csv
+        CustomerBuilder.parse_csv
+
+        @c = Customer.find_by_id(7)
+        @m = Merchant.find_by_id(22)
+        @i1 = Item.random
+        @i2 = Item.random
+        @i3 = Item.random
+
+      end
+
+      def test_if_new_invoice_is_successfully_created
+        items = [@i1, @i2, @i3]
+        invoice = Invoice.create(customer: customer, merchant: merchant, items: items)
+
+        result = invoice.items.include?(@i1)
+        assert_equal 7, invoice.customer_id
+      end
+
     end
 
     # describe "Invoice Extensions" do
