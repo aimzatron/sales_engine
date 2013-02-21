@@ -76,7 +76,6 @@ module SalesEngine
     end
 
     def invoice_items
-      # InvoiceItem.all.select{|inv_item| inv_item.item_id == self.id}
       hash =  InvoiceItem.get_index(:item_id)
       items = hash[self.id]
     end
@@ -137,32 +136,6 @@ module SalesEngine
       InvoiceItem.paid_invoice_items(self.invoice_items)
 
     end
-
-    # def self.group_by_revenue
-    #   top_items = @data.inject(Hash.new(0)) do |hash, item|
-    #     ii = item.invoice_items
-    #     # #puts ii.inspect
-    #     paid_ii = InvoiceItem.paid_invoice_items(ii)
-
-    #     revenue = item.calculate_revenue(ii)
-    #     puts revenue
-
-    #     hash[item.id] = revenue
-    #     hash
-    #   end
-    #   puts top_items.inspect
-    #   top_items = top_items.sort_by{|k,v| v}.reverse
-    # end
-
-    # def self.get_items(items)
-    #   items.collect{|item| self.find_by_id(item[0])}
-    # end
-
-    # def calculate_revenue(ii)
-    #   ii.inject(0) do |sum, invoice_item|
-    #     sum += invoice_item.line_revenue
-    #   end
-    # end
 
   end
 end

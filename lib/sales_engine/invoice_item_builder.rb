@@ -39,13 +39,11 @@ module SalesEngine
 
     def self.index_by(attribute, data, repo)
       index = data.group_by { |invoice_item| invoice_item.send(attribute) }
-     # puts index.inspect
       repo.store_index(attribute, index)
     end
 
 
     def self.create_invoice_revenue_index(invoice_index)
-      #data.group_by{|invoiceItem| invoiceItem.item_id}
       revenue_hash = Hash.new(0)
 
       invoice_index.each do |id, invoice_items|

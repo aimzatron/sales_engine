@@ -76,7 +76,6 @@ module SalesEngine
       sales = paid_invoices.inject(0) do |sales, invoice|
         sales += revenue_index[invoice.id]
       end
-      sum
     end
 
 

@@ -24,7 +24,6 @@ module SalesEngine
 
       before do
         InvoiceBuilder.parse_csv
-        #@data = Customer.all
       end
 
       def test_if_random

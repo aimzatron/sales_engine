@@ -128,7 +128,6 @@ module SalesEngine
     end
 
     describe "merchant relationships" do
-      # Ask why Item class did not need to be required for this test to work!!!!!!
       before do
         MerchantBuilder.parse_csv
         ItemBuilder.parse_csv
@@ -148,11 +147,6 @@ module SalesEngine
         invoices = @m.invoices
         assert_equal 43, invoices.count
       end
-
-      # def test_if_invoice_for_customer_named_Block_exists
-      #   invoice = @m.invoices.find{|i| i.customer.last_name == 'Block'}
-      #   assert_equal "shipped", invoice.status
-      # end
     end
 
     describe "merchant business intelligence" do
@@ -172,13 +166,11 @@ module SalesEngine
 
       def test_if_correct_revenue_is_returned_for_a_merchant
         sales = @m1.revenue
-        #puts (sales.round(2).to_f)/100
         assert_equal 1148393.74, (sales.round(2).to_f)
       end
 
       def test_if_top_merchant_by_revenue_is_returned
         merchants = Merchant.most_revenue(3)
-        #puts merchants.inspect
         assert_equal "Dicki-Bednar", merchants[0].name
       end
 
@@ -195,13 +187,11 @@ module SalesEngine
       def test_if_customers_with_unpaid_invoices_are_returned
         customers = @m4.customers_with_pending_invoices
         assert_equal 4, customers.size
-        #assert_equal "Leanne", customers[1].first_name
       end
 
       def test_if_favorite_customer_is_found
         customer = @m3.favorite_customer
         assert_equal "Hammes", customer.last_name
-        #assert_equal "5", customer.id
       end
 
       def test_if_top_merchants_by_items_sold_is_returned

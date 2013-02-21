@@ -15,7 +15,6 @@ module SalesEngine
 
     def test_if_invoice_item_was_created
       output = InvoiceItemBuilder.parse_csv("./test/support/invoice_item_build.csv")
-      #puts output.inspect
       assert_equal "34873", output[2].unit_price
     end
 

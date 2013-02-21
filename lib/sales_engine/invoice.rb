@@ -149,11 +149,6 @@ module SalesEngine
 
     def invoice_items
       InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
-      #puts invoice_items.inspect
-      #invoice_items
-      #hash = InvoiceItem.get_index(:invoice_id)
-      #puts "# here's the id of the invoice #{self.id}"
-      #invoice_items = #hash[self.id]
     end
 
     def items
@@ -162,12 +157,7 @@ module SalesEngine
       found_items = all_items.select do |item|
         invoice_items.find {|ii| ii.item_id == item.id }
       end
-
       found_items
-      # hash = Item.get_index(:merchant_id)
-      # items = hash[self.merchant_id]
-      # puts items.inspect
-      # items
     end
 
     def customer
@@ -175,27 +165,8 @@ module SalesEngine
     end
 
     def self.pending
-
       invoices = @data
-
       unpaid = unpaid_invoices(invoices)
-      # pending_transactions = Transaction.pending
-      # #puts transactions.inspect
-
-      # @data.select do |invoice|
-      #   pending_transactions.find do |invoice_id, no_of_trans|
-      #     invoice_id == invoice.id
-      #   end
-      # end
-
-     # pending_transactions = Transaction.pending
-      #puts transactions.inspect
-
-      # @data.select do |invoice|
-      #   pending_transactions.find do |invoice_id, no_of_trans|
-      #     invoice_id == invoice.id
-      #   end
-      # end
     end
 
     def self.average_revenue(date = "")
@@ -267,9 +238,7 @@ module SalesEngine
     end
 
     def self.total_revenue(invoices)
-      # invoices.inject(0){|sum, invoice| sum + invoice.revenue}
       hash = InvoiceItem.get_index(:invoice_revenue)
-      #puts hash.inspect
       sum = 0
       invoices.each do |invoice|
         hash.each do |id, revenue|
@@ -282,7 +251,6 @@ module SalesEngine
     end
 
     def self.total_qty(invoices)
-      # #invoices.inject(0){|sum, invoice| sum + invoice.get_quantity}
       hash = InvoiceItem.get_index(:invoice_qty)
       sum = 0
       invoices.each do |invoice|
