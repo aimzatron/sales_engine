@@ -7,11 +7,10 @@ module SalesEngine
     def self.parse_csv(file = DEFAULT_FILE, repo=DATA_REPOSITORY)
       contents = CSV.open(file, headers: true, header_converters: :symbol)
 
-      data = contents.collect do |item|
-        item_hash = item.to_hash.merge({id: item[:id].to_i,
-          merchant_id: item[:merchant_id].to_i,
-          unit_price: BigDecimal.new(item[:unit_price]) / 100})
-
+      data = contents.collect do |i|
+        item_hash = i.to_hash.merge!({id: i[:id].to_i})
+        item_hash.merge!({merchant_id: i[:merchant_id].to_i})
+        item_hash.merge!({unit_price: BigDecimal.new(i[:unit_price]) / 100})
         repo.new(item_hash)
       end
 
@@ -22,6 +21,10 @@ module SalesEngine
     def self.index_by(attribute, data, repo)
       index = data.group_by { |invoice| invoice.send(attribute) }
       repo.store_index(attribute, index)
+    end
+
+    def calculate_line_revenue
+
     end
 
   end
