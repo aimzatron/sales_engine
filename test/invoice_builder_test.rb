@@ -15,7 +15,7 @@ module SalesEngine
 
     def test_if_invoice_was_created
       output = InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-      merchant_id = "75"
+      merchant_id = 75
       assert_equal merchant_id, output[1].merchant_id
     end
 
