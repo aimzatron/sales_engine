@@ -63,9 +63,6 @@ module SalesEngine
       invoices = self.invoices
 
       paid_invoices = Invoice.paid_invoices(invoices)
-
-      #puts paid_invoices.inspect
-
       merchants = paid_invoices.inject(Hash.new(0)) do |hash, paid_invoice|
         hash[paid_invoice.merchant_id] += 1
         hash
