@@ -176,25 +176,29 @@ module SalesEngine
       Customer.all.find {|customer| customer.id == self.customer_id}
     end
 
-    # def self.pending
-    #   # pending_transactions = Transaction.pending
-    #   # #puts transactions.inspect
+    def self.pending
 
-    #   # @data.select do |invoice|
-    #   #   pending_transactions.find do |invoice_id, no_of_trans|
-    #   #     invoice_id == invoice.id
-    #   #   end
-    #   # end
+      invoices = @data
 
-    #   pending_transactions = Transaction.pending
-    #   #puts transactions.inspect
+      unpaid = unpaid_invoices(invoices)
+      # pending_transactions = Transaction.pending
+      # #puts transactions.inspect
 
-    #   @data.select do |invoice|
-    #     pending_transactions.find do |invoice_id, no_of_trans|
-    #       invoice_id == invoice.id
-    #     end
-    #   end
-    # end
+      # @data.select do |invoice|
+      #   pending_transactions.find do |invoice_id, no_of_trans|
+      #     invoice_id == invoice.id
+      #   end
+      # end
+
+     # pending_transactions = Transaction.pending
+      #puts transactions.inspect
+
+      # @data.select do |invoice|
+      #   pending_transactions.find do |invoice_id, no_of_trans|
+      #     invoice_id == invoice.id
+      #   end
+      # end
+    end
 
     def self.paid_invoices(invoices)
       results_index = Transaction.get_index(:results)

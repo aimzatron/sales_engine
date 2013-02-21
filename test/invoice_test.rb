@@ -212,17 +212,22 @@ module SalesEngine
 
     end
 
-    # describe "Invoice Extensions" do
-    #   before do
-    #     TransactionBuilder.parse_csv("./test/support/transaction_build.csv")
-    #     InvoiceBuilder.parse_csv("./test/support/invoice_build.csv")
-    #   end
+    describe "Invoice Extensions" do
+      before do
+        TransactionBuilder.parse_csv
+        InvoiceBuilder.parse_csv
+      end
 
-    #   def test_if_pending_invoices_can_be_retrieved
-    #     pending_invoices = Invoice.pending
-    #     #© pending_invoices.inspect
-    #     assert_equal 2, pending_invoices.size
-    #   end
-    # end
+      def test_if_pending_invoices_can_be_retrieved
+        invoice =  Invoice.find_by_id(13)
+        pending_invoices = Invoice.pending
+
+        puts pending_invoices[1].inspect
+
+        assert_equal invoice, pending_invoices[1]
+        assert_equal 195, pending_invoices.count
+      end
+    end
+
   end
 end
