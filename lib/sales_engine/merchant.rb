@@ -50,35 +50,91 @@ module SalesEngine
       invoices = hash[self.id]
     end
 
-    def revenue(date = "")
+    def revenue(args = "")
       invoices = self.invoices
 
-      if date != ""
-        invoices_for_date = Invoice.get_invoices_for_date(date)
-        invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+      if args.class == Range
+        revenue_range(args, invoices)
+      else
+        if args != ""
+          invoices_for_date = Invoice.get_invoices_for_date(args)
+          invoices = Invoice.filter_for_date(invoices, invoices_for_date)
+        end
+        paid_invoices = Invoice.paid_invoices(invoices)
+        sales = Invoice.total_revenue(paid_invoices)
       end
-      paid_invoices = Invoice.paid_invoices(invoices)
-      sales = Invoice.total_revenue(paid_invoices)
     end
 
-    def self.revenue(date)
-      invoices = Invoice.get_invoices_for_date(date)
-      paid_invoice_ids = Transaction.get_paid_invoice_list
-      revenue_index = InvoiceItem.get_index(:invoice_revenue)
 
-      sum = 0
-      merch_id_rev = invoices.inject(Hash.new(0)) do |memo, inv|
-        if paid_invoice_ids.include?(inv.id)
-          sum += revenue_index[inv.id]
-        end
+    def revenue_range(range, invoices)
+      range_invoices = Invoice.get_invoices_for_date_range(range)
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+      selected = invoices & range_invoices
+
+      paid_invoices = Invoice.paid_invoices(selected)
+
+      sales = paid_invoices.inject(0) do |sales, invoice|
+        sales += revenue_index[invoice.id]
       end
       sum
+    end
+
+
+    def self.revenue(args)
+      if args.class == Range
+        revenue_range(args)
+      else
+        invoices = Invoice.get_invoices_for_date(args)
+        paid_invoice_ids = Transaction.get_paid_invoice_list
+        revenue_index = InvoiceItem.get_index(:invoice_revenue)
+
+        sum = 0
+        merch_id_rev = invoices.inject(Hash.new(0)) do |memo, inv|
+          if paid_invoice_ids.include?(inv.id)
+            sum += revenue_index[inv.id]
+          end
+        end
+        sum
+      end
     end
 
     def self.most_revenue(num)
       merchants = self.group_by_revenue
       top_merchants = get_merchants(merchants[0..(num-1)])
     end
+
+    def self.dates_by_revenue(num = "")
+      paid_invoice_ids = Transaction.get_paid_invoice_list
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+
+      dates = Invoice.all.inject(Hash.new(0)) do |memo, invoice|
+        if paid_invoice_ids.include?(invoice.id)
+          memo[invoice.created_at] += revenue_index[invoice.id]
+        end
+        memo
+      end
+
+      num != "" ? num = num.to_i - 1 : num = -1
+
+      sorted = dates.sort_by{|k, v| v}.reverse
+      sorted[0..num].map{ |pair| pair[0] }
+    end
+
+    def self.revenue_range(range)
+      paid_invoice_ids = Transaction.get_paid_invoice_list
+
+      revenue_index = InvoiceItem.get_index(:invoice_revenue)
+      invoices = Invoice.get_invoices_for_date_range(range)
+
+      sum = 0
+      invoices.each do |invoice|
+        if paid_invoice_ids.include?(invoice.id)
+            sum += revenue_index[invoice.id]
+        end
+      end
+      sum
+    end
+
 
     def self.most_items(num)
       merchants = self.group_by_items_sold
@@ -95,7 +151,6 @@ module SalesEngine
       invoices = self.invoices
       paid_invoices = Invoice.paid_invoices(invoices)
       customers = Invoice.group_by_customer_id(paid_invoices)
-      #puts customers.inspect
       Customer.find_by_id(customers[0][0])
     end
 

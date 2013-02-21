@@ -302,6 +302,12 @@ module SalesEngine
       invoices_on_date = self.find_all_by_created_at(date)
     end
 
+    def self.get_invoices_for_date_range(range)
+      invoices = @data.select do |invoice|
+        range.cover?(invoice.created_at)
+      end
+    end
+
     def self.filter_for_date(all_invoices, invoices_on_date)
       all_invoices & invoices_on_date
     end
