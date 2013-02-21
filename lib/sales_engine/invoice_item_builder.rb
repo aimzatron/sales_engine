@@ -36,7 +36,7 @@ module SalesEngine
         ii_hash.merge!({quantity: ii[:quantity].to_i})
         ii_hash.merge!({line_revenue: calc(ii[:quantity], ii[:unit_price])})
         repo.new(ii_hash)
-      end   
+      end
     end
 
     def self.calc(qty, unit_price)

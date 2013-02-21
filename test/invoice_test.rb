@@ -237,6 +237,11 @@ module SalesEngine
         avg_revenue = Invoice.average_revenue(date)
         assert_equal BigDecimal("11603.14"), avg_revenue
       end
+
+      def test_if_avg_items_per_paid_invoice_is_returned
+        avg_items = Invoice.average_items
+        assert_equal BigDecimal("24.45"), avg_items
+      end
     end
 
   end

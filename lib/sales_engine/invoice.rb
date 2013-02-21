@@ -222,6 +222,23 @@ module SalesEngine
 
     end
 
+    def self.average_items
+      invoices = @data
+      paid = paid_invoices(invoices)
+
+      count = paid.size
+      qty_index = InvoiceItem.get_index(:invoice_qty)
+
+      total_qty = paid.inject(0) do |qty, invoice|
+        qty += qty_index[invoice.id]
+      end
+
+      avg_qty = BigDecimal.new(total_qty) / count
+      #puts avg_qty
+      avg_qty.round(2)
+
+    end
+
     def self.paid_invoices(invoices)
       results_index = Transaction.get_index(:results)
       good_invoices = []
