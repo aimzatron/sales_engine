@@ -22,17 +22,12 @@ module SalesEngine
 
     def self.create(info)
 
-      puts info.inspect
-      puts ""
-      
       id = @data.size + 1
-      customer = info[:customer] #= data[customer
-      merchant = info[:merchant] #= customer
-      status = info[:status] #= customer
-      #puts status.class
+      customer = info[:customer]
+      merchant = info[:merchant]
+      status = info[:status]
       items = info[:items]
 
-      # INVOICE - :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
       data = {}
       data[:id] = id
       data[:customer_id] = customer.id
@@ -42,39 +37,53 @@ module SalesEngine
       data[:updated_at] = Date.today
 
       invoice = Invoice.new(data)
-      puts invoice.inspect
-
+      Invoice.all.push(invoice)
       add_invoice_item(invoice, items)
+      invoice
     end
 
     def self.add_invoice_item(invoice, items)
 
       invoice_items = InvoiceItem.all
-      count = invoice_items.size
+      id_counter = invoice_items.size
 
       details = items.inject(Hash.new(0)) do |hash, item|
         hash[item] += 1
         hash
       end
 
-      #puts details.inspect
-
       details.each do |item, qty|
+        # puts "adding item_id: #{item.id}"
+        # puts " "
         ii_hash = {}
-        ii_hash[:id] = count + 1
+        ii_hash[:id] = id_counter += 1
         ii_hash[:item_id] = item.id
         ii_hash[:invoice_id] = invoice.id
         ii_hash[:quantity] = qty
         ii_hash[:unit_price] = item.unit_price
         ii_hash[:created_at] = Date.today
         ii_hash[:updated_at] = Date.today
-        InvoiceItem.new(ii_hash)
+        ii = InvoiceItem.new(ii_hash)
+        InvoiceItem.all.push(ii)
       end
 
     end
 
-    def charge
-      # find_by_id(new_id)
+    def charge(info)
+      id_counter = Transaction.all.size
+
+      data = {}
+      data[:id] = id_counter += 1
+      data[:invoice_id] = self.id
+      data[:credit_card_number] = info[:credit_card_number]
+      data[:credit_card_expiration_date] = info[:credit_card_expiration_date]
+      data[:result] = info[:result]
+      data[:created_at] = Date.today
+      data[:updated_at] = Date.today
+
+      t = Transaction.new(data)
+      #puts t.inspect
+      Transaction.all.push(t)
     end
 
     def self.store_index(attribute, index_data)
@@ -131,15 +140,18 @@ module SalesEngine
     end
 
     def transactions
-      #Transaction.all.select{|transaction| transaction.invoice_id == self.id}
-      hash = Transaction.get_index(:invoice_id)
-      transactions = hash[self.id]
+      Transaction.all.select{|transaction| transaction.invoice_id == self.id}
+      # hash = Transaction.get_index(:invoice_id)
+      # transactions = hash[self.id]
     end
 
     def invoice_items
-      #InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
-      hash = InvoiceItem.get_index(:invoice_id)
-      invoice_items = hash[self.id]
+      invoice_items = InvoiceItem.all.select{|invoice_item| invoice_item.invoice_id == self.id}
+      #puts invoice_items.inspect
+      #invoice_items
+      #hash = InvoiceItem.get_index(:invoice_id)
+      #puts "# here's the id of the invoice #{self.id}"
+      #invoice_items = #hash[self.id]
     end
 
     def items

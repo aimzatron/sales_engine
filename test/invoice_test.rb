@@ -274,9 +274,12 @@ module SalesEngine
 
       def test_if_new_invoice_is_successfully_created
         items = [@i1, @i2, @i3]
-        invoice = Invoice.create(customer: customer, merchant: merchant, items: items)
+        invoice = Invoice.create(customer: @c, merchant: @m, items: items)
 
-        result = invoice.items.include?(@i1)
+        #result = invoice.items
+        #puts result.inspect
+
+        result.include?(@i1)
         assert_equal 7, invoice.customer_id
       end
 
