@@ -113,42 +113,42 @@ module SalesEngine
           assert_equal 2, invoices.count
         end
 
-        # def test_if_find_all_by_status_returns_empty_array_if_id_not_found
-        #   invoices = Invoice.find_all_by_status("failed")
-        #   assert_equal [], invoices
-        # end
+        def test_if_find_all_by_status_returns_empty_array_if_id_not_found
+          invoices = Invoice.find_all_by_status("failed")
+          assert_equal [], invoices
+        end
 
-        # def test_find_by_created_at_matches_first_result
-        #   invoice = Invoice.find_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
-        #   assert_equal Date.parse("2012-03-27 14:54:09 UTC"), invoice.created_at
-        #   refute_nil invoice
-        # end
+        def test_find_by_created_at_matches_first_result
+          invoice = Invoice.find_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
+          assert_equal Date.parse("2012-03-27 14:54:09 UTC"), invoice.created_at
+          refute_nil invoice
+        end
 
-        # def test_find_all_by_created_at
-        #   invoices = Invoice.find_all_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
-        #   assert_equal 2, invoices.count
-        # end
+        def test_find_all_by_created_at
+          invoices = Invoice.find_all_by_created_at(Date.parse("2012-03-27 14:54:09 UTC"))
+          assert_equal 2, invoices.count
+        end
 
-        # def test_if_find_all_by_created_at_returns_empty_array_if_id_not_found
-        #   invoices = Invoice.find_all_by_id("2012-03-27 16:54:09 UTC")
-        #   assert_equal [], invoices
-        # end
+        def test_if_find_all_by_created_at_returns_empty_array_if_id_not_found
+          invoices = Invoice.find_all_by_id("2012-03-27 16:54:09 UTC")
+          assert_equal [], invoices
+        end
 
-        # def test_find_by_updated_at_matches_first_result
-        #   invoice = Invoice.find_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
-        #   assert_equal Date.parse("2012-03-27 15:00:00 UTC"), invoice.updated_at
-        #   refute_nil invoice
-        # end
+        def test_find_by_updated_at_matches_first_result
+          invoice = Invoice.find_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
+          assert_equal Date.parse("2012-03-27 15:00:00 UTC"), invoice.updated_at
+          refute_nil invoice
+        end
 
-        # def test_find_all_by_updated_at
-        #   invoices = Invoice.find_all_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
-        #   assert_equal 2, invoices.count
-        # end
+        def test_find_all_by_updated_at
+          invoices = Invoice.find_all_by_updated_at(Date.parse("2012-03-27 15:00:00 UTC"))
+          assert_equal 2, invoices.count
+        end
 
-        # def test_if_find_all_by_updated_at_returns_empty_array_if_id_not_found
-        #   invoices = Invoice.find_all_by_updated_at(Date.parse("2013-03-27 23:54:09 UTC"))
-        #   assert_equal [], invoices
-        # end
+        def test_if_find_all_by_updated_at_returns_empty_array_if_id_not_found
+          invoices = Invoice.find_all_by_updated_at(Date.parse("2013-03-27 23:54:09 UTC"))
+          assert_equal [], invoices
+        end
     end
 
     describe "Invoice relationships" do

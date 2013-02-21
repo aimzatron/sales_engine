@@ -23,9 +23,5 @@ module SalesEngine
       repo.store_index(attribute, index)
     end
 
-    def calculate_line_revenue
-
-    end
-
   end
 end
