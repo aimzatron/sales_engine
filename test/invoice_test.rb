@@ -228,7 +228,7 @@ module SalesEngine
         ItemBuilder.parse_csv
         CustomerBuilder.parse_csv
 
-        @i = Invoice.find_by_id("1002")
+        @i = Invoice.find_by_id(1002)
 
       end
 
@@ -276,10 +276,6 @@ module SalesEngine
         items = [@i1, @i2, @i3]
         invoice = Invoice.create(customer: @c, merchant: @m, items: items)
 
-        #result = invoice.items
-        #puts result.inspect
-
-        result.include?(@i1)
         assert_equal 7, invoice.customer_id
       end
 

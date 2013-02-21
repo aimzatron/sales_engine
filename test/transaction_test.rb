@@ -24,7 +24,7 @@ module SalesEngine
     describe "transaction relationships " do
       before do
         InvoiceBuilder.parse_csv
-        t = {:id => '1138', :invoice_id => '982',
+        t = {:id => 1138, :invoice_id => 982,
               :credit_card_number => '4031429122375205',
               :credit_card_expiration_date => '',
               :result => "success",
@@ -38,7 +38,7 @@ module SalesEngine
       def test_if_invoice_is_returned_for_transaction
 
         invoice = @t.invoice
-        invoice_customer = Customer.find_by_id("192")
+        invoice_customer = Customer.find_by_id(192)
         transaction_customer = @t.invoice.customer.first_name
         assert_equal invoice_customer.first_name, transaction_customer
 
