@@ -74,11 +74,12 @@ module SalesEngine
 
     def charge(info)
       tran_id = Transaction.all.size + 1
-      t = Transaction.new(build_transaction(info, tran_id, self.id))
+      data = build_transaction(info, tran_id, self.id)
+      t = Transaction.new(data)
       Transaction.all.push(t)
     end
 
-    def self.build_transaction(info, inv_id)
+    def build_transaction(info, tran_id, inv_id)
       data = {}
       data[:id] = tran_id
       data[:invoice_id] = inv_id
